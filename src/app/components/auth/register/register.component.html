@@ -9,21 +9,21 @@
           <mat-form-field appearance="outline">
             <mat-label>First Name</mat-label>
             <input matInput formControlName="firstName" placeholder="First name" required>
-            <mat-error *ngIf="f.firstName.errors?.required">First name is required</mat-error>
+            <mat-error *ngIf="f['firstName'].errors?.['required']">First name is required</mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>Last Name</mat-label>
             <input matInput formControlName="lastName" placeholder="Last name" required>
-            <mat-error *ngIf="f.lastName.errors?.required">Last name is required</mat-error>
+            <mat-error *ngIf="f['lastName'].errors?.['required']">Last name is required</mat-error>
           </mat-form-field>
         </div>
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Email</mat-label>
           <input matInput formControlName="email" placeholder="Enter your email" type="email" required>
-          <mat-error *ngIf="f.email.errors?.required">Email is required</mat-error>
-          <mat-error *ngIf="f.email.errors?.email">Please enter a valid email</mat-error>
+          <mat-error *ngIf="f['email'].errors?.['required']">Email is required</mat-error>
+          <mat-error *ngIf="f['email'].errors?.['email']">Please enter a valid email</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
@@ -32,11 +32,9 @@
           <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
             <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
-          <mat-error *ngIf="f.password.errors?.required">Password is required</mat-error>
-          <mat-error *ngIf="f.password.errors?.minlength">Password must be at least 8 characters</mat-error>
-          <mat-error *ngIf="f.password.errors?.pattern">
-            Password must contain uppercase, lowercase, number and special character
-          </mat-error>
+          <mat-error *ngIf="f['password'].errors?.['required']">Password is required</mat-error>
+          <mat-error *ngIf="f['password'].errors?.['minlength']">Password must be minimum length</mat-error>
+          <mat-error *ngIf="f['password'].errors?.['pattern']">Password format is invalid</mat-error>
           <mat-hint>At least 8 characters with uppercase, lowercase, number and special character</mat-hint>
         </mat-form-field>
 
@@ -46,8 +44,8 @@
           <button mat-icon-button matSuffix (click)="hideConfirmPassword = !hideConfirmPassword" type="button">
             <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
-          <mat-error *ngIf="f.confirmPassword.errors?.required">Password confirmation is required</mat-error>
-          <mat-error *ngIf="f.confirmPassword.errors?.passwordMismatch">Passwords do not match</mat-error>
+          <mat-error *ngIf="f['confirmPassword'].errors?.['required']">Password confirmation is required</mat-error>
+          <mat-error *ngIf="f['confirmPassword'].errors?.['passwordMismatch']">Passwords do not match</mat-error>
         </mat-form-field>
 
         <div class="register-actions">

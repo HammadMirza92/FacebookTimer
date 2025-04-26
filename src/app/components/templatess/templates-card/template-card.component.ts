@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./template-card.component.scss']
 })
 export class TemplateCardComponent {
-  @Input() template: Template;
+  @Input() template!: Template;
   @Input() canUse: boolean = true;
   @Output() useTemplate = new EventEmitter<Template>();
 

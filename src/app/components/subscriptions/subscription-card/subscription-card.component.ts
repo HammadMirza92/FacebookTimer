@@ -7,7 +7,7 @@ import { SubscriptionPlan } from '../../../models/subscription-plan.model';
   styleUrls: ['./subscription-card.component.scss']
 })
 export class SubscriptionCardComponent {
-  @Input() plan: SubscriptionPlan;
+  @Input() plan!: SubscriptionPlan;
   @Input() currentPlan: boolean = false;
   @Input() features: string[] = [];
   @Input() loading: boolean = false;

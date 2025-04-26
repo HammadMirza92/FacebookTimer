@@ -1,3 +1,5 @@
+import { UserSubscription } from "./user-subscription.model";
+
 export interface User {
   id: string;
   firstName: string;

@@ -7,9 +7,9 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class AlertComponent implements OnInit {
   @Input() type: 'info' | 'success' | 'warning' | 'error' = 'info';
-  @Input() message: string;
+  @Input() message!: string;
   @Input() dismissible: boolean = true;
-  @Input() icon: string;
+  @Input() icon!: string;
 
   showAlert: boolean = true;
 

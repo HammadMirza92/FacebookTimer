@@ -14,7 +14,7 @@
             <mat-select formControlName="facebookPageId" (selectionChange)="onPageChange()" required>
               <mat-option *ngFor="let page of pages" [value]="page.id">{{ page.pageName }}</mat-option>
             </mat-select>
-            <mat-error *ngIf="f.facebookPageId.errors?.required">Facebook Page is required</mat-error>
+            <mat-error *ngIf="f['facebookPageId'].errors?.['required']">Facebook Page is required</mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
@@ -22,21 +22,21 @@
             <mat-select formControlName="templateId" (selectionChange)="onTemplateChange()" required>
               <mat-option *ngFor="let template of templates" [value]="template.id">{{ template.name }}</mat-option>
             </mat-select>
-            <mat-error *ngIf="f.templateId.errors?.required">Template is required</mat-error>
+            <mat-error *ngIf="f['templateId'].errors?.['required']">Template is required</mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Post Title</mat-label>
             <input matInput formControlName="title" placeholder="Enter title (e.g., EVENT NAME IS COMING!)" required>
-            <mat-error *ngIf="f.title.errors?.required">Title is required</mat-error>
-            <mat-error *ngIf="f.title.errors?.maxlength">Title must be less than 100 characters</mat-error>
+            <mat-error *ngIf="f['title'].errors?.['required']">Title is required</mat-error>
+            <mat-error *ngIf="f['title'].errors?.['maxlength']">Title must be less than 100 characters</mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Post Description</mat-label>
             <textarea matInput formControlName="description" placeholder="Enter description" rows="4" required></textarea>
-            <mat-error *ngIf="f.description.errors?.required">Description is required</mat-error>
-            <mat-error *ngIf="f.description.errors?.maxlength">Description must be less than 500 characters</mat-error>
+            <mat-error *ngIf="f['description'].errors?.['required']">Description is required</mat-error>
+            <mat-error *ngIf="f['description'].errors?.['maxlength']">Description must be less than 500 characters</mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="full-width">
@@ -44,7 +44,7 @@
             <input matInput [matDatepicker]="eventDatePicker" formControlName="eventDateTime" placeholder="Select date and time" required>
             <mat-datepicker-toggle matSuffix [for]="eventDatePicker"></mat-datepicker-toggle>
             <mat-datepicker #eventDatePicker></mat-datepicker>
-            <mat-error *ngIf="f.eventDateTime.errors?.required">Event date and time is required</mat-error>
+            <mat-error *ngIf="f['eventDateTime'].errors?.['required']">Event date and time is required</mat-error>
           </mat-form-field>
 
           <h3>Display Options</h3>

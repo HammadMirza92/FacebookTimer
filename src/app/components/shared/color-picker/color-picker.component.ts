@@ -33,6 +33,11 @@ export class ColorPickerComponent implements ControlValueAccessor {
       this.isOpen = !this.isOpen;
     }
   }
+  onColorChange(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    const selectedColor = inputElement.value;
+    this.selectColor(selectedColor);
+  }
 
   selectColor(color: string): void {
     this.color = color;

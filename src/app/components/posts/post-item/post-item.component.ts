@@ -7,7 +7,7 @@ import { Post, PostStatus } from '../../../models/post.model';
   styleUrls: ['./post-item.component.scss']
 })
 export class PostItemComponent {
-  @Input() post: Post;
+  @Input() post!: Post;
   @Output() edit = new EventEmitter<Post>();
   @Output() publish = new EventEmitter<Post>();
   @Output() cancel = new EventEmitter<Post>();

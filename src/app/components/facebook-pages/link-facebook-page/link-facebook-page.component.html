@@ -6,20 +6,20 @@
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Page Name</mat-label>
         <input matInput formControlName="pageName" placeholder="Enter page name" required>
-        <mat-error *ngIf="f.pageName.errors?.required">Page name is required</mat-error>
+        <mat-error *ngIf="f['pageName'].errors?.['required']">Page name is required</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Page ID</mat-label>
         <input matInput formControlName="pageId" placeholder="Enter page ID" required>
-        <mat-error *ngIf="f.pageId.errors?.required">Page ID is required</mat-error>
+        <mat-error *ngIf="f['pageId'].errors?.['required']">Page ID is required</mat-error>
         <mat-hint>You can find your Page ID in the About section of your Facebook Page</mat-hint>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Access Token</mat-label>
         <textarea matInput formControlName="accessToken" placeholder="Enter page access token" required rows="3"></textarea>
-        <mat-error *ngIf="f.accessToken.errors?.required">Access token is required</mat-error>
+        <mat-error *ngIf="f['accessToken'].errors?.['required']">Access token is required</mat-error>
         <mat-hint>Get a Page Access Token from Facebook Developer Console</mat-hint>
       </mat-form-field>
     </form>

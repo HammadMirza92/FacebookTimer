@@ -24,7 +24,7 @@ export class CreatePostComponent implements OnInit, OnDestroy {
   loading = true;
   submitting = false;
   isEdit = false;
-  postId: number;
+  postId: number = 0;
   selectedTemplate: Template | null = null;
   selectedPage: FacebookPage | null = null;
   minDateTime = new Date();

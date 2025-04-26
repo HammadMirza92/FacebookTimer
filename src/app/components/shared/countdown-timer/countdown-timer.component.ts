@@ -7,7 +7,7 @@ import { interval, Subscription } from 'rxjs';
   styleUrls: ['./countdown-timer.component.scss']
 })
 export class CountdownTimerComponent implements OnInit, OnDestroy {
-  @Input() targetDate: Date | string;
+  @Input() targetDate!: Date | string;
   @Input() showDays = true;
   @Input() showHours = true;
   @Input() showMinutes = true;

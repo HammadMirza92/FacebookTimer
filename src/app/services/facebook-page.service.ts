@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -15,8 +15,15 @@ export class FacebookPageService {
 
   constructor(private http: HttpClient) { }
 
+  private getAuthHeaders() {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+  }
+
   getUserPages(): Observable<FacebookPage[]> {
-    return this.http.get<FacebookPage[]>(this.apiUrl)
+    return this.http.get<FacebookPage[]>(this.apiUrl, { headers: this.getAuthHeaders() })
       .pipe(
         catchError(error => {
           return throwError(() => error);
@@ -25,7 +32,7 @@ export class FacebookPageService {
   }
 
   getPageById(id: number): Observable<FacebookPage> {
-    return this.http.get<FacebookPage>(`${this.apiUrl}/${id}`)
+    return this.http.get<FacebookPage>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() })
       .pipe(
         catchError(error => {
           return throwError(() => error);
@@ -34,7 +41,7 @@ export class FacebookPageService {
   }
 
   linkFacebookPage(linkPageData: LinkPage): Observable<FacebookPage> {
-    return this.http.post<FacebookPage>(`${this.apiUrl}/link`, linkPageData)
+    return this.http.post<FacebookPage>(`${this.apiUrl}/link`, linkPageData, { headers: this.getAuthHeaders() })
       .pipe(
         catchError(error => {
           return throwError(() => error);
@@ -43,7 +50,7 @@ export class FacebookPageService {
   }
 
   unlinkPage(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`)
+    return this.http.delete(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() })
       .pipe(
         catchError(error => {
           return throwError(() => error);
