@@ -1,0 +1,67 @@
+<div class="payment-history-container">
+  <div class="page-header">
+    <h1>Payment History</h1>
+  </div>
+
+  <div class="payment-history-content" *ngIf="!loading; else loadingTemplate">
+    <div *ngIf="payments.length > 0; else noPaymentsTemplate">
+      <table mat-table [dataSource]="payments" class="payment-table">
+        <!-- Date Column -->
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>Date</th>
+          <td mat-cell *matCellDef="let payment">{{ payment.createdAt | date:'medium' }}</td>
+        </ng-container>
+
+        <!-- Amount Column -->
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef>Amount</th>
+          <td mat-cell *matCellDef="let payment">{{ payment.amount | currency:payment.currency }}</td>
+        </ng-container>
+
+        <!-- Provider Column -->
+        <ng-container matColumnDef="provider">
+          <th mat-header-cell *matHeaderCellDef>Payment Method</th>
+          <td mat-cell *matCellDef="let payment">{{ payment.paymentProvider }}</td>
+        </ng-container>
+
+        <!-- Transaction ID Column -->
+        <ng-container matColumnDef="transactionId">
+          <th mat-header-cell *matHeaderCellDef>Transaction ID</th>
+          <td mat-cell *matCellDef="let payment">{{ payment.transactionId }}</td>
+        </ng-container>
+
+        <!-- Status Column -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let payment">
+            <span class="status-chip" [ngClass]="getStatusClass(payment.status)">
+              {{ payment.status }}
+            </span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+    <ng-template #noPaymentsTemplate>
+      <mat-card class="empty-state-card">
+        <mat-card-content>
+          <div class="empty-state">
+            <mat-icon>payment</mat-icon>
+            <h3>No Payment History</h3>
+            <p>You haven't made any payments yet.</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </ng-template>
+  </div>
+
+  <ng-template #loadingTemplate>
+    <div class="loading-container">
+      <mat-spinner></mat-spinner>
+      <p>Loading payment history...</p>
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,94 @@
+.subscription-plans-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: 24px;
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.current-subscription {
+  margin-bottom: 40px;
+
+  h2 {
+    margin-top: 0;
+    margin-bottom: 16px;
+  }
+
+  .subscription-details {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+
+    @media (min-width: 576px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (min-width: 992px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .detail-item {
+      display: flex;
+      flex-direction: column;
+
+      .label {
+        font-size: 14px;
+        color: rgba(0, 0, 0, 0.6);
+        margin-bottom: 4px;
+      }
+
+      .value {
+        font-size: 16px;
+        font-weight: 500;
+
+        &.expiring-soon {
+          color: #f44336;
+          display: flex;
+          align-items: center;
+
+          mat-icon {
+            margin-left: 4px;
+            font-size: 16px;
+            height: 16px;
+            width: 16px;
+          }
+        }
+      }
+    }
+  }
+
+  .subscription-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+.plans-container {
+  .plans-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+
+    @media (min-width: 768px) {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px;
+
+  p {
+    margin-top: 16px;
+  }
+}

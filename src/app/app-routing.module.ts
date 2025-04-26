@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/auth/login/login.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { TemplateLibraryComponent } from './components/templates/template-library/template-library.component';
+import { TemplateLibraryComponent } from './components/templatess/template-library/template-library.component';
 import { FacebookPagesComponent } from './components/facebook-pages/facebook-pages/facebook-pages.component';
 import { CreatePostComponent } from './components/posts/create-post/create-post.component';
 import { PostListComponent } from './components/posts/post-list/post-list.component';

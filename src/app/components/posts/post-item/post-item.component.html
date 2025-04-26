@@ -1,0 +1,44 @@
+<mat-card class="post-item">
+  <mat-card-header>
+    <div mat-card-avatar class="post-header-image">
+      <mat-icon>schedule</mat-icon>
+    </div>
+    <mat-card-title>{{ post.title }}</mat-card-title>
+    <mat-card-subtitle>{{ post.facebookPageName }}</mat-card-subtitle>
+    <span class="status-chip" [ngClass]="getStatusClass()">
+      {{ post.status }}
+    </span>
+  </mat-card-header>
+
+  <mat-card-content>
+    <p class="post-description">{{ post.description }}</p>
+    <div class="post-metadata">
+      <div class="metadata-item">
+        <mat-icon>event</mat-icon>
+        <span>Event: {{ post.eventDateTime | date:'medium' }}</span>
+      </div>
+      <div class="metadata-item">
+        <mat-icon>view_quilt</mat-icon>
+        <span>Template: {{ post.templateName }}</span>
+      </div>
+      <div class="metadata-item" *ngIf="post.scheduledFor">
+        <mat-icon>schedule</mat-icon>
+        <span>Scheduled: {{ post.scheduledFor | date:'medium' }}</span>
+      </div>
+      <div class="metadata-item" *ngIf="post.publishedAt">
+        <mat-icon>publish</mat-icon>
+        <span>Published: {{ post.publishedAt | date:'medium' }}</span>
+      </div>
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-button color="primary" *ngIf="canEdit()" (click)="onEdit()">EDIT</button>
+    <button mat-button color="accent" *ngIf="canPublish()" (click)="onPublish()">PUBLISH</button>
+    <button mat-button color="warn" *ngIf="canCancel()" (click)="onCancel()">CANCEL</button>
+    <button mat-button *ngIf="post.facebookPostId" (click)="onViewOnFacebook()">VIEW ON FACEBOOK</button>
+    <button mat-icon-button color="warn" *ngIf="canDelete()" (click)="onDelete()" aria-label="Delete post">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,56 @@
+<div class="template-library-container">
+  <div class="page-header">
+    <h1>Template Library</h1>
+    <div class="search-filter-container">
+      <mat-form-field appearance="outline" class="search-field">
+        <mat-label>Search templates</mat-label>
+        <input matInput [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()" placeholder="Search by name or description">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Filter by access</mat-label>
+        <mat-select [(ngModel)]="filterSubscription" (ngModelChange)="onFilterChange()">
+          <mat-option value="all">All Templates</mat-option>
+          <mat-option value="free">Free Templates</mat-option>
+          <mat-option value="premium">Premium Templates</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="template-library-content" *ngIf="!loading; else loadingTemplate">
+    <ng-container *ngIf="currentUser$ | async as user">
+      <div *ngIf="filteredTemplates.length > 0; else noTemplatesTemplate">
+        <div class="template-cards">
+          <app-template-card
+            *ngFor="let template of filteredTemplates"
+            [template]="template"
+            [canUse]="canUseTemplate(template, user)"
+            (useTemplate)="useTemplate(template)">
+          </app-template-card>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #noTemplatesTemplate>
+      <mat-card class="empty-state-card">
+        <mat-card-content>
+          <div class="empty-state">
+            <mat-icon>view_quilt</mat-icon>
+            <h3>No Templates Found</h3>
+            <p *ngIf="searchTerm">No templates match your search criteria. Try different keywords.</p>
+            <p *ngIf="!searchTerm">No templates are available at the moment. Please try again later.</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </ng-template>
+  </div>
+
+  <ng-template #loadingTemplate>
+    <div class="loading-container">
+      <mat-spinner></mat-spinner>
+      <p>Loading templates...</p>
+    </div>
+  </ng-template>
+</div>

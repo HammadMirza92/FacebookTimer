@@ -1,0 +1,74 @@
+<div class="subscription-plans-container">
+  <div class="page-header">
+    <h1>Subscription Plans</h1>
+  </div>
+
+  <div class="subscription-plans-content" *ngIf="!loading; else loadingTemplate">
+    <div class="current-subscription" *ngIf="currentSubscription">
+      <mat-card>
+        <mat-card-content>
+          <h2>Your Current Subscription</h2>
+          <div class="subscription-details">
+            <div class="detail-item">
+              <span class="label">Plan:</span>
+              <span class="value">{{ currentSubscription.subscriptionPlanName }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Status:</span>
+              <span class="value">{{ currentSubscription.isActive ? 'Active' : 'Inactive' }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Start Date:</span>
+              <span class="value">{{ currentSubscription.startDate | date }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">End Date:</span>
+              <span class="value">{{ currentSubscription.endDate | date }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Days Remaining:</span>
+              <span class="value" [ngClass]="{'expiring-soon': currentSubscription.daysRemaining <= 3}">
+                {{ currentSubscription.daysRemaining }}
+                <mat-icon *ngIf="currentSubscription.daysRemaining <= 3">warning</mat-icon>
+              </span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Auto-Renew:</span>
+              <span class="value">{{ currentSubscription.autoRenew ? 'Enabled' : 'Disabled' }}</span>
+            </div>
+          </div>
+
+          <div class="subscription-actions">
+            <button mat-raised-button color="warn" *ngIf="currentSubscription.autoRenew" (click)="cancelSubscription()">
+              Cancel Auto-Renewal
+            </button>
+            <button mat-raised-button color="primary" *ngIf="!currentSubscription.autoRenew" (click)="processSubscription(plans[currentSubscription.subscriptionPlanId - 1])">
+              Enable Auto-Renewal
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="plans-container">
+      <div class="plans-grid">
+        <div *ngFor="let plan of plans" class="plan-card-container">
+          <app-subscription-card
+            [plan]="plan"
+            [currentPlan]="isCurrentPlan(plan)"
+            [features]="getFeaturesByPlanId(plan.id)"
+            [loading]="subscribing"
+            (subscribe)="subscribeOrUpgrade(plan)">
+          </app-subscription-card>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #loadingTemplate>
+    <div class="loading-container">
+      <mat-spinner></mat-spinner>
+      <p>Loading subscription plans...</p>
+    </div>
+  </ng-template>
+</div>

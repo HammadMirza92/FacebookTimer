@@ -1,0 +1,35 @@
+<mat-card class="subscription-card" [ngClass]="getPlanColor()">
+  <div class="card-ribbon" *ngIf="currentPlan">Current Plan</div>
+
+  <mat-card-header>
+    <mat-card-title>{{ plan.name }}</mat-card-title>
+    <mat-card-subtitle>{{ plan.description }}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="price">
+      <span class="amount" *ngIf="plan.price > 0">${{ plan.price }}</span>
+      <span class="amount" *ngIf="plan.price === 0">Free</span>
+      <span class="period" *ngIf="plan.price > 0">/month</span>
+    </div>
+
+    <div class="features">
+      <ul>
+        <li *ngFor="let feature of features">
+          <mat-icon>check_circle</mat-icon>
+          <span>{{ feature }}</span>
+        </li>
+      </ul>
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-raised-button
+            [color]="currentPlan ? 'accent' : 'primary'"
+            [disabled]="currentPlan || loading"
+            (click)="onSubscribe()">
+      <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+      <span *ngIf="!loading">{{ currentPlan ? 'Current Plan' : (plan.price > 0 ? 'Subscribe' : 'Sign Up Free') }}</span>
+    </button>
+  </mat-card-actions>
+</mat-card>

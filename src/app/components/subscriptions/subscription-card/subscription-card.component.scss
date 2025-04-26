@@ -1,0 +1,84 @@
+.subscription-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+
+  &.basic-color {
+    border-top: 4px solid #9e9e9e;
+  }
+
+  &.pro-color {
+    border-top: 4px solid #2196f3;
+  }
+
+  &.premium-color {
+    border-top: 4px solid #ff9800;
+  }
+
+  .card-ribbon {
+    position: absolute;
+    top: 20px;
+    right: -30px;
+    background-color: #4caf50;
+    color: white;
+    padding: 5px 40px;
+    font-size: 12px;
+    font-weight: 500;
+    transform: rotate(45deg);
+  }
+
+  mat-card-header {
+    padding: 16px 16px 0;
+  }
+
+  mat-card-content {
+    flex-grow: 1;
+    padding: 16px;
+
+    .price {
+      text-align: center;
+      margin-bottom: 24px;
+
+      .amount {
+        font-size: 32px;
+        font-weight: 700;
+      }
+
+      .period {
+        font-size: 14px;
+        color: rgba(0, 0, 0, 0.6);
+      }
+    }
+
+    .features {
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+
+        li {
+          display: flex;
+          align-items: flex-start;
+          margin-bottom: 12px;
+
+          mat-icon {
+            margin-right: 8px;
+            color: #4caf50;
+          }
+
+          span {
+            flex: 1;
+          }
+        }
+      }
+    }
+  }
+
+  mat-card-actions {
+    padding: 16px;
+    display: flex;
+    justify-content: center;
+  }
+}

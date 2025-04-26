@@ -1,0 +1,30 @@
+<div class="post-preview-container">
+  <div class="preview-content" [ngStyle]="{'font-family': data.customFontFamily || 'Arial, sans-serif'}">
+    <div class="preview-background"
+        [ngStyle]="{'background-color': data.customPrimaryColor || '#3f51b5',
+                   'background-image': data.backgroundImageUrl ? 'url(' + data.backgroundImageUrl + ')' : 'none'}">
+      <div class="preview-overlay" *ngIf="data.hasOverlay"></div>
+      <div class="preview-text">
+        <div class="preview-title">{{ data.title }}</div>
+        <div class="preview-description">{{ data.description }}</div>
+
+        <div class="preview-countdown">
+          <app-countdown-timer
+            [targetDate]="data.eventDateTime"
+            [showDays]="data.showDays"
+            [showHours]="data.showHours"
+            [showMinutes]="data.showMinutes"
+            [showSeconds]="data.showSeconds"
+            [primaryColor]="'white'"
+            [fontFamily]="data.customFontFamily || 'Arial, sans-serif'"
+            [fontSize]="'large'">
+          </app-countdown-timer>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="preview-actions">
+    <button mat-raised-button color="primary" (click)="close()">Close Preview</button>
+  </div>
+</div>
