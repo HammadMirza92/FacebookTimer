@@ -1,0 +1,49 @@
+<mat-toolbar color="primary">
+  <button mat-icon-button (click)="toggleSidenav()" aria-label="Toggle sidebar">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span class="app-name">Facebook Scheduler</span>
+  <span class="spacer"></span>
+
+  <ng-container *ngIf="(currentUser$ | async) as user; else loginButton">
+    <button mat-button [matMenuTriggerFor]="userMenu" class="user-menu-button">
+      <span class="user-info">
+        {{ user.firstName }} {{ user.lastName }}
+        <mat-icon *ngIf="(subscriptionAlert$ | async)" matBadge="!" matBadgeColor="warn" matBadgeSize="small"
+          matTooltip="Your subscription is expiring soon">
+          notification_important
+        </mat-icon>
+      </span>
+      <mat-icon>arrow_drop_down</mat-icon>
+    </button>
+    <mat-menu #userMenu="matMenu">
+      <div class="subscription-info" *ngIf="user.currentSubscription">
+        <p class="plan-name">{{ user.currentSubscription.subscriptionPlanName }} Plan</p>
+        <p class="expiry-info">
+          Expires in {{ user.currentSubscription.daysRemaining }} days
+          <button mat-button color="accent" *ngIf="(subscriptionAlert$ | async)" (click)="navigateToPlans()">
+            Renew Now
+          </button>
+        </p>
+      </div>
+      <button mat-menu-item routerLink="/dashboard">
+        <mat-icon>dashboard</mat-icon>
+        <span>Dashboard</span>
+      </button>
+      <button mat-menu-item routerLink="/subscription/plans">
+        <mat-icon>card_membership</mat-icon>
+        <span>Subscription</span>
+      </button>
+      <mat-divider></mat-divider>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </ng-container>
+
+  <ng-template #loginButton>
+    <button mat-button routerLink="/login">Login</button>
+    <button mat-raised-button color="accent" routerLink="/register">Register</button>
+  </ng-template>
+</mat-toolbar>

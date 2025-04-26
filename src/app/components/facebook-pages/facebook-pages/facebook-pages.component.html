@@ -1,0 +1,72 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>Facebook Pages</h1>
+    <button mat-raised-button color="primary" (click)="openLinkPageDialog()">
+      <mat-icon>add</mat-icon>
+      Link New Page
+    </button>
+  </div>
+
+  <div class="page-content" *ngIf="!loading; else loadingTemplate">
+    <div *ngIf="pages.length > 0; else noPagesTemplate">
+      <div class="page-cards">
+        <mat-card class="page-card" *ngFor="let page of pages">
+          <mat-card-header>
+            <div mat-card-avatar class="page-header-image">
+              <mat-icon>pages</mat-icon>
+            </div>
+            <mat-card-title>{{ page.pageName }}</mat-card-title>
+            <mat-card-subtitle>Page ID: {{ page.pageId }}</mat-card-subtitle>
+          </mat-card-header>
+
+          <mat-card-content>
+            <div class="page-details">
+              <div class="detail-item">
+                <span class="label">Linked on:</span>
+                <span class="value">{{ page.createdAt | date:'medium' }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="label">Token expires in:</span>
+                <span class="value" [ngClass]="{'expiring-soon': isTokenExpiringSoon(page.tokenExpiryDate)}">
+                  {{ getDaysRemaining(page.tokenExpiryDate) }} days
+                  <mat-icon *ngIf="isTokenExpiringSoon(page.tokenExpiryDate)"
+                    matTooltip="Token is expiring soon. Please renew it.">
+                    warning
+                  </mat-icon>
+                </span>
+              </div>
+            </div>
+          </mat-card-content>
+
+          <mat-card-actions>
+            <a mat-button color="primary" [routerLink]="['/posts/create']" [queryParams]="{pageId: page.id}">CREATE POST</a>
+            <button mat-button (click)="openFacebookPage(page.pageId)">VIEW PAGE</button>
+            <button mat-button color="warn" (click)="unlinkPage(page)">UNLINK</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+
+    <ng-template #noPagesTemplate>
+      <mat-card class="empty-state-card">
+        <mat-card-content>
+          <div class="empty-state">
+            <mat-icon>pages</mat-icon>
+            <h3>No Facebook Pages Linked</h3>
+            <p>Link your Facebook pages to create and schedule countdown posts.</p>
+            <button mat-raised-button color="primary" (click)="openLinkPageDialog()">
+              Link Facebook Page
+            </button>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </ng-template>
+  </div>
+
+  <ng-template #loadingTemplate>
+    <div class="loading-container">
+      <mat-spinner></mat-spinner>
+      <p>Loading your Facebook pages...</p>
+    </div>
+  </ng-template>
+</div>

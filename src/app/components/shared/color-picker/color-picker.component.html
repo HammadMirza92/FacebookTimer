@@ -1,0 +1,20 @@
+<div class="color-picker-container">
+  <div class="color-picker-label">{{ label }}</div>
+  <div class="color-picker-selected" [style.background-color]="color" (click)="togglePicker()"></div>
+  <div class="color-picker-value">{{ color }}</div>
+
+  <div class="color-picker-dropdown" *ngIf="isOpen">
+    <div class="color-picker-palette">
+      <div
+        *ngFor="let presetColor of presetColors"
+        class="color-picker-swatch"
+        [style.background-color]="presetColor"
+        (click)="selectColor(presetColor)"
+        [class.selected]="color === presetColor"
+      ></div>
+    </div>
+    <div class="color-picker-custom">
+      <input type="color" [value]="color" (change)="selectColor($event.target.value)">
+    </div>
+  </div>
+</div>

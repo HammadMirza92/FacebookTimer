@@ -1,0 +1,14 @@
+<div class="font-picker-container">
+  <mat-form-field appearance="outline">
+    <mat-label>{{ label }}</mat-label>
+    <mat-select [value]="selectedFont" (selectionChange)="selectFont($event.value)" [disabled]="disabled">
+      <mat-option *ngFor="let font of fontFamilies" [value]="font" [ngStyle]="getFontStyle(font)">
+        {{ font.split(',')[0] }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="font-preview" [ngStyle]="getFontStyle(selectedFont)">
+    <span>Font Preview: Aa Bb Cc 123</span>
+  </div>
+</div>

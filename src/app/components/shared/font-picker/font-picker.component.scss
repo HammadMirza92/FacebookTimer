@@ -1,0 +1,15 @@
+.font-picker-container {
+  margin-bottom: 16px;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.font-preview {
+  padding: 8px;
+  margin-top: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}

@@ -1,0 +1,44 @@
+<div class="link-page-dialog">
+  <h2 mat-dialog-title>Link Facebook Page</h2>
+
+  <mat-dialog-content>
+    <form [formGroup]="linkPageForm">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Page Name</mat-label>
+        <input matInput formControlName="pageName" placeholder="Enter page name" required>
+        <mat-error *ngIf="f.pageName.errors?.required">Page name is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Page ID</mat-label>
+        <input matInput formControlName="pageId" placeholder="Enter page ID" required>
+        <mat-error *ngIf="f.pageId.errors?.required">Page ID is required</mat-error>
+        <mat-hint>You can find your Page ID in the About section of your Facebook Page</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Access Token</mat-label>
+        <textarea matInput formControlName="accessToken" placeholder="Enter page access token" required rows="3"></textarea>
+        <mat-error *ngIf="f.accessToken.errors?.required">Access token is required</mat-error>
+        <mat-hint>Get a Page Access Token from Facebook Developer Console</mat-hint>
+      </mat-form-field>
+    </form>
+
+    <div class="help-info">
+      <h3>How to get these values:</h3>
+      <ol>
+        <li>Go to your Facebook page and copy the page name</li>
+        <li>Go to the About section of your page to find the Page ID</li>
+        <li>Get a Page Access Token from the <a href="https://developers.facebook.com/tools/explorer/" target="_blank">Graph API Explorer</a></li>
+      </ol>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="cancel()" [disabled]="loading">Cancel</button>
+    <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="linkPageForm.invalid || loading">
+      <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+      <span *ngIf="!loading">Link Page</span>
+    </button>
+  </mat-dialog-actions>
+</div>

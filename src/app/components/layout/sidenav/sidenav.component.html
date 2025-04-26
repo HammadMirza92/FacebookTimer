@@ -1,0 +1,45 @@
+<div class="sidenav-container">
+  <div class="user-info" *ngIf="(currentUser$ | async) as user">
+    <div class="user-avatar">
+      {{ user.firstName.charAt(0) }}{{ user.lastName.charAt(0) }}
+    </div>
+    <div class="user-details">
+      <div class="user-name">{{ user.firstName }} {{ user.lastName }}</div>
+      <div class="user-email">{{ user.email }}</div>
+    </div>
+  </div>
+
+  <mat-nav-list>
+    <a mat-list-item routerLink="/dashboard" routerLinkActive="active">
+      <mat-icon matListItemIcon>dashboard</mat-icon>
+      <span matListItemTitle>Dashboard</span>
+    </a>
+
+    <a mat-list-item routerLink="/facebook-pages" routerLinkActive="active">
+      <mat-icon matListItemIcon>pages</mat-icon>
+      <span matListItemTitle>Facebook Pages</span>
+    </a>
+
+    <a mat-list-item routerLink="/templates" routerLinkActive="active">
+      <mat-icon matListItemIcon>view_quilt</mat-icon>
+      <span matListItemTitle>Templates</span>
+    </a>
+
+    <a mat-list-item routerLink="/posts" routerLinkActive="active">
+      <mat-icon matListItemIcon>schedule</mat-icon>
+      <span matListItemTitle>Posts</span>
+    </a>
+
+    <mat-divider></mat-divider>
+
+    <a mat-list-item routerLink="/subscription/plans" routerLinkActive="active">
+      <mat-icon matListItemIcon>card_membership</mat-icon>
+      <span matListItemTitle>Subscription Plans</span>
+    </a>
+
+    <a mat-list-item routerLink="/subscription/history" routerLinkActive="active">
+      <mat-icon matListItemIcon>payment</mat-icon>
+      <span matListItemTitle>Payment History</span>
+    </a>
+  </mat-nav-list>
+</div>
