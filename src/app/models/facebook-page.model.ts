@@ -18,12 +18,13 @@ export interface FacebookPageResponse {
   }
 }
 export interface FacebookPage {
-  id: number;           // Local ID for the database entry
-  pageId: string;       // Facebook page ID
-  pageName: string;     // Facebook page name
-  accessToken: string;  // Page access token
-  category: string;     // Page category
-  createdAt: Date;      // When this page was linked
-  tokenExpiryDate: Date; // When the token expires
-  tasks?: string[];     // Available tasks for this page
+  id: number;
+  pageId: string;
+  pageName: string;
+  accessToken: string;
+  category: string;
+  createdAt: Date;
+  tokenExpiryDate: Date;
+  tasks?: string[];
+  isActive: boolean;
 }

@@ -12,7 +12,6 @@ export class FacebookService {
 
   login(): Observable<any> {
     return new Observable(observer => {
-      debugger;
       // Ensure FB SDK is loaded
       if (!window.FB) {
         observer.error('Facebook SDK not loaded');
@@ -33,7 +32,6 @@ export class FacebookService {
   }
 
   getLoginStatus(): Observable<any> {
-    debugger;
     return new Observable(observer => {
       window.FB.getLoginStatus((response) => {
         observer.next(response);

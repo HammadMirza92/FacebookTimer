@@ -23,7 +23,6 @@ export class FacebookPageService {
   }
   loginWithFacebook(): Observable<any> {
     return new Observable(observer => {
-      debugger;
       // Ensure FB SDK is loaded
       if (!window.FB) {
         observer.error('Facebook SDK not loaded');
@@ -42,9 +41,9 @@ export class FacebookPageService {
       }, { scope: 'pages_read_engagement,pages_manage_posts,pages_show_list' });
     });
   }
-  getUserPages(accessToken: string): Observable<any> {
+  getUserPages(accessTokenFb: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/get-pages`, {
-      params: { accessToken }
+      params: { accessTokenFb }
     });
   }
   // getUserPages(): Observable<FacebookPage[]> {

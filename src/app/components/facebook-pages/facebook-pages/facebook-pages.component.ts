@@ -15,6 +15,7 @@ export class FacebookPagesComponent implements OnInit {
   loading = true;
   isLoggedIn = false;
   accessToken = '';
+  linkSuccessMessage = '';
 
   constructor(
     private facebookPageService: FacebookPageService,
@@ -58,26 +59,15 @@ export class FacebookPagesComponent implements OnInit {
     this.loading = true;
     this.facebookPageService.getUserPages(this.accessToken).subscribe({
       next: (response) => {
-        // Process the Facebook API response format
-        if (response && response.data) {
-          this.pages = response.data.map((page: { id: any; name: any; access_token: any; category: any; tasks: any; }) => {
-            // Transform Facebook API response format to our FacebookPage model
-            return {
-              id: this.generateLocalId(), // Generate a local ID for the page entry
-              pageId: page.id,
-              pageName: page.name,
-              accessToken: page.access_token,
-              category: page.category,
-              createdAt: new Date(),
-              tokenExpiryDate: this.calculateTokenExpiry(), // Set default expiry (60 days from now)
-              tasks: page.tasks || []
-            } as any;
-          });
+        // Process the API response format with the new structure
+        if (response && response.pages) {
+          this.pages = response.pages;
+          this.linkSuccessMessage = response.message;
 
-          // Save linked pages to local storage or your backend
+          // Save linked pages to local storage
           this.savePagesToStorage();
 
-          this.notificationService.showSuccess('Facebook pages linked successfully');
+          this.notificationService.showSuccess(this.linkSuccessMessage || 'Facebook pages linked successfully');
         } else {
           this.pages = [];
         }
@@ -89,18 +79,6 @@ export class FacebookPagesComponent implements OnInit {
         this.loading = false;
       }
     });
-  }
-
-  // Generate a simple unique ID for local use
-  private generateLocalId(): string {
-    return 'page_' + new Date().getTime() + '_' + Math.floor(Math.random() * 1000);
-  }
-
-  // Calculate token expiry date (Facebook tokens typically last 60 days)
-  private calculateTokenExpiry(): Date {
-    const expiryDate = new Date();
-    expiryDate.setDate(expiryDate.getDate() + 60); // Default to 60 days
-    return expiryDate;
   }
 
   // Save pages to storage (localStorage for demo, should be backend in production)
@@ -143,6 +121,8 @@ export class FacebookPagesComponent implements OnInit {
   }
 
   getDaysRemaining(expiryDate: Date): number {
+    if (!expiryDate) return 0;
+
     const expiry = new Date(expiryDate);
     const now = new Date();
     const diffTime = expiry.getTime() - now.getTime();

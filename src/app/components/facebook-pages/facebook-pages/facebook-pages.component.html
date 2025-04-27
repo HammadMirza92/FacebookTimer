@@ -15,7 +15,7 @@
     <div *ngIf="pages.length > 0; else noPagesTemplate">
       <div class="page-status-banner">
         <mat-icon color="primary">check_circle</mat-icon>
-        <span>Your Facebook account is connected and pages are linked successfully!</span>
+        <span>{{ linkSuccessMessage || 'Your Facebook account is connected and pages are linked successfully!' }}</span>
       </div>
 
       <div class="page-cards">
@@ -25,7 +25,8 @@
               <mat-icon>pages</mat-icon>
             </div>
             <mat-card-title>{{ page.pageName }}</mat-card-title>
-            <mat-card-subtitle>{{ page.category }}</mat-card-subtitle>
+            <mat-card-subtitle *ngIf="page.isActive" class="active-status">Active</mat-card-subtitle>
+            <mat-card-subtitle *ngIf="!page.isActive" class="inactive-status">Inactive</mat-card-subtitle>
           </mat-card-header>
 
           <mat-card-content>
@@ -37,24 +38,6 @@
               <div class="detail-item">
                 <span class="label">Linked on:</span>
                 <span class="value">{{ page.createdAt | date:'medium' }}</span>
-              </div>
-              <div class="detail-item">
-                <span class="label">Token expires in:</span>
-                <span class="value" [ngClass]="{'expiring-soon': isTokenExpiringSoon(page.tokenExpiryDate)}">
-                  {{ getDaysRemaining(page.tokenExpiryDate) }} days
-                  <mat-icon *ngIf="isTokenExpiringSoon(page.tokenExpiryDate)"
-                    matTooltip="Token is expiring soon. Please renew it.">
-                    warning
-                  </mat-icon>
-                </span>
-              </div>
-              <div class="detail-item" *ngIf="page.tasks && page.tasks.length > 0">
-                <span class="label">Available tasks:</span>
-                <span class="value tasks-list">
-                  <span>
-                    <mat-chip *ngFor="let task of page.tasks" color="accent" selected>{{ task }}</mat-chip>
-                  </span>
-                </span>
               </div>
             </div>
           </mat-card-content>

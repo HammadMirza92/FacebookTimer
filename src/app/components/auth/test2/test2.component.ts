@@ -26,7 +26,6 @@ export class Test2Component implements OnInit {
   constructor(private facebookService: FacebookService) {}
 
   ngOnInit(): void {
-    debugger;
     // Check if we have a token in session storage
     const token = localStorage.getItem('fb_access_token');
     if (token) {
