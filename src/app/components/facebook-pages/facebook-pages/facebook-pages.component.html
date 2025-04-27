@@ -51,9 +51,9 @@
               <div class="detail-item" *ngIf="page.tasks && page.tasks.length > 0">
                 <span class="label">Available tasks:</span>
                 <span class="value tasks-list">
-                  <mat-chip-list>
+                  <span>
                     <mat-chip *ngFor="let task of page.tasks" color="accent" selected>{{ task }}</mat-chip>
-                  </mat-chip-list>
+                  </span>
                 </span>
               </div>
             </div>
