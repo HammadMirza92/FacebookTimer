@@ -88,11 +88,11 @@ export class CreatePostComponent implements OnInit, OnDestroy {
       // Edit mode: load post, pages, and templates
       forkJoin({
         post: this.postService.getPostById(this.postId),
-        pages: this.facebookPageService.getUserPages(),
+       // pages: this.facebookPageService.getUserPages(),
         templates: this.templateService.getTemplates()
       }).subscribe({
         next: result => {
-          this.pages = result.pages;
+         // this.pages = result.pages;
           this.templates = result.templates;
           this.populateForm(result.post);
           this.loading = false;
@@ -105,11 +105,11 @@ export class CreatePostComponent implements OnInit, OnDestroy {
     } else {
       // Create mode: load pages and templates
       forkJoin({
-        pages: this.facebookPageService.getUserPages(),
+       // pages: this.facebookPageService.getUserPages(),
         templates: this.templateService.getTemplates()
       }).subscribe({
         next: result => {
-          this.pages = result.pages;
+         // this.pages = result.pages;
           this.templates = result.templates;
 
           // Check for query params

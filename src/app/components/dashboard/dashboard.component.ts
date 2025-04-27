@@ -40,12 +40,12 @@ export class DashboardComponent implements OnInit {
 
   loadDashboardData(): void {
     forkJoin({
-      pages: this.facebookPageService.getUserPages(),
+      //pages: this.facebookPageService.getUserPages(),
       posts: this.postService.getUserPosts(),
       templates: this.templateService.getTemplates()
     }).subscribe({
       next: result => {
-        this.pages = result.pages;
+        //this.pages = result.pages;
         this.recentPosts = result.posts
           .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
           .slice(0, 5); // Get most recent 5 posts

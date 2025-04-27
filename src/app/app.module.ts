@@ -77,6 +77,8 @@ import { SubscriptionGuard } from './guards/subscription.guard';
 
 // Routes
 import { AppRoutingModule } from './app-routing.module';
+import { TestComponent } from './components/auth/test/test.component';
+import { Test2Component } from './components/auth/test2/test2.component';
 
 @NgModule({
   declarations: [
@@ -104,7 +106,9 @@ import { AppRoutingModule } from './app-routing.module';
     ColorPickerComponent,
     FontPickerComponent,
     ConfirmDialogComponent,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    TestComponent,
+    Test2Component
   ],
   imports: [
     BrowserModule,

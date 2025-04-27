@@ -3,7 +3,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { FacebookPageService } from '../../../services/facebook-page.service';
 import { NotificationService } from '../../../services/notification.service';
 import { FacebookPage } from '../../../models/facebook-page.model';
-import { LinkFacebookPageComponent } from '../link-facebook-page/link-facebook-page.component';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
@@ -14,6 +13,8 @@ import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dial
 export class FacebookPagesComponent implements OnInit {
   pages: FacebookPage[] = [];
   loading = true;
+  isLoggedIn = false;
+  accessToken = '';
 
   constructor(
     private facebookPageService: FacebookPageService,
@@ -27,27 +28,88 @@ export class FacebookPagesComponent implements OnInit {
 
   loadPages(): void {
     this.loading = true;
-    this.facebookPageService.getUserPages().subscribe({
-      next: pages => {
-        this.pages = pages;
-        this.loading = false;
+    const token = localStorage.getItem('fb_access_token');
+    if (token) {
+      this.accessToken = token;
+      this.isLoggedIn = true;
+      this.getPages();
+    } else {
+      this.loading = false;
+    }
+  }
+
+  loginWithFacebook(): void {
+    this.facebookPageService.loginWithFacebook().subscribe({
+      next: (response) => {
+        this.isLoggedIn = true;
+        this.accessToken = response.authResponse.accessToken;
+        localStorage.setItem('fb_access_token', this.accessToken);
+        this.getPages();
       },
-      error: () => {
+      error: (error) => {
+        console.error('Login failed', error);
+        this.notificationService.showError('Failed to login with Facebook');
         this.loading = false;
       }
     });
   }
 
-  openLinkPageDialog(): void {
-    const dialogRef = this.dialog.open(LinkFacebookPageComponent, {
-      width: '500px'
-    });
+  getPages(): void {
+    this.loading = true;
+    this.facebookPageService.getUserPages(this.accessToken).subscribe({
+      next: (response) => {
+        // Process the Facebook API response format
+        if (response && response.data) {
+          this.pages = response.data.map((page: { id: any; name: any; access_token: any; category: any; tasks: any; }) => {
+            // Transform Facebook API response format to our FacebookPage model
+            return {
+              id: this.generateLocalId(), // Generate a local ID for the page entry
+              pageId: page.id,
+              pageName: page.name,
+              accessToken: page.access_token,
+              category: page.category,
+              createdAt: new Date(),
+              tokenExpiryDate: this.calculateTokenExpiry(), // Set default expiry (60 days from now)
+              tasks: page.tasks || []
+            } as any;
+          });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.loadPages();
+          // Save linked pages to local storage or your backend
+          this.savePagesToStorage();
+
+          this.notificationService.showSuccess('Facebook pages linked successfully');
+        } else {
+          this.pages = [];
+        }
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Failed to fetch pages', error);
+        this.notificationService.showError('Failed to fetch Facebook pages');
+        this.loading = false;
       }
     });
+  }
+
+  // Generate a simple unique ID for local use
+  private generateLocalId(): string {
+    return 'page_' + new Date().getTime() + '_' + Math.floor(Math.random() * 1000);
+  }
+
+  // Calculate token expiry date (Facebook tokens typically last 60 days)
+  private calculateTokenExpiry(): Date {
+    const expiryDate = new Date();
+    expiryDate.setDate(expiryDate.getDate() + 60); // Default to 60 days
+    return expiryDate;
+  }
+
+  // Save pages to storage (localStorage for demo, should be backend in production)
+  private savePagesToStorage(): void {
+    try {
+      localStorage.setItem('linked_fb_pages', JSON.stringify(this.pages));
+    } catch (error) {
+      console.error('Error saving pages to storage', error);
+    }
   }
 
   unlinkPage(page: FacebookPage): void {
@@ -67,7 +129,10 @@ export class FacebookPagesComponent implements OnInit {
         this.facebookPageService.unlinkPage(page.id).subscribe({
           next: () => {
             this.notificationService.showSuccess(`Successfully unlinked ${page.pageName}`);
-            this.loadPages();
+            // Remove page from local array
+            this.pages = this.pages.filter(p => p.id !== page.id);
+            // Update storage
+            this.savePagesToStorage();
           },
           error: error => {
             this.notificationService.showError(error.error || 'Failed to unlink page');

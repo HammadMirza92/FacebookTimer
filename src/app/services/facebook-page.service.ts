@@ -21,15 +21,40 @@ export class FacebookPageService {
       Authorization: `Bearer ${token}`
     });
   }
+  loginWithFacebook(): Observable<any> {
+    return new Observable(observer => {
+      debugger;
+      // Ensure FB SDK is loaded
+      if (!window.FB) {
+        observer.error('Facebook SDK not loaded');
+        return;
+      }
 
-  getUserPages(): Observable<FacebookPage[]> {
-    return this.http.get<FacebookPage[]>(this.apiUrl, { headers: this.getAuthHeaders() })
-      .pipe(
-        catchError(error => {
-          return throwError(() => error);
-        })
-      );
+      window.FB.login((response) => {
+        if (response.authResponse) {
+          localStorage.setItem('fb_access_token', response.authResponse.accessToken);
+          localStorage.setItem('fbUSerId', response.authResponse.userID);
+          observer.next(response);
+          observer.complete();
+        } else {
+          observer.error('User cancelled login or did not fully authorize');
+        }
+      }, { scope: 'pages_read_engagement,pages_manage_posts,pages_show_list' });
+    });
   }
+  getUserPages(accessToken: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/get-pages`, {
+      params: { accessToken }
+    });
+  }
+  // getUserPages(): Observable<FacebookPage[]> {
+  //   return this.http.get<FacebookPage[]>(this.apiUrl, { headers: this.getAuthHeaders() })
+  //     .pipe(
+  //       catchError(error => {
+  //         return throwError(() => error);
+  //       })
+  //     );
+  // }
 
   getPageById(id: number): Observable<FacebookPage> {
     return this.http.get<FacebookPage>(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() })

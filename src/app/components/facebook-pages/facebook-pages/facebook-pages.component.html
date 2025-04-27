@@ -1,14 +1,23 @@
 <div class="page-container">
   <div class="page-header">
     <h1>Facebook Pages</h1>
-    <button mat-raised-button color="primary" (click)="openLinkPageDialog()">
-      <mat-icon>add</mat-icon>
-      Link New Page
+    <button mat-raised-button color="primary" (click)="loginWithFacebook()" *ngIf="!isLoggedIn">
+      <mat-icon>login</mat-icon>
+      Login with Facebook
+    </button>
+    <button mat-raised-button color="primary" (click)="getPages()" *ngIf="isLoggedIn">
+      <mat-icon>refresh</mat-icon>
+      Refresh Pages
     </button>
   </div>
 
   <div class="page-content" *ngIf="!loading; else loadingTemplate">
     <div *ngIf="pages.length > 0; else noPagesTemplate">
+      <div class="page-status-banner">
+        <mat-icon color="primary">check_circle</mat-icon>
+        <span>Your Facebook account is connected and pages are linked successfully!</span>
+      </div>
+
       <div class="page-cards">
         <mat-card class="page-card" *ngFor="let page of pages">
           <mat-card-header>
@@ -16,11 +25,15 @@
               <mat-icon>pages</mat-icon>
             </div>
             <mat-card-title>{{ page.pageName }}</mat-card-title>
-            <mat-card-subtitle>Page ID: {{ page.pageId }}</mat-card-subtitle>
+            <mat-card-subtitle>{{ page.category }}</mat-card-subtitle>
           </mat-card-header>
 
           <mat-card-content>
             <div class="page-details">
+              <div class="detail-item">
+                <span class="label">Page ID:</span>
+                <span class="value">{{ page.pageId }}</span>
+              </div>
               <div class="detail-item">
                 <span class="label">Linked on:</span>
                 <span class="value">{{ page.createdAt | date:'medium' }}</span>
@@ -33,6 +46,14 @@
                     matTooltip="Token is expiring soon. Please renew it.">
                     warning
                   </mat-icon>
+                </span>
+              </div>
+              <div class="detail-item" *ngIf="page.tasks && page.tasks.length > 0">
+                <span class="label">Available tasks:</span>
+                <span class="value tasks-list">
+                  <mat-chip-list>
+                    <mat-chip *ngFor="let task of page.tasks" color="accent" selected>{{ task }}</mat-chip>
+                  </mat-chip-list>
                 </span>
               </div>
             </div>
@@ -54,7 +75,7 @@
             <mat-icon>pages</mat-icon>
             <h3>No Facebook Pages Linked</h3>
             <p>Link your Facebook pages to create and schedule countdown posts.</p>
-            <button mat-raised-button color="primary" (click)="openLinkPageDialog()">
+            <button mat-raised-button color="primary" (click)="loginWithFacebook()">
               Link Facebook Page
             </button>
           </div>
