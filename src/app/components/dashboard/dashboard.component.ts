@@ -23,6 +23,7 @@ export class DashboardComponent implements OnInit {
   recentPosts: Post[] = [];
   loading = true;
   postStatusEnum = PostStatus;
+  hasFacebookPages = false;
 
   constructor(
     private authService: AuthService,
@@ -39,20 +40,33 @@ export class DashboardComponent implements OnInit {
   }
 
   loadDashboardData(): void {
+    // Load Facebook pages separately to handle its specific logic
+    const tokenfb = localStorage.getItem('fb_access_token');
+    if(tokenfb){
+      this.facebookPageService.getUserPages(tokenfb).subscribe({
+        next: (pages) => {
+          this.pages = pages;
+          this.hasFacebookPages = this.pages.length > 0;
+        },
+        error: (error) => {
+          console.error('Error loading Facebook pages:', error);
+        }
+      });
+    }
+
     forkJoin({
-      //pages: this.facebookPageService.getUserPages(),
       posts: this.postService.getUserPosts(),
       templates: this.templateService.getTemplates()
     }).subscribe({
       next: result => {
-        //this.pages = result.pages;
         this.recentPosts = result.posts
           .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
           .slice(0, 5); // Get most recent 5 posts
         this.templates = result.templates;
         this.loading = false;
       },
-      error: () => {
+      error: (error) => {
+        console.error('Error loading dashboard data:', error);
         this.loading = false;
       }
     });
@@ -67,6 +81,10 @@ export class DashboardComponent implements OnInit {
   }
 
   linkFacebookPage(): void {
+    this.router.navigate(['/facebook-pages']);
+  }
+
+  manageFacebookPages(): void {
     this.router.navigate(['/facebook-pages']);
   }
 
