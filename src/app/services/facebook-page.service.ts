@@ -41,10 +41,13 @@ export class FacebookPageService {
       }, { scope: 'pages_read_engagement,pages_manage_posts,pages_show_list' });
     });
   }
-  getUserPages(accessTokenFb: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/get-pages`, {
+  linkFbPages(accessTokenFb: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/link-pages`, {
       params: { accessTokenFb }
     });
+  }
+  getUserPages(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/get-user-pages`);
   }
   // getUserPages(): Observable<FacebookPage[]> {
   //   return this.http.get<FacebookPage[]>(this.apiUrl, { headers: this.getAuthHeaders() })

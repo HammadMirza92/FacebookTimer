@@ -10,4 +10,5 @@ export interface PostPreview {
   showSeconds: boolean;
   backgroundImageUrl?: string;
   hasOverlay: boolean;
+  fontSize: number;
 }

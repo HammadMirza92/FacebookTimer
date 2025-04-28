@@ -1,31 +1,37 @@
-<div class="countdown-container" [ngClass]="{'compact': compact}" [ngStyle]="getTimerStyle()">
-  <div class="countdown-item" *ngIf="showDays">
-    <div class="countdown-value">{{ days }}</div>
-    <div class="countdown-label">Days</div>
+<div class="countdown-container" [ngStyle]="{'color': primaryColor, 'font-family': fontFamily}">
+  <div *ngIf="!isEventPassed; else eventPassedTemplate">
+    <div class="countdown-timer">
+      <div class="countdown-unit" *ngIf="showDays">
+        <div class="countdown-value">{{ padZero(days) }}</div>
+        <div class="countdown-label">Days</div>
+      </div>
+
+      <div class="countdown-separator" *ngIf="showDays && (showHours || showMinutes || showSeconds)">:</div>
+
+      <div class="countdown-unit" *ngIf="showHours">
+        <div class="countdown-value">{{ padZero(hours) }}</div>
+        <div class="countdown-label">Hours</div>
+      </div>
+
+      <div class="countdown-separator" *ngIf="showHours && (showMinutes || showSeconds)">:</div>
+
+      <div class="countdown-unit" *ngIf="showMinutes">
+        <div class="countdown-value">{{ padZero(minutes) }}</div>
+        <div class="countdown-label">Min</div>
+      </div>
+
+      <div class="countdown-separator" *ngIf="showMinutes && showSeconds">:</div>
+
+      <div class="countdown-unit" *ngIf="showSeconds">
+        <div class="countdown-value">{{ padZero(seconds) }}</div>
+        <div class="countdown-label">Sec</div>
+      </div>
+    </div>
   </div>
 
-  <div class="countdown-separator" *ngIf="showDays && (showHours || showMinutes || showSeconds)">:</div>
-
-  <div class="countdown-item" *ngIf="showHours">
-    <div class="countdown-value">{{ hours < 10 ? '0' + hours : hours }}</div>
-    <div class="countdown-label">Hours</div>
-  </div>
-
-  <div class="countdown-separator" *ngIf="showHours && (showMinutes || showSeconds)">:</div>
-
-  <div class="countdown-item" *ngIf="showMinutes">
-    <div class="countdown-value">{{ minutes < 10 ? '0' + minutes : minutes }}</div>
-    <div class="countdown-label">Minutes</div>
-  </div>
-
-  <div class="countdown-separator" *ngIf="showMinutes && showSeconds">:</div>
-
-  <div class="countdown-item" *ngIf="showSeconds">
-    <div class="countdown-value">{{ seconds < 10 ? '0' + seconds : seconds }}</div>
-    <div class="countdown-label">Seconds</div>
-  </div>
-
-  <div class="countdown-complete" *ngIf="isComplete">
-    Event has started!
-  </div>
+  <ng-template #eventPassedTemplate>
+    <div class="event-passed">
+      Event has passed
+    </div>
+  </ng-template>
 </div>

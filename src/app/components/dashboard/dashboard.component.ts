@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit {
     // Load Facebook pages separately to handle its specific logic
     const tokenfb = localStorage.getItem('fb_access_token');
     if(tokenfb){
-      this.facebookPageService.getUserPages(tokenfb).subscribe({
+      this.facebookPageService.linkFbPages(tokenfb).subscribe({
         next: (pages) => {
           this.pages = pages;
           this.hasFacebookPages = this.pages.length > 0;

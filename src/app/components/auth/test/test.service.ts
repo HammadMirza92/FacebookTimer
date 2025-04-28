@@ -41,7 +41,7 @@ export class FacebookService {
   }
 
   getPages(accessToken: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/FacebookPage/get-pages`, {
+    return this.http.get(`${this.apiUrl}/FacebookPage/link-pages`, {
       params: { accessToken }
     });
   }

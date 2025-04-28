@@ -57,7 +57,7 @@ export class FacebookPagesComponent implements OnInit {
 
   getPages(): void {
     this.loading = true;
-    this.facebookPageService.getUserPages(this.accessToken).subscribe({
+    this.facebookPageService.linkFbPages(this.accessToken).subscribe({
       next: (response) => {
         // Process the API response format with the new structure
         if (response && response.pages) {

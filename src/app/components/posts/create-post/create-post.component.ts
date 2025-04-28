@@ -84,58 +84,65 @@ export class CreatePostComponent implements OnInit, OnDestroy {
   private loadInitialData(): void {
     this.loading = true;
 
-    if (this.isEdit) {
-      // Edit mode: load post, pages, and templates
-      forkJoin({
-        post: this.postService.getPostById(this.postId),
-       // pages: this.facebookPageService.getUserPages(),
-        templates: this.templateService.getTemplates()
-      }).subscribe({
-        next: result => {
-         // this.pages = result.pages;
-          this.templates = result.templates;
-          this.populateForm(result.post);
-          this.loading = false;
-        },
-        error: error => {
-          this.notificationService.showError('Failed to load post data');
-          this.router.navigate(['/posts']);
-        }
-      });
-    } else {
-      // Create mode: load pages and templates
-      forkJoin({
-       // pages: this.facebookPageService.getUserPages(),
-        templates: this.templateService.getTemplates()
-      }).subscribe({
-        next: result => {
-         // this.pages = result.pages;
-          this.templates = result.templates;
+    // First, load the Facebook pages from the database
+    this.facebookPageService.getUserPages().subscribe({
+      next: (pages) => {
+        this.pages = pages;
 
-          // Check for query params
-          this.route.queryParams.subscribe(params => {
-            if (params['pageId']) {
-              this.postForm.patchValue({ facebookPageId: parseInt(params['pageId']) });
-              this.onPageChange();
-            }
-
-            if (params['templateId']) {
-              this.postForm.patchValue({ templateId: parseInt(params['templateId']) });
-              this.onTemplateChange();
+        if (this.isEdit) {
+          // Edit mode: load post and templates
+          forkJoin({
+            post: this.postService.getPostById(this.postId),
+            templates: this.templateService.getTemplates()
+          }).subscribe({
+            next: result => {
+              this.templates = result.templates;
+              this.populateForm(result.post);
+              this.loading = false;
+            },
+            error: error => {
+              this.notificationService.showError('Failed to load post data');
+              this.router.navigate(['/posts']);
             }
           });
+        } else {
+          // Create mode: load templates
+          this.templateService.getTemplates().subscribe({
+            next: templates => {
+              this.templates = templates;
 
-          this.loading = false;
-        },
-        error: error => {
-          this.notificationService.showError('Failed to load data. Please try again later.');
-          this.router.navigate(['/dashboard']);
+              // Check for query params
+              this.route.queryParams.subscribe(params => {
+                if (params['pageId']) {
+                  this.postForm.patchValue({ facebookPageId: parseInt(params['pageId']) });
+                  this.onPageChange();
+                }
+
+                if (params['templateId']) {
+                  this.postForm.patchValue({ templateId: parseInt(params['templateId']) });
+                  this.onTemplateChange();
+                }
+              });
+
+              this.loading = false;
+            },
+            error: error => {
+              this.notificationService.showError('Failed to load templates. Please try again later.');
+              this.router.navigate(['/dashboard']);
+            }
+          });
         }
-      });
-    }
+      },
+      error: error => {
+        this.notificationService.showError('Failed to load Facebook pages');
+        this.loading = false;
+        this.router.navigate(['/dashboard']);
+      }
+    });
   }
 
   private populateForm(post: Post): void {
+    debugger;
     const formValue = {
       facebookPageId: post.facebookPageId,
       templateId: post.templateId,
@@ -160,6 +167,7 @@ export class CreatePostComponent implements OnInit, OnDestroy {
   }
 
   onPageChange(): void {
+    debugger;
     const pageId = this.postForm.get('facebookPageId')?.value;
     this.selectedPage = this.pages.find(page => page.id === pageId) || null;
   }
@@ -278,6 +286,7 @@ export class CreatePostComponent implements OnInit, OnDestroy {
         }
       });
     } else {
+      debugger;
       this.postService.createPost(formData).subscribe({
         next: post => {
           // Then publish
