@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FacebookPageService } from '../../../services/facebook-page.service';
 import { NotificationService } from '../../../services/notification.service';
@@ -20,7 +20,8 @@ export class FacebookPagesComponent implements OnInit {
   constructor(
     private facebookPageService: FacebookPageService,
     private notificationService: NotificationService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private changeDetectorRef: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
@@ -29,6 +30,8 @@ export class FacebookPagesComponent implements OnInit {
 
   loadPages(): void {
     this.loading = true;
+    this.changeDetectorRef.detectChanges(); // Force update UI
+
     const token = localStorage.getItem('fb_access_token');
     if (token) {
       this.accessToken = token;
@@ -36,6 +39,7 @@ export class FacebookPagesComponent implements OnInit {
       this.getPages();
     } else {
       this.loading = false;
+      this.changeDetectorRef.detectChanges(); // Force update UI
     }
   }
 
@@ -51,34 +55,46 @@ export class FacebookPagesComponent implements OnInit {
         console.error('Login failed', error);
         this.notificationService.showError('Failed to login with Facebook');
         this.loading = false;
+        this.changeDetectorRef.detectChanges(); // Force update UI
       }
     });
   }
 
   getPages(): void {
     this.loading = true;
-    this.facebookPageService.linkFbPages(this.accessToken).subscribe({
-      next: (response) => {
-        // Process the API response format with the new structure
-        if (response && response.pages) {
-          this.pages = response.pages;
-          this.linkSuccessMessage = response.message;
+    this.changeDetectorRef.detectChanges(); // Force update UI
 
-          // Save linked pages to local storage
-          this.savePagesToStorage();
+    this.facebookPageService.linkFbPages(this.accessToken)
+      .subscribe({
+        next: (response) => {
+          // Process the API response format with the new structure
+          if (response && response.pages) {
+            this.pages = response.pages;
+            this.linkSuccessMessage = response.message;
 
-          this.notificationService.showSuccess(this.linkSuccessMessage || 'Facebook pages linked successfully');
-        } else {
-          this.pages = [];
+            // Save linked pages to local storage
+            this.savePagesToStorage();
+
+            // Update loading state before showing notification
+            this.loading = false;
+            this.changeDetectorRef.detectChanges(); // Force update UI
+
+            // Show notification after UI update
+            this.notificationService.showSuccess(this.linkSuccessMessage || 'Facebook pages linked successfully');
+          } else {
+            this.pages = [];
+            this.loading = false;
+            this.changeDetectorRef.detectChanges(); // Force update UI
+            this.notificationService.showError('No Facebook pages found.');
+          }
+        },
+        error: (error) => {
+          console.error('Failed to fetch pages', error);
+          this.loading = false;
+          this.changeDetectorRef.detectChanges(); // Force update UI
+          this.notificationService.showError('Failed to fetch Facebook pages');
         }
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Failed to fetch pages', error);
-        this.notificationService.showError('Failed to fetch Facebook pages');
-        this.loading = false;
-      }
-    });
+      });
   }
 
   // Save pages to storage (localStorage for demo, should be backend in production)
@@ -104,6 +120,7 @@ export class FacebookPagesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
+        this.loading = true;
         this.facebookPageService.unlinkPage(page.id).subscribe({
           next: () => {
             this.notificationService.showSuccess(`Successfully unlinked ${page.pageName}`);
@@ -111,8 +128,10 @@ export class FacebookPagesComponent implements OnInit {
             this.pages = this.pages.filter(p => p.id !== page.id);
             // Update storage
             this.savePagesToStorage();
+            this.loading = false;
           },
           error: error => {
+            this.loading = false;
             this.notificationService.showError(error.error || 'Failed to unlink page');
           }
         });

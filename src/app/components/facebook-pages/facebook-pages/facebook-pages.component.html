@@ -1,11 +1,11 @@
 <div class="page-container">
   <div class="page-header">
     <h1>Facebook Pages</h1>
-    <button mat-raised-button color="primary" (click)="loginWithFacebook()" *ngIf="!isLoggedIn">
+    <button mat-raised-button color="primary" (click)="loginWithFacebook()" >
       <mat-icon>login</mat-icon>
-      Login with Facebook
+      Add Facebook Page
     </button>
-    <button mat-raised-button color="primary" (click)="getPages()" *ngIf="isLoggedIn">
+    <button mat-raised-button color="primary" (click)="getPages()" >
       <mat-icon>refresh</mat-icon>
       Refresh Pages
     </button>

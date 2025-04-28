@@ -259,7 +259,9 @@ export class CreatePostComponent implements OnInit, OnDestroy {
     this.submitting = true;
     const formData = {...this.postForm.value};
     formData.scheduledFor = null;
-
+    if (this.selectedPage) {
+      formData.facebookPageId = this.selectedPage.pageId;
+    }
     if (this.isEdit) {
       this.postService.updatePost(this.postId, formData).subscribe({
         next: post => {
@@ -316,9 +318,12 @@ export class CreatePostComponent implements OnInit, OnDestroy {
 
   private savePost(formData: any): void {
     this.submitting = true;
-
+    const apiFormData = {...formData};
+    if (this.selectedPage) {
+      apiFormData.facebookPageId = this.selectedPage.pageId;
+    }
     if (this.isEdit) {
-      this.postService.updatePost(this.postId, formData).subscribe({
+      this.postService.updatePost(this.postId, apiFormData).subscribe({
         next: post => {
           this.notificationService.showSuccess('Post updated successfully!');
           this.router.navigate(['/posts']);
@@ -329,7 +334,7 @@ export class CreatePostComponent implements OnInit, OnDestroy {
         }
       });
     } else {
-      this.postService.createPost(formData).subscribe({
+      this.postService.createPost(apiFormData).subscribe({
         next: post => {
           this.notificationService.showSuccess('Post created successfully!');
           this.router.navigate(['/posts']);
