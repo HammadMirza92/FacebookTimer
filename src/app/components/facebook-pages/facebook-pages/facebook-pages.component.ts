@@ -107,38 +107,59 @@ export class FacebookPagesComponent implements OnInit {
   }
 
   unlinkPage(page: FacebookPage): void {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '400px',
-      data: {
-        title: 'Unlink Facebook Page',
-        message: `Are you sure you want to unlink "${page.pageName}"? Any scheduled posts for this page will be canceled.`,
-        confirmText: 'Unlink',
-        cancelText: 'Cancel',
-        color: 'warn'
-      }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.loading = true;
-        this.facebookPageService.unlinkPage(page.id).subscribe({
-          next: () => {
-            this.notificationService.showSuccess(`Successfully unlinked ${page.pageName}`);
-            // Remove page from local array
-            this.pages = this.pages.filter(p => p.id !== page.id);
-            // Update storage
-            this.savePagesToStorage();
-            this.loading = false;
+    // Force a short delay to ensure component is fully initialized
+    setTimeout(() => {
+      try {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+          width: '400px',
+          data: {
+            title: 'Unlink Facebook Page',
+            message: `Are you sure you want to unlink "${page.pageName}"? Any scheduled posts for this page will be canceled.`,
+            confirmText: 'Unlink',
+            cancelText: 'Cancel',
+            color: 'warn'
           },
-          error: error => {
-            this.loading = false;
-            this.notificationService.showError(error.error || 'Failed to unlink page');
+          // Add this to ensure dialog is properly styled and positioned
+          panelClass: 'confirm-dialog-container',
+          disableClose: false
+        });
+
+        // Use changeDetectorRef to ensure UI updates
+        this.changeDetectorRef.detectChanges();
+
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            this.loading = true;
+            this.changeDetectorRef.detectChanges();
+
+            console.log(`Unlinking page with ID: ${page.pageId}`);
+
+            this.facebookPageService.unlinkPage(page.pageId).subscribe({
+              next: () => {
+                this.notificationService.showSuccess(`Successfully unlinked ${page.pageName}`);
+
+                // Fix the filter to use pageId for consistency
+                this.pages = this.pages.filter(p => p.pageId !== page.pageId);
+
+                this.savePagesToStorage();
+                this.loading = false;
+                this.changeDetectorRef.detectChanges();
+              },
+              error: error => {
+                console.error('Failed to unlink page:', error);
+                this.loading = false;
+                this.changeDetectorRef.detectChanges();
+                this.notificationService.showError(error.error || 'Failed to unlink page');
+              }
+            });
           }
         });
+      } catch (error) {
+        console.error('Error opening dialog:', error);
+        this.notificationService.showError('Failed to open confirmation dialog');
       }
-    });
+    }, 100); // Small delay to ensure component is ready
   }
-
   getDaysRemaining(expiryDate: Date): number {
     if (!expiryDate) return 0;
 

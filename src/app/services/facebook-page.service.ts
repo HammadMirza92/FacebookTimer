@@ -76,8 +76,8 @@ export class FacebookPageService {
       );
   }
 
-  unlinkPage(id: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/${id}`, { headers: this.getAuthHeaders() })
+  unlinkPage(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/unlinkFbPage/${id}`, { headers: this.getAuthHeaders() })
       .pipe(
         catchError(error => {
           return throwError(() => error);
