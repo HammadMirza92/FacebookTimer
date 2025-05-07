@@ -1,0 +1,165 @@
+.template-admin-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+
+  h1 {
+    margin: 0;
+  }
+}
+
+.template-form-container {
+  margin-bottom: 32px;
+
+  form {
+    mat-card {
+      margin-bottom: 24px;
+    }
+
+    .form-row {
+      margin-bottom: 16px;
+
+      &.double {
+        display: flex;
+        gap: 16px;
+
+        @media (max-width: 768px) {
+          flex-direction: column;
+          gap: 0;
+        }
+
+        mat-form-field {
+          flex: 1;
+        }
+      }
+
+      &.subscription-settings {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        @media (max-width: 768px) {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+        }
+
+        mat-form-field {
+          flex: 1;
+        }
+      }
+
+      &.html-template-section {
+        .html-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 16px;
+
+          h3 {
+            margin: 0;
+          }
+
+          .template-actions {
+            display: flex;
+            gap: 8px;
+          }
+        }
+
+        .html-textarea {
+          width: 100%;
+        }
+
+        .code-editor-wrapper {
+          height: 500px;
+          border: 1px solid #ccc;
+          margin-bottom: 16px;
+
+          ::ng-deep {
+            .monaco-editor {
+              height: 100% !important;
+            }
+          }
+        }
+
+        .template-variables-info {
+          margin-top: 16px;
+          padding: 16px;
+          background-color: #f5f5f5;
+          border-radius: 4px;
+
+          h4 {
+            margin-top: 0;
+          }
+
+          code {
+            background-color: #e8e8e8;
+            padding: 2px 4px;
+            border-radius: 4px;
+            font-family: monospace;
+          }
+        }
+      }
+    }
+
+    mat-form-field {
+      width: 100%;
+    }
+  }
+}
+
+.template-list-container {
+  h2 {
+    margin-bottom: 16px;
+  }
+
+  .loading-indicator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px;
+
+    p {
+      margin-top: 16px;
+    }
+  }
+
+  .template-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+
+    .template-item {
+      &.empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 32px;
+        text-align: center;
+
+        mat-icon {
+          font-size: 48px;
+          height: 48px;
+          width: 48px;
+          margin-bottom: 16px;
+          color: rgba(0, 0, 0, 0.38);
+        }
+
+        p {
+          margin: 0 0 8px;
+          &:last-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}

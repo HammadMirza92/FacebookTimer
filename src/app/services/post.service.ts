@@ -45,7 +45,7 @@ export class PostService {
       );
   }
 
-  createPost(createPostData: CreatePost): Observable<Post> {
+  createPost(createPostData:any): Observable<Post> {
     return this.http.post<Post>(this.apiUrl, createPostData)
       .pipe(
         catchError(error => {

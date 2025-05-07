@@ -79,6 +79,9 @@ import { SubscriptionGuard } from './guards/subscription.guard';
 import { AppRoutingModule } from './app-routing.module';
 import { TestComponent } from './components/auth/test/test.component';
 import { Test2Component } from './components/auth/test2/test2.component';
+import { TemplateEditComponent } from './components/templatess/template-edit/template-edit.component';
+import { TemplateAdminComponent } from './components/templatess/template-admin/template-admin.component';
+import { TemplatePreviewComponent } from './components/templatess/template-preview/template-preview.component';
 
 @NgModule({
   declarations: [
@@ -108,7 +111,10 @@ import { Test2Component } from './components/auth/test2/test2.component';
     ConfirmDialogComponent,
     LoadingSpinnerComponent,
     TestComponent,
-    Test2Component
+    Test2Component,
+    TemplateEditComponent,
+    TemplateAdminComponent,
+    TemplatePreviewComponent
   ],
   imports: [
     BrowserModule,

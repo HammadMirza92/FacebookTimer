@@ -10,4 +10,6 @@ export interface Template {
   minimumSubscriptionPlanName?: string;
   isActive: boolean;
   createdAt: Date;
+  htmlTemplate: string;
+  templateVariables: string[];
 }

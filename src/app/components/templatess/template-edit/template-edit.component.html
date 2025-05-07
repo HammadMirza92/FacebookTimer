@@ -1,0 +1,103 @@
+<div class="template-edit-container">
+  <div class="page-header">
+    <h1>Create Post from Template</h1>
+    <button mat-button color="primary" [routerLink]="['/templates']">
+      <mat-icon>arrow_back</mat-icon> Back to Templates
+    </button>
+  </div>
+
+  <div class="loading-container" *ngIf="loading">
+    <mat-spinner></mat-spinner>
+    <p>Loading template...</p>
+  </div>
+
+  <div class="template-edit-content" *ngIf="!loading && template">
+    <div class="template-info">
+      <h2>{{ template.name }}</h2>
+      <p>{{ template.description }}</p>
+    </div>
+
+    <div class="edit-preview-container">
+      <div class="edit-form">
+        <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
+          <h3>Post Details</h3>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Post Title</mat-label>
+            <input matInput formControlName="title" placeholder="Post title for your reference">
+            <mat-error *ngIf="postForm.get('title')?.invalid">Title is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Post Description (optional)</mat-label>
+            <textarea matInput formControlName="description" rows="2" placeholder="Internal description for your reference"></textarea>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Scheduled Date & Time</mat-label>
+            <!-- <input matInput [matDatetimepicker]="picker" formControlName="scheduledDateTime">
+            <mat-datetimepicker-toggle matSuffix [for]="picker"></mat-datetimepicker-toggle>
+            <mat-datetimepicker #picker type="datetime"></mat-datetimepicker> -->
+            <mat-error *ngIf="postForm.get('scheduledDateTime')?.invalid">
+              Schedule date and time is required
+            </mat-error>
+          </mat-form-field>
+
+          <h3>Content Variables</h3>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Event Name</mat-label>
+            <input matInput formControlName="eventName" placeholder="Name of the event">
+            <mat-error *ngIf="postForm.get('eventName')?.invalid">Event name is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Event Description</mat-label>
+            <textarea matInput formControlName="eventDescription" rows="3" placeholder="Description of the event"></textarea>
+            <mat-error *ngIf="postForm.get('eventDescription')?.invalid">Event description is required</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Event Link</mat-label>
+            <input matInput formControlName="eventLink" placeholder="https://example.com">
+            <mat-error *ngIf="postForm.get('eventLink')?.hasError('required')">
+              Event link is required
+            </mat-error>
+            <mat-error *ngIf="postForm.get('eventLink')?.hasError('pattern')">
+              Please enter a valid URL (starting with http:// or https://)
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Button Text</mat-label>
+            <input matInput formControlName="buttonText" placeholder="Call to action text">
+            <mat-error *ngIf="postForm.get('buttonText')?.invalid">Button text is required</mat-error>
+          </mat-form-field>
+
+          <div class="form-actions">
+            <button type="button" mat-button [routerLink]="['/templates']">Cancel</button>
+            <button
+              type="submit"
+              mat-raised-button
+              color="primary"
+              [disabled]="postForm.invalid || savingPost"
+            >
+              Create Post
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="template-preview">
+        <h3>Live Preview</h3>
+        <div class="preview-container">
+          <div class="preview-content" *ngIf="previewHtml" [innerHTML]="previewHtml"></div>
+          <div class="preview-placeholder" *ngIf="!previewHtml">
+            <mat-icon>visibility</mat-icon>
+            <p>Fill in the form to see the live preview</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

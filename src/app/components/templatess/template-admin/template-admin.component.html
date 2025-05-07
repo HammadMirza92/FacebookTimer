@@ -1,0 +1,175 @@
+<div class="template-admin-container">
+  <div class="page-header">
+    <h1>Template Management</h1>
+    <button mat-raised-button color="primary" (click)="resetForm()">
+      <mat-icon>add</mat-icon> New Template
+    </button>
+  </div>
+
+  <div class="template-form-container">
+    <form [formGroup]="templateForm" (ngSubmit)="onSubmit()">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>{{ isEditMode ? 'Edit Template' : 'Create New Template' }}</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Name</mat-label>
+              <input matInput formControlName="name" placeholder="Template name">
+              <mat-error *ngIf="templateForm.get('name')?.invalid">Name is required</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Description</mat-label>
+              <textarea matInput formControlName="description" rows="3" placeholder="Template description"></textarea>
+              <mat-error *ngIf="templateForm.get('description')?.invalid">Description is required</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row double">
+            <mat-form-field appearance="outline">
+              <mat-label>Default Font Family</mat-label>
+              <input matInput formControlName="defaultFontFamily" placeholder="Font family">
+              <mat-error *ngIf="templateForm.get('defaultFontFamily')?.invalid">Font family is required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Primary Color</mat-label>
+              <input matInput formControlName="primaryColor" placeholder="Color code (e.g. #FF5500)">
+              <mat-error *ngIf="templateForm.get('primaryColor')?.invalid">Primary color is required</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline">
+              <mat-label>Background Image URL (optional)</mat-label>
+              <input matInput formControlName="backgroundImageUrl" placeholder="https://example.com/image.jpg">
+            </mat-form-field>
+          </div>
+
+          <div class="form-row subscription-settings">
+            <mat-checkbox formControlName="requiresSubscription">Requires Subscription</mat-checkbox>
+
+            <mat-form-field appearance="outline" *ngIf="templateForm.get('requiresSubscription')?.value">
+              <mat-label>Minimum Subscription Plan</mat-label>
+              <mat-select formControlName="minimumSubscriptionPlanId">
+                <mat-option *ngFor="let plan of subscriptionPlans" [value]="plan.id">
+                  {{ plan.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="templateForm.get('minimumSubscriptionPlanId')?.invalid">
+                Subscription plan is required when template requires subscription
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row html-template-section">
+            <div class="html-header">
+              <h3>HTML Template</h3>
+              <div class="template-actions">
+                <button type="button" mat-button color="primary" (click)="loadDefaultTemplate()">
+                  Load Default Template
+                </button>
+                <button type="button" mat-button color="accent" (click)="toggleHtmlEditor()">
+                  {{ htmlEditor ? 'Simple Editor' : 'Advanced Editor' }}
+                </button>
+              </div>
+            </div>
+
+            <ng-container *ngIf="!htmlEditor">
+              <mat-form-field appearance="outline" class="html-textarea">
+                <textarea
+                  matInput
+                  formControlName="htmlTemplate"
+                  rows="20"
+                  placeholder="Paste your HTML template here"
+                ></textarea>
+                <mat-error *ngIf="templateForm.get('htmlTemplate')?.invalid">
+                  HTML template is required
+                </mat-error>
+              </mat-form-field>
+            </ng-container>
+
+            <ng-container *ngIf="htmlEditor">
+              <!-- Integrate a code editor like Monaco editor or ngx-monaco-editor here -->
+              <div class="code-editor-wrapper">
+                <!-- <ngx-monaco-editor
+                  [options]="{ theme: 'vs-dark', language: 'html', automaticLayout: true }"
+                  formControlName="htmlTemplate"
+                ></ngx-monaco-editor> -->
+              </div>
+            </ng-container>
+
+            <div class="template-variables-info">
+              <h4>Available Template Variables:</h4>
+              <p>Use these variables in your template to be replaced with actual content:</p>
+              <ul>
+                <!-- <li><code>{{eventName}}</code> - The name of the event</li>
+                <li><code>{{eventDescription}}</code> - Description of the event</li>
+                <li><code>{{eventLink}}</code> - URL for the event</li>
+                <li><code>{{buttonText}}</code> - Text for the call-to-action button</li>
+                <li><code>{{days}}</code> - Days remaining</li>
+                <li><code>{{hours}}</code> - Hours remaining</li>
+                <li><code>{{minutes}}</code> - Minutes remaining</li>
+                <li><code>{{seconds}}</code> - Seconds remaining</li> -->
+              </ul>
+            </div>
+          </div>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <button type="button" mat-button (click)="resetForm()">Cancel</button>
+          <button type="submit" mat-raised-button color="primary" [disabled]="templateForm.invalid || loading">
+            {{ isEditMode ? 'Update Template' : 'Create Template' }}
+          </button>
+        </mat-card-actions>
+
+        <mat-card-footer *ngIf="loading">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        </mat-card-footer>
+      </mat-card>
+    </form>
+  </div>
+
+  <div class="template-list-container">
+    <h2>Existing Templates</h2>
+
+    <div class="loading-indicator" *ngIf="loading">
+      <mat-spinner diameter="40"></mat-spinner>
+      <p>Loading templates...</p>
+    </div>
+
+    <div class="template-list" *ngIf="!loading">
+      <mat-card *ngFor="let template of templates" class="template-item">
+        <mat-card-header>
+          <mat-card-title>{{ template.name }}</mat-card-title>
+          <mat-card-subtitle>
+            {{ template.requiresSubscription ? (template.minimumSubscriptionPlanName || 'Premium') : 'Free' }}
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <p>{{ template.description }}</p>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <button mat-button color="primary" (click)="editTemplate(template)">
+            <mat-icon>edit</mat-icon> Edit
+          </button>
+        </mat-card-actions>
+      </mat-card>
+
+      <mat-card class="template-item empty-state" *ngIf="templates.length === 0">
+        <mat-card-content>
+          <mat-icon>view_carousel</mat-icon>
+          <p>No templates available yet.</p>
+          <p>Create your first template to get started!</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

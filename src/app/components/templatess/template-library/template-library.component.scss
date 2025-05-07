@@ -1,6 +1,7 @@
 .template-library-container {
   max-width: 1200px;
   margin: 0 auto;
+  padding: 24px;
 }
 
 .page-header {
@@ -8,6 +9,8 @@
 
   h1 {
     margin-bottom: 16px;
+    font-size: 28px;
+    color: #333;
   }
 
   .search-filter-container {
@@ -32,13 +35,34 @@
 
 .template-cards {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 32px; // Increased gap for better spacing
+  padding-top: 16px;
 }
+
+app-template-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  min-height: 420px; // Adjust to make height consistent
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+  }
+}
+
 
 .empty-state-card {
   text-align: center;
   padding: 48px;
+  background-color: #f5f5f5;
+  border-radius: 8px;
 }
 
 .empty-state {
@@ -56,11 +80,13 @@
 
   h3 {
     margin: 0 0 8px;
+    font-size: 20px;
   }
 
   p {
     margin: 0 0 16px;
     color: rgba(0, 0, 0, 0.6);
+    max-width: 400px;
   }
 }
 
@@ -73,5 +99,6 @@
 
   p {
     margin-top: 16px;
+    color: rgba(0, 0, 0, 0.6);
   }
 }

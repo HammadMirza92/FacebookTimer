@@ -81,22 +81,6 @@ export class TemplateLibraryComponent implements OnInit {
     this.router.navigate(['/posts/create'], { queryParams: { templateId: template.id } });
   }
 
-  getPlanColor(template: Template): string {
-    if (!template.requiresSubscription) {
-      return 'basic-plan';
-    }
-
-    if (template.minimumSubscriptionPlanId === 2) {
-      return 'pro-plan';
-    }
-
-    if (template.minimumSubscriptionPlanId === 3) {
-      return 'premium-plan';
-    }
-
-    return '';
-  }
-
   canUseTemplate(template: Template, user: User | null): boolean {
     if (!template.requiresSubscription) {
       return true;

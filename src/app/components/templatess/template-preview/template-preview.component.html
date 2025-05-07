@@ -1,0 +1,29 @@
+<div class="template-preview-container">
+  <div class="preview-header">
+    <h2>{{ editMode ? 'Edit' : 'Preview' }}: {{ template.name }}</h2>
+  </div>
+
+  <div class="preview-content">
+    <div class="form-container" *ngIf="templateForm">
+      <form [formGroup]="templateForm">
+        <div class="form-row" *ngFor="let variable of template.templateVariables">
+          <mat-form-field appearance="outline">
+            <mat-label>{{ variable | titlecase }}</mat-label>
+            <input matInput [formControlName]="variable">
+          </mat-form-field>
+        </div>
+
+        <div class="form-actions" *ngIf="editMode">
+          <button mat-raised-button color="primary" (click)="onSave()" [disabled]="!templateForm.valid">
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="preview-container">
+      <mat-spinner *ngIf="loading" diameter="40"></mat-spinner>
+      <div class="template-render" *ngIf="!loading && previewHtml" [innerHTML]="previewHtml"></div>
+    </div>
+  </div>
+</div>

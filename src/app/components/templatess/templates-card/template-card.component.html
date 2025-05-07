@@ -1,25 +1,8 @@
 <mat-card class="template-card">
   <div class="template-preview">
-    <div class="template-background" [ngStyle]="{'background-color': template.primaryColor || '#3f51b5'}">
-      <div class="template-content" [style.font-family]="template.defaultFontFamily">
-        <div class="template-title">EVENT NAME IS COMING!</div>
-        <div class="template-countdown">
-          <div class="time-block">
-            <div class="time-value">01</div>
-            <div class="time-label">Days</div>
-          </div>
-          <div class="time-separator">:</div>
-          <div class="time-block">
-            <div class="time-value">12</div>
-            <div class="time-label">Hours</div>
-          </div>
-          <div class="time-separator">:</div>
-          <div class="time-block">
-            <div class="time-value">30</div>
-            <div class="time-label">Minutes</div>
-          </div>
-        </div>
-      </div>
+    <!-- Use an iframe for perfect rendering of the template -->
+    <div class="iframe-container">
+      <iframe #previewFrame frameborder="0" class="template-iframe"></iframe>
     </div>
     <div class="template-badge" [ngClass]="getPlanBadgeClass()">{{ getPlanName() }}</div>
   </div>
@@ -33,7 +16,7 @@
     <button mat-raised-button
       [color]="canUse ? 'primary' : 'warn'"
       (click)="onUseTemplate()">
-      {{ canUse ? 'USE TEMPLATE' : 'UPGRADE TO USE' }}
+      {{ canUse ? 'USE TEMPLATE' : 'UPGRADE TO USE THIS TEMPLATE' }}
     </button>
   </mat-card-actions>
 </mat-card>
