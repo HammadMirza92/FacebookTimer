@@ -1,38 +1,149 @@
-<div class="login-container">
-  <mat-card class="login-card">
-    <mat-card-header>
-      <mat-card-title>Login</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Email</mat-label>
-          <input matInput formControlName="email" placeholder="Enter your email" type="email" required>
-          <mat-error *ngIf="f['email'].errors?.['required']">Email is required</mat-error>
-          <mat-error *ngIf="f['email'].errors?.['email']">Please enter a valid email</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Password</mat-label>
-          <input matInput formControlName="password" [type]="hidePassword ? 'password' : 'text'" required>
-          <button mat-icon-button matSuffix (click)="hidePassword = !hidePassword" type="button">
-            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-          </button>
-          <mat-error *ngIf="f['password'].errors?.['required']">Password is required</mat-error>
-        </mat-form-field>
-
-
-        <div class="login-actions">
-          <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid || loading">
-            <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
-            <span *ngIf="!loading">Login</span>
-          </button>
+<div class="auth-container">
+  <div class="auth-card-wrapper">
+    <mat-card class="auth-card">
+      <!-- Header Section -->
+      <mat-card-header class="auth-header">
+        <div class="logo-section">
+          <div class="logo-container">
+            <mat-icon class="logo-icon">security</mat-icon>
+          </div>
+          <mat-card-title class="auth-title">Welcome Back</mat-card-title>
+          <mat-card-subtitle class="auth-subtitle">
+            Sign in to access your account
+          </mat-card-subtitle>
         </div>
-      </form>
-    </mat-card-content>
-    <mat-card-actions align="end">
-      <span>Don't have an account?</span>
-      <button mat-button color="accent" routerLink="/register">Register</button>
-    </mat-card-actions>
-  </mat-card>
+      </mat-card-header>
+
+      <!-- Content Section -->
+      <mat-card-content class="auth-content">
+        <!-- Google Sign In Button -->
+        <button
+          mat-raised-button
+          class="google-btn full-width"
+          (click)="signInWithGoogle()"
+          [disabled]="loading || googleLoading"
+          type="button">
+          <div class="google-btn-content">
+            <div class="google-icon-container">
+              <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20">
+                <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+              </svg>
+            </div>
+            <span class="google-btn-text">
+              <mat-spinner diameter="18" *ngIf="googleLoading"></mat-spinner>
+              <span *ngIf="!googleLoading">Continue with Google</span>
+            </span>
+          </div>
+        </button>
+
+        <!-- Divider -->
+        <div class="divider">
+          <span class="divider-text">or sign in with email</span>
+        </div>
+
+        <!-- Email/Password Form -->
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form" novalidate>
+          <!-- Email Field -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email Address</mat-label>
+            <input
+              matInput
+              formControlName="email"
+              placeholder="Enter your email address"
+              type="email"
+              autocomplete="email"
+              [class.mat-input-invalid]="f['email'].invalid && f['email'].touched">
+            <mat-icon matSuffix color="primary">email</mat-icon>
+            <mat-error *ngIf="f['email'].errors?.['required'] && f['email'].touched">
+              Email address is required
+            </mat-error>
+            <mat-error *ngIf="f['email'].errors?.['email'] && f['email'].touched">
+              Please enter a valid email address
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Password Field -->
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Password</mat-label>
+            <input
+              matInput
+              formControlName="password"
+              [type]="hidePassword ? 'password' : 'text'"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              [class.mat-input-invalid]="f['password'].invalid && f['password'].touched">
+            <button
+              mat-icon-button
+              matSuffix
+              (click)="hidePassword = !hidePassword"
+              type="button"
+              [attr.aria-label]="hidePassword ? 'Show password' : 'Hide password'"
+              tabindex="-1">
+              <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+            </button>
+            <mat-error *ngIf="f['password'].errors?.['required'] && f['password'].touched">
+              Password is required
+            </mat-error>
+            <mat-error *ngIf="f['password'].errors?.['minlength'] && f['password'].touched">
+              Password must be at least 6 characters long
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Form Options -->
+          <div class="form-options">
+            <mat-checkbox formControlName="rememberMe" color="primary" class="remember-me-checkbox">
+              Keep me signed in
+            </mat-checkbox>
+            <a
+              mat-button
+              color="primary"
+              routerLink="/forgot-password"
+              class="forgot-link"
+              tabindex="0">
+              Forgot Password?
+            </a>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="auth-actions">
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
+              class="full-width auth-submit-btn"
+              [disabled]="!canSubmit">
+              <div class="submit-btn-content">
+                <mat-spinner diameter="20" *ngIf="loading && !googleLoading"></mat-spinner>
+                <span *ngIf="!loading || googleLoading">Sign In</span>
+              </div>
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+
+      <!-- Footer Section -->
+      <mat-card-actions class="auth-footer">
+        <div class="footer-content">
+          <span class="footer-text">Don't have an account?</span>
+          <a
+            mat-button
+            color="accent"
+            routerLink="/register"
+            class="footer-link">
+            Create Account
+          </a>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+
+  <!-- Background Elements -->
+  <div class="background-elements">
+    <div class="floating-element element-1"></div>
+    <div class="floating-element element-2"></div>
+    <div class="floating-element element-3"></div>
+  </div>
 </div>

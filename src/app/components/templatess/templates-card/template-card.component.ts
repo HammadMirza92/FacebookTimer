@@ -1,4 +1,3 @@
-// template-card.component.ts
 import { Component, Input, Output, EventEmitter, OnInit, ElementRef, ViewChild, AfterViewInit, SecurityContext } from '@angular/core';
 import { Template } from '../../../models/template.model';
 import { Router } from '@angular/router';

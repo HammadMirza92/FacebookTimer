@@ -82,6 +82,7 @@ import { Test2Component } from './components/auth/test2/test2.component';
 import { TemplateEditComponent } from './components/templatess/template-edit/template-edit.component';
 import { TemplateAdminComponent } from './components/templatess/template-admin/template-admin.component';
 import { TemplatePreviewComponent } from './components/templatess/template-preview/template-preview.component';
+import { GoogleAuthService } from './services/GoogleAuthService.service';
 
 @NgModule({
   declarations: [
@@ -154,6 +155,7 @@ import { TemplatePreviewComponent } from './components/templatess/template-previ
     FacebookPageService,
     TemplateService,
     PostService,
+    GoogleAuthService,
     SubscriptionService,
     NotificationService,
     AuthGuard,
