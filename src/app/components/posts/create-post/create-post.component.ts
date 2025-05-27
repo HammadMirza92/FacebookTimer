@@ -402,10 +402,8 @@ publishNow(): void {
   };
 
   console.log('Saving post data before publishing:', formData);
-
   // Step 1: Save/Update the post first
   const saveOperation = this.postService.createPost(formData);
-
   saveOperation.subscribe({
     next: (savedPost) => {
       console.log('Post saved successfully:', savedPost);
@@ -424,15 +422,15 @@ publishNow(): void {
             console.log('Facebook Post ID:', publishResult.facebookPostId);
             this.router.navigate(['/posts']);
           } else {
+            debugger;
             this.notificationService.showError(
-              publishResult.errorMessage || 'Failed to publish post to Facebook'
+              'Failed to publish post to Facebook000001'
             );
           }
         },
         error: (publishError) => {
           this.submitting = false;
           console.error('Publish error:', publishError);
-
           let errorMessage = 'Failed to publish post to Facebook';
           if (publishError?.error?.errorMessage) {
             errorMessage = publishError.error.errorMessage;
@@ -454,7 +452,7 @@ publishNow(): void {
 
       if (saveError?.status === 400 && saveError?.error) {
         if (saveError.error.message) {
-          errorMessage = saveError.error.message;
+          errorMessage = saveError.error.error;
         } else if (saveError.error.errors) {
           const validationErrors = Object.values(saveError.error.errors).flat();
           errorMessage = `Validation failed: ${validationErrors.join(', ')}`;
