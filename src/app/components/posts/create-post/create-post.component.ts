@@ -101,8 +101,8 @@ export class CreatePostComponent implements OnInit, OnDestroy {
 
     // First, load the Facebook pages from the database
     this.facebookPageService.getUserPages().subscribe({
-      next: (pages) => {
-        this.pages = pages;
+      next: (response) => {
+        this.pages = response.pages;
 
         if (this.isEdit) {
           // Edit mode: load post and templates

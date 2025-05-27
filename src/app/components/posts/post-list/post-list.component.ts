@@ -156,8 +156,13 @@ export class PostListComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.postService.deletePost(post.id).subscribe({
-          next: () => {
-            this.notificationService.showSuccess('Post has been deleted');
+          next: (result) => {
+            if(result.warning){
+              this.notificationService.showSuccess(result.warning,5000);
+            } else {
+              this.notificationService.showSuccess('Post has been deleted');
+            }
+
             this.loadPosts();
           },
           error: error => {
