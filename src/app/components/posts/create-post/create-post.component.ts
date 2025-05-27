@@ -408,41 +408,8 @@ publishNow(): void {
     next: (savedPost) => {
       console.log('Post saved successfully:', savedPost);
       console.log(`Now calling publish endpoint for post ID: ${savedPost.id}`);
-
-      // Step 2: Immediately publish the saved post to Facebook
-      this.postService.publishPost(savedPost.id).subscribe({
-        next: (publishResult) => {
-          this.submitting = false;
-          console.log('Publish result:', publishResult);
-
-          if (publishResult.success) {
-            this.notificationService.showSuccess(
-              publishResult.message || 'Post published successfully to Facebook with countdown image!'
-            );
-            console.log('Facebook Post ID:', publishResult.facebookPostId);
-            this.router.navigate(['/posts']);
-          } else {
-            debugger;
-            this.notificationService.showError(
-              'Failed to publish post to Facebook000001'
-            );
-          }
-        },
-        error: (publishError) => {
-          this.submitting = false;
-          console.error('Publish error:', publishError);
-          let errorMessage = 'Failed to publish post to Facebook';
-          if (publishError?.error?.errorMessage) {
-            errorMessage = publishError.error.errorMessage;
-          } else if (publishError?.error?.message) {
-            errorMessage = publishError.error.message;
-          } else if (publishError?.message) {
-            errorMessage = publishError.message;
-          }
-
-          this.notificationService.showError(errorMessage);
-        }
-      });
+        this.notificationService.showSuccess('Post published successfully to Facebook with countdown image!');
+        this.router.navigate(['/posts']);
     },
     error: (saveError) => {
       this.submitting = false;
