@@ -7,8 +7,14 @@ import { environment } from '../environments/environment';
 import { Post } from '../models/post.model';
 import { CreatePost } from '../models/create-post.model';
 import { UpdatePost } from '../models/update-post.model';
-import { PublishResult } from '../models/publish-result.model';
-import { PostPreview } from '../models/post-preview.model';
+
+// Updated PublishResult interface to match the new API response
+export interface PublishResult {
+  success: boolean;
+  facebookPostId?: string;
+  message?: string;
+  errorMessage?: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +28,7 @@ export class PostService {
     return this.http.get<Post[]>(this.apiUrl)
       .pipe(
         catchError(error => {
+          console.error('Error fetching user posts:', error);
           return throwError(() => error);
         })
       );
@@ -31,6 +38,7 @@ export class PostService {
     return this.http.get<Post[]>(`${this.apiUrl}/page/${pageId}`)
       .pipe(
         catchError(error => {
+          console.error('Error fetching page posts:', error);
           return throwError(() => error);
         })
       );
@@ -40,15 +48,17 @@ export class PostService {
     return this.http.get<Post>(`${this.apiUrl}/${id}`)
       .pipe(
         catchError(error => {
+          console.error('Error fetching post by ID:', error);
           return throwError(() => error);
         })
       );
   }
 
-  createPost(createPostData:any): Observable<Post> {
+  createPost(createPostData: any): Observable<Post> {
     return this.http.post<Post>(this.apiUrl, createPostData)
       .pipe(
         catchError(error => {
+          console.error('Error creating post:', error);
           return throwError(() => error);
         })
       );
@@ -58,6 +68,7 @@ export class PostService {
     return this.http.put<Post>(`${this.apiUrl}/${id}`, updatePostData)
       .pipe(
         catchError(error => {
+          console.error('Error updating post:', error);
           return throwError(() => error);
         })
       );
@@ -67,7 +78,13 @@ export class PostService {
     return this.http.post<PublishResult>(`${this.apiUrl}/${id}/publish`, {})
       .pipe(
         catchError(error => {
-          return throwError(() => error);
+          console.error('Error publishing post:', error);
+          // Handle different error response formats
+          const errorResponse = error.error || error;
+          return throwError(() => ({
+            success: false,
+            errorMessage: errorResponse.errorMessage || errorResponse.message || 'Failed to publish post'
+          }));
         })
       );
   }
@@ -76,6 +93,7 @@ export class PostService {
     return this.http.post(`${this.apiUrl}/${id}/cancel`, {})
       .pipe(
         catchError(error => {
+          console.error('Error canceling post:', error);
           return throwError(() => error);
         })
       );
@@ -85,6 +103,7 @@ export class PostService {
     return this.http.delete(`${this.apiUrl}/${id}`)
       .pipe(
         catchError(error => {
+          console.error('Error deleting post:', error);
           return throwError(() => error);
         })
       );

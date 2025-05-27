@@ -95,13 +95,27 @@
 
         <div class="form-column">
           <h2>Preview</h2>
-          <div class="preview-container">
+          <div class="preview-wrapper">
             <div class="preview-header">
               <div class="preview-page-name" *ngIf="selectedPage">{{ selectedPage.pageName }}</div>
               <div class="preview-template-name" *ngIf="selectedTemplate">Template: {{ selectedTemplate.name }}</div>
             </div>
 
-            <div class="preview-content"
+            <!-- Template Preview Container with iframe (similar to template card) -->
+            <div class="template-preview-container" *ngIf="selectedTemplate && selectedTemplate.htmlTemplate">
+              <div class="iframe-container">
+                <iframe
+                  #previewFrame
+                  frameborder="0"
+                  class="template-iframe"
+                  (load)="onPreviewLoad()"
+                  scrolling="no">
+                </iframe>
+              </div>
+            </div>
+
+            <!-- Fallback Preview if no template HTML -->
+            <div class="preview-content" *ngIf="!selectedTemplate || !selectedTemplate.htmlTemplate"
                 [ngStyle]="{'font-family': postForm.get('customFontFamily')?.value || 'Arial, sans-serif'}">
               <div class="preview-background"
                   [ngStyle]="{'background-color': postForm.get('customPrimaryColor')?.value || '#3f51b5',

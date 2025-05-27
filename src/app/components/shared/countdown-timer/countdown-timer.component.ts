@@ -74,6 +74,8 @@ export class CountdownTimerComponent implements OnInit, OnDestroy {
     this.hours = Math.floor((totalSeconds % (3600 * 24)) / 3600);
     this.minutes = Math.floor((totalSeconds % 3600) / 60);
     this.seconds = totalSeconds % 60;
+
+    this.isEventPassed = false;
   }
 
   // Helper function to display numbers with leading zeros
