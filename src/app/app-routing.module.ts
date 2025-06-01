@@ -14,14 +14,10 @@ import { NotFoundComponent } from './components/layout/not-found/not-found.compo
 
 import { AuthGuard } from './guards/auth.guard';
 import { SubscriptionGuard } from './guards/subscription.guard';
-import { TestComponent } from './components/auth/test/test.component';
-import { Test2Component } from './components/auth/test2/test2.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'test', component: TestComponent },
-  { path: 'test2', component: Test2Component },
   { path: 'register', component: RegisterComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'templates', component: TemplateLibraryComponent, canActivate: [AuthGuard] },
