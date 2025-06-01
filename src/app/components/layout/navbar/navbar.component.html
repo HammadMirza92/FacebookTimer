@@ -1,49 +1,145 @@
-<mat-toolbar color="primary">
-  <button mat-icon-button (click)="toggleSidenav()" aria-label="Toggle sidebar">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span class="app-name">Facebook Scheduler</span>
-  <span class="spacer"></span>
-
-  <ng-container *ngIf="(currentUser$ | async) as user; else loginButton">
-    <button mat-button [matMenuTriggerFor]="userMenu" class="user-menu-button">
-      <span class="user-info">
-        {{ user.firstName }} {{ user.lastName }}
-        <mat-icon *ngIf="(subscriptionAlert$ | async)" matBadge="!" matBadgeColor="warn" matBadgeSize="small"
-          matTooltip="Your subscription is expiring soon">
-          notification_important
-        </mat-icon>
-      </span>
-      <mat-icon>arrow_drop_down</mat-icon>
+<!-- Professional Header Component -->
+<mat-toolbar class="professional-header" color="primary">
+  <!-- Left Section -->
+  <div class="header-left">
+    <button
+      mat-icon-button
+      (click)="toggleSidenav()"
+      aria-label="Toggle sidebar"
+      class="menu-toggle-btn">
+      <mat-icon>menu</mat-icon>
     </button>
-    <mat-menu #userMenu="matMenu">
-      <div class="subscription-info" *ngIf="user.currentSubscription">
-        <p class="plan-name">{{ user.currentSubscription.subscriptionPlanName }} Plan</p>
-        <p class="expiry-info">
-          Expires in {{ user.currentSubscription.daysRemaining }} days
-          <button mat-button color="accent" *ngIf="(subscriptionAlert$ | async)" (click)="navigateToPlans()">
-            Renew Now
-          </button>
-        </p>
-      </div>
-      <button mat-menu-item routerLink="/dashboard">
-        <mat-icon>dashboard</mat-icon>
-        <span>Dashboard</span>
-      </button>
-      <button mat-menu-item routerLink="/subscription/plans">
-        <mat-icon>card_membership</mat-icon>
-        <span>Subscription</span>
-      </button>
-      <mat-divider></mat-divider>
-      <button mat-menu-item (click)="logout()">
-        <mat-icon>exit_to_app</mat-icon>
-        <span>Logout</span>
-      </button>
-    </mat-menu>
-  </ng-container>
 
-  <ng-template #loginButton>
-    <button mat-button routerLink="/login">Login</button>
-    <button mat-raised-button color="accent" routerLink="/register">Register</button>
-  </ng-template>
+    <div class="brand-section">
+      <div class="logo-container">
+        <mat-icon class="logo-icon">schedule_send</mat-icon>
+      </div>
+      <div class="brand-info">
+        <span class="app-name">Facebook Scheduler</span>
+        <span class="app-tagline">Smart Social Media Management</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Center Section (optional for future navigation) -->
+  <div class="header-center">
+    <span class="spacer"></span>
+  </div>
+
+  <!-- Right Section -->
+  <div class="header-right">
+    <ng-container *ngIf="(currentUser$ | async) as user; else loginSection">
+      <!-- Quick Actions -->
+      <div class="quick-actions">
+        <button
+          mat-icon-button
+          class="quick-action-btn"
+          matTooltip="Notifications"
+          [matBadge]="notificationCount > 0 ? notificationCount : null"
+          matBadgeColor="warn"
+          matBadgeSize="small">
+          <mat-icon>notifications</mat-icon>
+        </button>
+
+        <button
+          mat-icon-button
+          class="quick-action-btn"
+          matTooltip="Messages"
+          routerLink="/messages">
+          <mat-icon>mail_outline</mat-icon>
+        </button>
+      </div>
+
+      <!-- User Profile Section -->
+      <div class="user-profile-section">
+        <button
+          mat-button
+          [matMenuTriggerFor]="userMenu"
+          class="user-profile-btn">
+
+          <div class="user-details">
+            <div class="user-name">{{ user.firstName }} {{ user.lastName }}</div>
+          </div>
+
+          <mat-icon class="dropdown-icon">keyboard_arrow_down</mat-icon>
+        </button>
+
+        <!-- Enhanced User Menu -->
+        <mat-menu #userMenu="matMenu" class="professional-user-menu" xPosition="before">
+          <!-- User Info Header -->
+          <!-- <div class="menu-user-header">
+            <div class="menu-user-avatar">
+
+              <ng-template #menuDefaultAvatar>
+                <div class="menu-default-avatar">
+                  {{ getInitials(user.firstName, user.lastName) }}
+                </div>
+              </ng-template>
+            </div>
+            <div class="menu-user-info">
+              <div class="menu-user-name">{{ user.firstName }} {{ user.lastName }}</div>
+              <div class="menu-user-email">{{ user.email }}</div>
+            </div>
+          </div> -->
+
+          <!-- Navigation Items -->
+          <div class="menu-navigation">
+            <button mat-menu-item routerLink="/dashboard" class="menu-nav-item">
+              <mat-icon>dashboard</mat-icon>
+              <span>Dashboard</span>
+              <mat-icon class="nav-arrow">chevron_right</mat-icon>
+            </button>
+
+            <button mat-menu-item routerLink="/posts" class="menu-nav-item">
+              <mat-icon>post_add</mat-icon>
+              <span>My Posts</span>
+              <mat-icon class="nav-arrow">chevron_right</mat-icon>
+            </button>
+
+            <button mat-menu-item routerLink="/analytics" class="menu-nav-item">
+              <mat-icon>analytics</mat-icon>
+              <span>Analytics</span>
+              <mat-icon class="nav-arrow">chevron_right</mat-icon>
+            </button>
+
+            <button mat-menu-item routerLink="/subscription/plans" class="menu-nav-item">
+              <mat-icon>card_membership</mat-icon>
+              <span>Subscription</span>
+              <mat-icon class="nav-arrow">chevron_right</mat-icon>
+            </button>
+
+            <button mat-menu-item routerLink="/settings" class="menu-nav-item">
+              <mat-icon>settings</mat-icon>
+              <span>Settings</span>
+              <mat-icon class="nav-arrow">chevron_right</mat-icon>
+            </button>
+          </div>
+
+          <mat-divider class="menu-divider"></mat-divider>
+
+          <!-- Logout Section -->
+          <div class="menu-logout">
+            <button mat-menu-item (click)="logout()" class="logout-btn">
+              <mat-icon>logout</mat-icon>
+              <span>Sign Out</span>
+            </button>
+          </div>
+        </mat-menu>
+      </div>
+    </ng-container>
+
+    <!-- Login/Register Section -->
+    <ng-template #loginSection>
+      <div class="auth-buttons">
+        <button mat-button routerLink="/login" class="login-btn">
+          <mat-icon>login</mat-icon>
+          Sign In
+        </button>
+        <button mat-raised-button color="accent" routerLink="/register" class="register-btn">
+          <mat-icon>person_add</mat-icon>
+          Get Started
+        </button>
+      </div>
+    </ng-template>
+  </div>
 </mat-toolbar>

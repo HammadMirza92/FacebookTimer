@@ -14,7 +14,7 @@ export class NavbarComponent implements OnInit {
   @Output() toggleSidenavEvent = new EventEmitter<void>();
   currentUser$: Observable<User | null>;
   subscriptionAlert$: Observable<boolean>;
-
+  notificationCount = 0;
   constructor(
     private authService: AuthService,
     private notificationService: NotificationService,
@@ -40,4 +40,15 @@ export class NavbarComponent implements OnInit {
   navigateToPlans(): void {
     this.router.navigate(['/subscription/plans']);
   }
+
+  getInitials(firstName: string, lastName: string): string {
+    if (!firstName && !lastName) return 'U';
+
+    const firstInitial = firstName ? firstName.charAt(0).toUpperCase() : '';
+    const lastInitial = lastName ? lastName.charAt(0).toUpperCase() : '';
+
+    return `${firstInitial}${lastInitial}`;
+  }
+
+
 }
