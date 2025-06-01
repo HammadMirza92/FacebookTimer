@@ -1,131 +1,162 @@
+<!-- login.component.html -->
 <div class="auth-container">
+
   <div class="auth-card-wrapper">
     <mat-card class="auth-card">
-      <!-- Header Section -->
-      <mat-card-header class="auth-header">
-        <div class="logo-section">
-          <div class="logo-container">
-            <mat-icon class="logo-icon">security</mat-icon>
+      <!-- Professional Header Section -->
+      <div class="auth-header">
+        <div class="header-content">
+          <div class="logo-section">
+            <div class="logo-container">
+              <mat-icon class="logo-icon">schedule_send</mat-icon>
+              <div class="pulse-ring"></div>
+              <div class="pulse-ring-delay"></div>
+            </div>
+            <div class="brand-info">
+              <h1 class="auth-title">Facebook Scheduler</h1>
+              <p class="auth-subtitle">Schedule and share your posts automatically</p>
+            </div>
           </div>
-          <mat-card-title class="auth-title">Welcome Back</mat-card-title>
-          <mat-card-subtitle class="auth-subtitle">
-            Sign in to access your account
-          </mat-card-subtitle>
         </div>
-      </mat-card-header>
+      </div>
 
-      <!-- Content Section -->
+      <!-- Main Content Section -->
       <mat-card-content class="auth-content">
-        <!-- Google Sign In Button -->
-        <button
-          mat-raised-button
-          class="google-btn full-width"
-          (click)="signInWithGoogle()"
-          [disabled]="loading || googleLoading"
-          type="button">
-          <div class="google-btn-content">
-            <div class="google-icon-container">
+        <!-- Centered Login Container -->
+        <div class="login-container">
+          <!-- Login Header -->
+          <div class="login-header">
+            <h2 class="login-title">Welcome Back</h2>
+            <p class="login-subtitle">Sign in to your Facebook Scheduler account</p>
+          </div>
+
+          <!-- Social Login Button -->
+          <button
+            mat-raised-button
+            class="social-login-btn"
+            (click)="signInWithGoogle()"
+            [disabled]="loading || googleLoading"
+            type="button">
+            <div class="social-btn-content">
               <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20">
                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                 <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
                 <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                 <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
               </svg>
-            </div>
-            <span class="google-btn-text">
-              <mat-spinner diameter="18" *ngIf="googleLoading"></mat-spinner>
               <span *ngIf="!googleLoading">Continue with Google</span>
-            </span>
-          </div>
-        </button>
+              <mat-spinner diameter="16" *ngIf="googleLoading"></mat-spinner>
+            </div>
+          </button>
 
-        <!-- Divider -->
-        <div class="divider">
-          <span class="divider-text">or sign in with email</span>
-        </div>
-
-        <!-- Email/Password Form -->
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form" novalidate>
-          <!-- Email Field -->
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Email Address</mat-label>
-            <input
-              matInput
-              formControlName="email"
-              placeholder="Enter your email address"
-              type="email"
-              autocomplete="email"
-              [class.mat-input-invalid]="f['email'].invalid && f['email'].touched">
-            <mat-icon matSuffix color="primary">email</mat-icon>
-            <mat-error *ngIf="f['email'].errors?.['required'] && f['email'].touched">
-              Email address is required
-            </mat-error>
-            <mat-error *ngIf="f['email'].errors?.['email'] && f['email'].touched">
-              Please enter a valid email address
-            </mat-error>
-          </mat-form-field>
-
-          <!-- Password Field -->
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Password</mat-label>
-            <input
-              matInput
-              formControlName="password"
-              [type]="hidePassword ? 'password' : 'text'"
-              placeholder="Enter your password"
-              autocomplete="current-password"
-              [class.mat-input-invalid]="f['password'].invalid && f['password'].touched">
-            <button
-              mat-icon-button
-              matSuffix
-              (click)="hidePassword = !hidePassword"
-              type="button"
-              [attr.aria-label]="hidePassword ? 'Show password' : 'Hide password'"
-              tabindex="-1">
-              <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-            </button>
-            <mat-error *ngIf="f['password'].errors?.['required'] && f['password'].touched">
-              Password is required
-            </mat-error>
-            <mat-error *ngIf="f['password'].errors?.['minlength'] && f['password'].touched">
-              Password must be at least 6 characters long
-            </mat-error>
-          </mat-form-field>
-
-          <!-- Form Options -->
-          <div class="form-options">
-            <mat-checkbox formControlName="rememberMe" color="primary" class="remember-me-checkbox">
-              Keep me signed in
-            </mat-checkbox>
-            <a
-              mat-button
-              color="primary"
-              routerLink="/forgot-password"
-              class="forgot-link"
-              tabindex="0">
-              Forgot Password?
-            </a>
+          <!-- Divider -->
+          <div class="form-divider">
+            <span class="divider-text">or sign in with email</span>
           </div>
 
-          <!-- Submit Button -->
-          <div class="auth-actions">
+          <!-- Login Form -->
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form" novalidate>
+            <!-- Email Field -->
+            <div class="input-group">
+              <mat-form-field appearance="outline" class="custom-field">
+                <mat-label>Email Address</mat-label>
+                <input
+                  matInput
+                  formControlName="email"
+                  placeholder="Enter your email address"
+                  type="email"
+                  autocomplete="email"
+                  [class.mat-input-invalid]="f['email'].invalid && f['email'].touched">
+                <mat-icon matSuffix>email</mat-icon>
+                <mat-error *ngIf="f['email'].errors?.['required'] && f['email'].touched">
+                  Email is required
+                </mat-error>
+                <mat-error *ngIf="f['email'].errors?.['email'] && f['email'].touched">
+                  Please enter a valid email address
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Password Field -->
+            <div class="input-group">
+              <mat-form-field appearance="outline" class="custom-field">
+                <mat-label>Password</mat-label>
+                <input
+                  matInput
+                  formControlName="password"
+                  [type]="hidePassword ? 'password' : 'text'"
+                  placeholder="Enter your password"
+                  autocomplete="current-password"
+                  [class.mat-input-invalid]="f['password'].invalid && f['password'].touched">
+                <button
+                  mat-icon-button
+                  matSuffix
+                  (click)="hidePassword = !hidePassword"
+                  type="button"
+                  [attr.aria-label]="hidePassword ? 'Show password' : 'Hide password'"
+                  tabindex="-1">
+                  <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                </button>
+                <mat-error *ngIf="f['password'].errors?.['required'] && f['password'].touched">
+                  Password is required
+                </mat-error>
+                <mat-error *ngIf="f['password'].errors?.['minlength'] && f['password'].touched">
+                  Password must be at least 6 characters
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Form Options -->
+            <div class="form-actions">
+              <mat-checkbox formControlName="rememberMe" color="primary" class="remember-me">
+                Remember me
+              </mat-checkbox>
+              <a
+                mat-button
+                color="primary"
+                routerLink="/forgot-password"
+                class="forgot-password">
+                Forgot Password?
+              </a>
+            </div>
+
+            <!-- Submit Button -->
             <button
               mat-raised-button
               color="primary"
               type="submit"
-              class="full-width auth-submit-btn"
+              class="login-btn"
               [disabled]="!canSubmit">
-              <div class="submit-btn-content">
-                <mat-spinner diameter="20" *ngIf="loading && !googleLoading"></mat-spinner>
-                <span *ngIf="!loading || googleLoading">Sign In</span>
+              <div class="btn-content">
+                <mat-spinner diameter="18" *ngIf="loading && !googleLoading"></mat-spinner>
+                <mat-icon *ngIf="!loading || googleLoading">rocket_launch</mat-icon>
+                <span *ngIf="!loading || googleLoading">
+                  {{ loginForm.valid ? 'Launch Dashboard' : 'Sign In' }}
+                </span>
               </div>
             </button>
+          </form>
+
+          <!-- Quick Features -->
+          <div class="feature-badges">
+            <div class="badge">
+              <mat-icon>schedule</mat-icon>
+              <span>Smart Scheduling</span>
+            </div>
+            <div class="badge">
+              <mat-icon>analytics</mat-icon>
+              <span>Analytics</span>
+            </div>
+            <div class="badge">
+              <mat-icon>auto_awesome</mat-icon>
+              <span>AI Powered</span>
+            </div>
           </div>
-        </form>
+        </div>
       </mat-card-content>
 
       <!-- Footer Section -->
-      <mat-card-actions class="auth-footer">
+      <div class="auth-footer">
         <div class="footer-content">
           <span class="footer-text">Don't have an account?</span>
           <a
@@ -136,14 +167,89 @@
             Create Account
           </a>
         </div>
-      </mat-card-actions>
+      </div>
     </mat-card>
   </div>
 
-  <!-- Background Elements -->
+  <!-- Enhanced Background Elements -->
   <div class="background-elements">
-    <div class="floating-element element-1"></div>
-    <div class="floating-element element-2"></div>
-    <div class="floating-element element-3"></div>
+    <!-- Main floating elements -->
+    <div class="floating-element element-1">
+      <mat-icon>schedule</mat-icon>
+    </div>
+    <div class="floating-element element-2">
+      <mat-icon>share</mat-icon>
+    </div>
+    <div class="floating-element element-3">
+      <mat-icon>trending_up</mat-icon>
+    </div>
+    <div class="floating-element element-4">
+      <mat-icon>notifications_active</mat-icon>
+    </div>
+    <div class="floating-element element-5">
+      <mat-icon>thumb_up</mat-icon>
+    </div>
+    <div class="floating-element element-6">
+      <mat-icon>facebook</mat-icon>
+    </div>
+    <div class="floating-element element-7">
+      <mat-icon>dashboard</mat-icon>
+    </div>
+    <div class="floating-element element-8">
+      <mat-icon>calendar_today</mat-icon>
+    </div>
+
+    <!-- Secondary floating elements -->
+    <div class="floating-element-small small-1">
+      <mat-icon>star</mat-icon>
+    </div>
+    <div class="floating-element-small small-2">
+      <mat-icon>favorite</mat-icon>
+    </div>
+    <div class="floating-element-small small-3">
+      <mat-icon>visibility</mat-icon>
+    </div>
+    <div class="floating-element-small small-4">
+      <mat-icon>comment</mat-icon>
+    </div>
+    <div class="floating-element-small small-5">
+      <mat-icon>photo_camera</mat-icon>
+    </div>
+    <div class="floating-element-small small-6">
+      <mat-icon>video_call</mat-icon>
+    </div>
+
+    <!-- Animated particles -->
+    <div class="particles">
+      <div class="particle" *ngFor="let p of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]"></div>
+    </div>
+
+    <!-- Glowing orbs -->
+    <div class="glowing-orbs">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+      <div class="orb orb-3"></div>
+      <div class="orb orb-4"></div>
+    </div>
+
+    <!-- Social media icons floating -->
+    <div class="social-float social-float-1">
+      <mat-icon>facebook</mat-icon>
+    </div>
+    <div class="social-float social-float-2">
+      <mat-icon>schedule_send</mat-icon>
+    </div>
+    <div class="social-float social-float-3">
+      <mat-icon>analytics</mat-icon>
+    </div>
+    <div class="social-float social-float-4">
+      <mat-icon>auto_awesome</mat-icon>
+    </div>
+
+    <!-- Geometric shapes -->
+    <div class="geometric-shape triangle-1"></div>
+    <div class="geometric-shape circle-1"></div>
+    <div class="geometric-shape square-1"></div>
+    <div class="geometric-shape triangle-2"></div>
   </div>
 </div>
