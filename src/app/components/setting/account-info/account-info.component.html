@@ -1,0 +1,343 @@
+<!-- account-info.component.html -->
+<div class="account-info-container">
+  <!-- Header Section -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">Account Information</h1>
+      <p class="page-subtitle">Manage your personal information and account details</p>
+    </div>
+  </div>
+
+  <!-- Account Info Form -->
+  <div class="account-form-card">
+    <form [formGroup]="accountForm" (ngSubmit)="onSubmit()" class="account-form" novalidate>
+
+      <!-- Personal Information Section -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <mat-icon>person</mat-icon>
+          Personal Information
+        </h3>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">First Name</label>
+            <mat-form-field appearance="outline" class="form-field">
+              <input
+                matInput
+                formControlName="firstName"
+                placeholder="Enter your first name"
+                autocomplete="given-name"
+                [class.mat-input-invalid]="f['firstName'].invalid && f['firstName'].touched">
+              <mat-icon matSuffix>person</mat-icon>
+              <mat-error *ngIf="f['firstName'].errors?.['required'] && f['firstName'].touched">
+                First name is required
+              </mat-error>
+              <mat-error *ngIf="f['firstName'].errors?.['minlength'] && f['firstName'].touched">
+                First name must be at least 2 characters
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Last Name</label>
+            <mat-form-field appearance="outline" class="form-field">
+              <input
+                matInput
+                formControlName="lastName"
+                placeholder="Enter your last name"
+                autocomplete="family-name"
+                [class.mat-input-invalid]="f['lastName'].invalid && f['lastName'].touched">
+              <mat-icon matSuffix>person</mat-icon>
+              <mat-error *ngIf="f['lastName'].errors?.['required'] && f['lastName'].touched">
+                Last name is required
+              </mat-error>
+              <mat-error *ngIf="f['lastName'].errors?.['minlength'] && f['lastName'].touched">
+                Last name must be at least 2 characters
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <mat-form-field appearance="outline" class="form-field">
+            <input
+              matInput
+              formControlName="email"
+              placeholder="Enter your email address"
+              type="email"
+              autocomplete="email"
+              [class.mat-input-invalid]="f['email'].invalid && f['email'].touched"
+              [readonly]="emailReadonly">
+            <mat-icon matSuffix>email</mat-icon>
+            <mat-hint *ngIf="emailReadonly">Email cannot be changed directly. Use the change email option below.</mat-hint>
+            <mat-error *ngIf="f['email'].errors?.['required'] && f['email'].touched">
+              Email is required
+            </mat-error>
+            <mat-error *ngIf="f['email'].errors?.['email'] && f['email'].touched">
+              Please enter a valid email address
+            </mat-error>
+          </mat-form-field>
+
+          <!-- Change Email Button -->
+          <button
+            type="button"
+            mat-stroked-button
+            color="primary"
+            class="change-email-btn"
+            (click)="openChangeEmailDialog()"
+            *ngIf="emailReadonly">
+            <mat-icon>edit</mat-icon>
+            Change Email
+          </button>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <mat-form-field appearance="outline" class="form-field">
+            <input
+              matInput
+              formControlName="phoneNumber"
+              placeholder="Enter your phone number"
+              type="tel"
+              autocomplete="tel"
+              [class.mat-input-invalid]="f['phoneNumber'].invalid && f['phoneNumber'].touched">
+            <mat-icon matSuffix>phone</mat-icon>
+            <mat-error *ngIf="f['phoneNumber'].errors?.['pattern'] && f['phoneNumber'].touched">
+              Please enter a valid phone number
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Additional Information Section -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <mat-icon>info</mat-icon>
+          Additional Information
+        </h3>
+
+        <div class="form-group">
+          <label class="form-label">Bio</label>
+          <mat-form-field appearance="outline" class="form-field">
+            <textarea
+              matInput
+              formControlName="bio"
+              placeholder="Tell us about yourself"
+              rows="4"
+              maxlength="500">
+            </textarea>
+            <mat-icon matSuffix>edit_note</mat-icon>
+            <mat-hint align="end">{{ getBioCharacterCount() }}/500</mat-hint>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Website</label>
+            <mat-form-field appearance="outline" class="form-field">
+              <input
+                matInput
+                formControlName="website"
+                placeholder="https://yourwebsite.com"
+                type="url">
+              <mat-icon matSuffix>link</mat-icon>
+              <mat-error *ngIf="f['website'].errors?.['pattern'] && f['website'].touched">
+                Please enter a valid URL
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Location</label>
+            <mat-form-field appearance="outline" class="form-field">
+              <input
+                matInput
+                formControlName="location"
+                placeholder="City, Country">
+              <mat-icon matSuffix>location_on</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+
+      <!-- Account Status Section -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <mat-icon>security</mat-icon>
+          Account Status
+        </h3>
+
+        <div class="status-grid">
+          <div class="status-item">
+            <div class="status-icon" [class.verified]="user?.emailConfirmed">
+              <mat-icon>{{ user?.emailConfirmed ? 'verified' : 'mail_outline' }}</mat-icon>
+            </div>
+            <div class="status-details">
+              <div class="status-title">Email Verification</div>
+              <div class="status-description" [class.verified]="user?.emailConfirmed">
+                {{ user?.emailConfirmed ? 'Your email is verified' : 'Email verification pending' }}
+              </div>
+            </div>
+            <button
+              mat-button
+              color="primary"
+              class="status-action"
+              *ngIf="!user?.emailConfirmed"
+              (click)="resendEmailVerification()">
+              Verify Now
+            </button>
+          </div>
+
+          <div class="status-item">
+            <div class="status-icon" [class.verified]="user?.phoneNumberConfirmed">
+              <mat-icon>{{ user?.phoneNumberConfirmed ? 'verified' : 'phone' }}</mat-icon>
+            </div>
+            <div class="status-details">
+              <div class="status-title">Phone Verification</div>
+              <div class="status-description" [class.verified]="user?.phoneNumberConfirmed">
+                {{ user?.phoneNumberConfirmed ? 'Your phone is verified' : 'Phone verification pending' }}
+              </div>
+            </div>
+            <button
+              mat-button
+              color="primary"
+              class="status-action"
+              *ngIf="!user?.phoneNumberConfirmed && f['phoneNumber'].value"
+              (click)="verifyPhoneNumber()">
+              Verify
+            </button>
+          </div>
+
+          <div class="status-item">
+            <div class="status-icon active">
+              <mat-icon>account_circle</mat-icon>
+            </div>
+            <div class="status-details">
+              <div class="status-title">Account Status</div>
+              <div class="status-description verified">
+                {{ user?.isActive ? 'Active Account' : 'Inactive Account' }}
+              </div>
+            </div>
+            <span class="status-badge" [class.active]="user?.isActive">
+              {{ user?.isActive ? 'Active' : 'Inactive' }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          class="save-btn"
+          [disabled]="!hasChanges() || loading">
+          <div class="btn-content">
+            <mat-spinner diameter="20" *ngIf="loading"></mat-spinner>
+            <mat-icon *ngIf="!loading">save</mat-icon>
+            <span *ngIf="!loading">Save Changes</span>
+            <span *ngIf="loading">Saving...</span>
+          </div>
+        </button>
+
+        <button
+          mat-button
+          type="button"
+          class="cancel-btn"
+          (click)="onCancel()"
+          [disabled]="loading">
+          Cancel
+        </button>
+
+        <button
+          mat-button
+          type="button"
+          class="reset-btn"
+          (click)="onReset()"
+          [disabled]="!hasChanges() || loading">
+          Reset
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Account Statistics -->
+  <div class="account-stats-card" *ngIf="accountStats">
+    <h3 class="stats-title">Account Activity</h3>
+
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-icon">
+          <mat-icon>calendar_today</mat-icon>
+        </div>
+        <div class="stat-details">
+          <div class="stat-number">{{ getDaysSinceRegistration() }}</div>
+          <div class="stat-label">Days Active</div>
+        </div>
+      </div>
+
+      <div class="stat-item">
+        <div class="stat-icon">
+          <mat-icon>login</mat-icon>
+        </div>
+        <div class="stat-details">
+          <div class="stat-number">{{ accountStats.loginCount }}</div>
+          <div class="stat-label">Total Logins</div>
+        </div>
+      </div>
+
+      <div class="stat-item">
+        <div class="stat-icon">
+          <mat-icon>schedule</mat-icon>
+        </div>
+        <div class="stat-details">
+          <div class="stat-number">{{ getLastLoginFormatted() }}</div>
+          <div class="stat-label">Last Login</div>
+        </div>
+      </div>
+
+      <div class="stat-item">
+        <div class="stat-icon">
+          <mat-icon>security</mat-icon>
+        </div>
+        <div class="stat-details">
+          <div class="stat-number">{{ accountStats.securityScore }}%</div>
+          <div class="stat-label">Security Score</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Export Section -->
+  <!-- <div class="data-export-card">
+    <div class="export-header">
+      <div class="export-info">
+        <h3 class="export-title">Data Management</h3>
+        <p class="export-description">Download your account data or request account deletion</p>
+      </div>
+    </div>
+
+    <div class="export-actions">
+      <button
+        mat-stroked-button
+        color="primary"
+        class="export-btn"
+        (click)="downloadAccountData()">
+        <mat-icon>download</mat-icon>
+        Download My Data
+      </button>
+
+      <button
+        mat-button
+        color="warn"
+        class="delete-btn"
+        (click)="openDeleteAccountDialog()">
+        <mat-icon>delete_forever</mat-icon>
+        Delete Account
+      </button>
+    </div>
+  </div> -->
+</div>

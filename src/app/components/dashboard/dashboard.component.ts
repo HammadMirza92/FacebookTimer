@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, forkJoin } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
 import { FacebookPageService } from '../../services/facebook-page.service';
 import { PostService } from '../../services/post.service';

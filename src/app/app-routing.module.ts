@@ -14,11 +14,13 @@ import { NotFoundComponent } from './components/layout/not-found/not-found.compo
 
 import { AuthGuard } from './guards/auth.guard';
 import { SubscriptionGuard } from './guards/subscription.guard';
+import { SettingComponent } from './components/setting/setting.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'settings', component: SettingComponent },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'templates', component: TemplateLibraryComponent, canActivate: [AuthGuard] },
   { path: 'facebook-pages', component: FacebookPagesComponent, canActivate: [AuthGuard] },

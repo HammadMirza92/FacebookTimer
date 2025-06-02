@@ -1,0 +1,135 @@
+<!-- settings-layout.component.html -->
+<div class="settings-container">
+  <!-- Settings Sidebar -->
+  <div class="settings-sidebar">
+    <div class="sidebar-header">
+      <h2 class="sidebar-title">
+        <mat-icon>settings</mat-icon>
+        Settings
+      </h2>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="settings-nav">
+      <div class="nav-section">
+        <div class="nav-section-title">Profile</div>
+        <div class="nav-items">
+          <a class="nav-item"
+             [class.active]="activeComponent === 'profile-header'"
+             (click)="setActiveComponent('profile-header')">
+            <mat-icon>person</mat-icon>
+            <span>Profile Header</span>
+          </a>
+
+          <a class="nav-item"
+             [class.active]="activeComponent === 'account-info'"
+             (click)="setActiveComponent('account-info')">
+            <mat-icon>info</mat-icon>
+            <span>Account Info</span>
+          </a>
+        </div>
+      </div>
+
+      <mat-divider class="nav-divider"></mat-divider>
+
+      <div class="nav-section">
+        <div class="nav-section-title">Security</div>
+        <div class="nav-items">
+          <a class="nav-item"
+             [class.active]="activeComponent === 'password-update'"
+             (click)="setActiveComponent('password-update')">
+            <mat-icon>lock</mat-icon>
+            <span>Password Update</span>
+          </a>
+
+          <a class="nav-item"
+             [class.active]="activeComponent === 'security-settings'"
+             (click)="setActiveComponent('security-settings')">
+            <mat-icon>security</mat-icon>
+            <span>Security Settings</span>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- User Quick Info -->
+    <div class="sidebar-footer" *ngIf="currentUser">
+      <div class="user-quick-info">
+        <div class="user-avatar">
+
+          <ng-template #defaultAvatar>
+            <div class="default-avatar">
+              {{ getInitials(currentUser.firstName, currentUser.lastName) }}
+            </div>
+          </ng-template>
+        </div>
+        <div class="user-details">
+          <div class="user-name">{{ currentUser.firstName }} {{ currentUser.lastName }}</div>
+          <div class="user-email">{{ currentUser.email }}</div>
+        </div>
+        <button mat-icon-button
+                class="more-options"
+                [matMenuTriggerFor]="userMenu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <!-- User Menu -->
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item routerLink="/dashboard">
+        <mat-icon>dashboard</mat-icon>
+        <span>Back to Dashboard</span>
+      </button>
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
+    </mat-menu>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="settings-content">
+    <div class="content-wrapper">
+      <!-- Dynamic Component Rendering -->
+      <ng-container [ngSwitch]="activeComponent">
+        <app-profile-header
+          *ngSwitchCase="'profile-header'"
+          [user]="currentUser"
+          [userStats]="userStats"
+          (profileUpdated)="onProfileUpdated($event)">
+        </app-profile-header>
+
+        <app-account-info
+          *ngSwitchCase="'account-info'"
+          [user]="currentUser"
+          (accountUpdated)="onAccountUpdated($event)">
+        </app-account-info>
+
+        <app-password-update
+          *ngSwitchCase="'password-update'"
+          (passwordChanged)="onPasswordChanged($event)">
+        </app-password-update>
+
+        <app-security-settings
+          *ngSwitchCase="'security-settings'"
+          [user]="currentUser"
+          (securityUpdated)="onSecurityUpdated($event)">
+        </app-security-settings>
+
+        <app-profile-header
+          *ngSwitchDefault
+          [user]="currentUser"
+          [userStats]="userStats"
+          (profileUpdated)="onProfileUpdated($event)">
+        </app-profile-header>
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" *ngIf="loading">
+    <mat-spinner diameter="50"></mat-spinner>
+    <p>Loading...</p>
+  </div>
+</div>
