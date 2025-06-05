@@ -1,10 +1,48 @@
+<!-- Footer Component -->
 <footer class="footer">
-  <div class="container">
-    <span>&copy; {{ currentYear }} Facebook Page Scheduler. All rights reserved.</span>
-    <div class="links">
-      <a href="#">Terms of Service</a>
-      <a href="#">Privacy Policy</a>
-      <a href="#">Contact Us</a>
+  <div class="footer-content">
+    <div class="footer-logo">
+      <div class="logo-icon">
+        <mat-icon>schedule_send</mat-icon>
+      </div>
+      <div class="logo-text">Facebook Scheduler</div>
     </div>
+
+    <div class="footer-links">
+      <a href="#" class="footer-link">
+        <span>Terms of Service</span>
+        <div class="link-hover-effect"></div>
+      </a>
+      <a href="#" class="footer-link">
+        <span>Privacy Policy</span>
+        <div class="link-hover-effect"></div>
+      </a>
+      <a href="#" class="footer-link">
+        <span>Contact Us</span>
+        <div class="link-hover-effect"></div>
+      </a>
+    </div>
+
+    <div class="footer-copyright">
+      <span>&copy; {{ currentYear }} Facebook Page Scheduler. All rights reserved.</span>
+    </div>
+
+    <div class="footer-social">
+      <a href="#" class="social-icon" aria-label="Facebook">
+        <mat-icon>facebook</mat-icon>
+      </a>
+      <!-- <a href="#" class="social-icon" aria-label="Twitter">
+        <mat-icon>twitter</mat-icon>
+      </a>
+      <a href="#" class="social-icon" aria-label="Instagram">
+        <mat-icon>instagram</mat-icon>
+      </a> -->
+    </div>
+  </div>
+
+  <div class="footer-wave">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100" preserveAspectRatio="none">
+      <path d="M0,50 C150,20 350,80 500,50 C650,20 850,80 1000,50 C1150,20 1350,80 1440,50 L1440,100 L0,100 Z" fill="#f9fafc"></path>
+    </svg>
   </div>
 </footer>

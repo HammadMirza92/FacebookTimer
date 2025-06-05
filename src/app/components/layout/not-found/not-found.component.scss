@@ -1,84 +1,312 @@
+/* not-found.component.scss */
+
+// Import fonts
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+
+// Base styles
 .not-found-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 64px - 53px);
+  min-height: 100vh;
+  background-color: #f9fafc;
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+// Animated background
+.animated-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.floating-icon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+  opacity: 0.7;
+  z-index: 1;
+
+  mat-icon {
+    color: #1877f2;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  &.icon-search {
+    top: 15%;
+    left: 15%;
+    animation: float 15s infinite ease-in-out;
+  }
+
+  &.icon-error {
+    top: 70%;
+    left: 25%;
+    animation: float 18s infinite ease-in-out 1s;
+  }
+
+  &.icon-help {
+    top: 25%;
+    right: 20%;
+    animation: float 12s infinite ease-in-out 2s;
+  }
+
+  &.icon-home {
+    top: 65%;
+    right: 15%;
+    animation: float 16s infinite ease-in-out 0.5s;
+  }
+}
+
+.floating-circle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.2;
+
+  &.circle-1 {
+    width: 300px;
+    height: 300px;
+    background: linear-gradient(135deg, #42a5f5, #64b5f6);
+    top: -150px;
+    left: -100px;
+    animation: float-slow 20s infinite alternate ease-in-out;
+  }
+
+  &.circle-2 {
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(135deg, #ef4444, #f87171);
+    bottom: -50px;
+    right: -50px;
+    animation: float-slow 25s infinite alternate-reverse ease-in-out;
+  }
+
+  &.circle-3 {
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(135deg, #f97316, #fb923c);
+    top: 50%;
+    right: 5%;
+    animation: float-slow 18s infinite alternate ease-in-out 2s;
+  }
+
+  &.circle-4 {
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, #8b5cf6, #a78bfa);
+    top: 30%;
+    left: 10%;
+    animation: float-slow 15s infinite alternate-reverse ease-in-out 1s;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-10px) rotate(2deg);
+  }
+  50% {
+    transform: translateY(5px) rotate(-2deg);
+  }
+  75% {
+    transform: translateY(-5px) rotate(1deg);
+  }
+}
+
+@keyframes float-slow {
+  0%, 100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(15px, 15px);
+  }
 }
 
 .not-found-content {
+  position: relative;
+  z-index: 1;
   text-align: center;
   max-width: 500px;
-  padding: 24px;
+  padding: 40px 24px;
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.08);
+  animation: fadeInUp 0.8s ease-out;
 
-  h1 {
-    font-size: 72px;
-    margin: 0;
-    color: #3f51b5;
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
-  h2 {
-    font-size: 24px;
-    margin-top: 8px;
-    margin-bottom: 16px;
+  .error-icon {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 24px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(239, 68, 68, 0.1);
+      border-radius: 50%;
+      animation: pulseShadow 2s infinite;
+
+      @keyframes pulseShadow {
+        0%, 100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.2);
+        }
+      }
+    }
+
+    .error-badge {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 56px;
+      font-weight: 800;
+      color: #ef4444;
+      animation: shake 5s ease-in-out infinite;
+
+      @keyframes shake {
+        0%, 100% {
+          transform: translate(-50%, -50%);
+        }
+        2%, 6% {
+          transform: translate(-52%, -50%) rotate(-2deg);
+        }
+        4%, 8% {
+          transform: translate(-48%, -50%) rotate(2deg);
+        }
+        10% {
+          transform: translate(-50%, -50%);
+        }
+      }
+    }
+  }
+
+  h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 0 0 16px;
+    color: #1e293b;
   }
 
   p {
     font-size: 16px;
-    color: rgba(0, 0, 0, 0.6);
-    margin-bottom: 24px;
+    color: #64748b;
+    margin: 0 0 32px;
+    line-height: 1.6;
+  }
+
+  .home-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+    background: linear-gradient(135deg, #1877f2 0%, #42a5f5 100%);
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 12px rgba(24, 119, 242, 0.15);
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.6s ease;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 16px rgba(24, 119, 242, 0.25);
+
+      &::before {
+        left: 100%;
+      }
+    }
+
+    &:active {
+      transform: translateY(0);
+      box-shadow: 0 4px 8px rgba(24, 119, 242, 0.2);
+    }
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
   }
 }
 
-// src/styles.scss (global styles)
-/* You can add global styles to this file, and also import other style files */
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+// Media queries
+@media (max-width: 600px) {
+  .not-found-content {
+    padding: 30px 20px;
+    max-width: 90%;
 
-/* Global utility classes */
-.full-width {
-  width: 100%;
-}
+    .error-icon {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 20px;
 
-.text-center {
-  text-align: center;
-}
+      .error-badge {
+        font-size: 48px;
+      }
+    }
 
-.flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+    h1 {
+      font-size: 28px;
+      margin-bottom: 12px;
+    }
 
-.spacer {
-  flex: 1 1 auto;
-}
+    p {
+      font-size: 15px;
+      margin-bottom: 24px;
+    }
 
-/* Custom snackbar styles */
-.success-snackbar {
-  background-color: #4caf50;
-  color: white;
-}
-
-.error-snackbar {
-  background-color: #f44336;
-  color: white;
-}
-
-.warning-snackbar {
-  background-color: #ff9800;
-  color: white;
-}
-
-.info-snackbar {
-  background-color: #2196f3;
-  color: white;
-}
-
-/* Custom theme overrides */
-.mat-card {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
-}
-
-.mat-raised-button {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    .home-btn {
+      padding: 8px 20px;
+      font-size: 14px;
+    }
+  }
 }

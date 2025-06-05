@@ -1,41 +1,44 @@
 <!-- Professional Sidenav Component -->
 <div class="professional-sidenav">
+  <!-- Branding Section -->
+  <div class="branding-section">
+    <div class="brand-logo">
+      <mat-icon>schedule_send</mat-icon>
+    </div>
+    <div class="brand-info">
+      <div class="brand-name">FB Scheduler</div>
+    </div>
+  </div>
+
   <!-- Enhanced User Profile Section -->
   <div class="user-profile-section" *ngIf="(currentUser$ | async) as user">
     <div class="profile-header">
       <div class="user-avatar-container">
+        <!-- <img *ngIf="user?.photoURL; else defaultAvatar"
+             [src]="user.photoURL"
+             alt="User profile"
+             class="user-avatar-image"> -->
+        <ng-template #defaultAvatar>
+          <div class="user-avatar-default">
+            {{ getInitials(user.firstName, user.lastName) }}
+          </div>
+        </ng-template>
         <div class="online-indicator"></div>
       </div>
 
       <div class="user-info">
         <div class="user-name">{{ user.firstName }} {{ user.lastName }}</div>
         <div class="user-email">{{ user.email }}</div>
-        <!-- <div class="user-status" *ngIf="user.currentSubscription">
-          <mat-icon class="status-icon" [class]="getSubscriptionStatusClass()">
-            {{ getSubscriptionIcon() }}
-          </mat-icon>
-          <span class="status-text">{{ user.currentSubscription.subscriptionPlanName }}</span>
-        </div> -->
+        <div class="user-actions">
+          <button mat-icon-button class="action-button" matTooltip="Edit Profile">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button class="action-button" matTooltip="Settings">
+            <mat-icon>settings</mat-icon>
+          </button>
+        </div>
       </div>
     </div>
-
-    <!-- Quick Stats -->
-    <!-- <div class="quick-stats">
-      <div class="stat-item">
-        <mat-icon>post_add</mat-icon>
-        <div class="stat-info">
-          <div class="stat-number">{{ userStats.totalPosts || 0 }}</div>
-          <div class="stat-label">Posts</div>
-        </div>
-      </div>
-      <div class="stat-item">
-        <mat-icon>schedule</mat-icon>
-        <div class="stat-info">
-          <div class="stat-number">{{ userStats.scheduledPosts || 0 }}</div>
-          <div class="stat-label">Scheduled</div>
-        </div>
-      </div>
-    </div> -->
   </div>
 
   <!-- Main Navigation -->
@@ -43,70 +46,66 @@
     <div class="nav-section">
       <div class="nav-section-title">Main</div>
       <div class="nav-items">
-        <a mat-list-item
-           routerLink="/dashboard"
+        <a routerLink="/dashboard"
            routerLinkActive="active"
            class="nav-item"
            [class.active]="isActiveRoute('/dashboard')">
           <div class="nav-item-content">
-            <mat-icon class="nav-icon">dashboard</mat-icon>
+            <div class="nav-icon-wrapper">
+              <mat-icon class="nav-icon">dashboard</mat-icon>
+            </div>
             <span class="nav-text">Dashboard</span>
             <div class="nav-indicator"></div>
           </div>
         </a>
 
-        <a mat-list-item
-           routerLink="/facebook-pages"
+        <a routerLink="/facebook-pages"
            routerLinkActive="active"
            class="nav-item"
            [class.active]="isActiveRoute('/facebook-pages')">
           <div class="nav-item-content">
-            <mat-icon class="nav-icon">pages</mat-icon>
+            <div class="nav-icon-wrapper">
+              <mat-icon class="nav-icon">pages</mat-icon>
+            </div>
             <span class="nav-text">Facebook Pages</span>
             <div class="nav-indicator"></div>
           </div>
-          <!-- <div class="nav-badge" *ngIf="connectedPagesCount > 0">
-            {{ connectedPagesCount }}
-          </div> -->
         </a>
 
-        <a mat-list-item
-           routerLink="/templates"
+        <a routerLink="/templates"
            routerLinkActive="active"
            class="nav-item"
            [class.active]="isActiveRoute('/templates')">
           <div class="nav-item-content">
-            <mat-icon class="nav-icon">view_quilt</mat-icon>
+            <div class="nav-icon-wrapper">
+              <mat-icon class="nav-icon">view_quilt</mat-icon>
+            </div>
             <span class="nav-text">Templates</span>
             <div class="nav-indicator"></div>
           </div>
-          <!-- <div class="nav-badge" *ngIf="templatesCount > 0">
-            {{ templatesCount }}
-          </div> -->
         </a>
 
-        <a mat-list-item
-           routerLink="/posts"
+        <a routerLink="/posts"
            routerLinkActive="active"
            class="nav-item"
            [class.active]="isActiveRoute('/posts')">
           <div class="nav-item-content">
-            <mat-icon class="nav-icon">schedule</mat-icon>
+            <div class="nav-icon-wrapper">
+              <mat-icon class="nav-icon">schedule</mat-icon>
+            </div>
             <span class="nav-text">Posts</span>
             <div class="nav-indicator"></div>
           </div>
-          <!-- <div class="nav-badge warning" *ngIf="pendingPostsCount > 0">
-            {{ pendingPostsCount }}
-          </div> -->
         </a>
 
-        <a mat-list-item
-           routerLink="/analytics"
+        <a routerLink="/analytics"
            routerLinkActive="active"
            class="nav-item"
            [class.active]="isActiveRoute('/analytics')">
           <div class="nav-item-content">
-            <mat-icon class="nav-icon">analytics</mat-icon>
+            <div class="nav-icon-wrapper">
+              <mat-icon class="nav-icon">analytics</mat-icon>
+            </div>
             <span class="nav-text">Analytics</span>
             <div class="nav-indicator"></div>
           </div>
@@ -121,40 +120,40 @@
     <div class="nav-section">
       <div class="nav-section-title">Account</div>
       <div class="nav-items">
-        <a mat-list-item
-           routerLink="/subscription/plans"
+        <a routerLink="/subscription/plans"
            routerLinkActive="active"
            class="nav-item"
            [class.active]="isActiveRoute('/subscription/plans')">
           <div class="nav-item-content">
-            <mat-icon class="nav-icon">card_membership</mat-icon>
+            <div class="nav-icon-wrapper">
+              <mat-icon class="nav-icon">card_membership</mat-icon>
+            </div>
             <span class="nav-text">Subscription Plans</span>
             <div class="nav-indicator"></div>
           </div>
-          <!-- <div class="nav-badge premium" *ngIf="hasUpgradeAvailable">
-            <mat-icon>upgrade</mat-icon>
-          </div> -->
         </a>
 
-        <a mat-list-item
-           routerLink="/subscription/history"
+        <a routerLink="/subscription/history"
            routerLinkActive="active"
            class="nav-item"
            [class.active]="isActiveRoute('/subscription/history')">
           <div class="nav-item-content">
-            <mat-icon class="nav-icon">payment</mat-icon>
+            <div class="nav-icon-wrapper">
+              <mat-icon class="nav-icon">payment</mat-icon>
+            </div>
             <span class="nav-text">Payment History</span>
             <div class="nav-indicator"></div>
           </div>
         </a>
 
-        <a mat-list-item
-           routerLink="/settings"
+        <a routerLink="/settings"
            routerLinkActive="active"
            class="nav-item"
            [class.active]="isActiveRoute('/settings')">
           <div class="nav-item-content">
-            <mat-icon class="nav-icon">settings</mat-icon>
+            <div class="nav-icon-wrapper">
+              <mat-icon class="nav-icon">settings</mat-icon>
+            </div>
             <span class="nav-text">Settings</span>
             <div class="nav-indicator"></div>
           </div>
@@ -167,13 +166,7 @@
   <div class="sidenav-footer">
     <div class="footer-content">
       <div class="app-info">
-        <div class="app-logo">
-          <mat-icon>schedule_send</mat-icon>
-        </div>
-        <div class="app-details">
-          <div class="app-name">Facebook Scheduler</div>
-          <div class="app-version">v2.1.0</div>
-        </div>
+        <div class="app-version">v2.1.0</div>
       </div>
 
       <div class="footer-actions">
@@ -186,6 +179,11 @@
                 matTooltip="Feedback"
                 class="footer-action-btn">
           <mat-icon>feedback</mat-icon>
+        </button>
+        <button mat-icon-button
+                matTooltip="Logout"
+                class="footer-action-btn">
+          <mat-icon>logout</mat-icon>
         </button>
       </div>
     </div>
