@@ -1,12 +1,24 @@
 <!-- settings-layout.component.html -->
 <div class="settings-container">
+  <!-- Animated Background Elements -->
+  <div class="animated-background">
+    <div class="floating-circle circle-1"></div>
+    <div class="floating-circle circle-2"></div>
+    <div class="floating-circle circle-3"></div>
+    <div class="floating-circle circle-4"></div>
+    <div class="floating-icon icon-person"><mat-icon>person</mat-icon></div>
+    <div class="floating-icon icon-security"><mat-icon>security</mat-icon></div>
+    <div class="floating-icon icon-info"><mat-icon>info</mat-icon></div>
+    <div class="floating-icon icon-lock"><mat-icon>lock</mat-icon></div>
+  </div>
+
   <!-- Settings Sidebar -->
   <div class="settings-sidebar">
     <div class="sidebar-header">
-      <h2 class="sidebar-title">
+      <div class="header-logo">
         <mat-icon>settings</mat-icon>
-        Settings
-      </h2>
+      </div>
+      <h2 class="sidebar-title">Settings</h2>
     </div>
 
     <!-- Navigation Menu -->
@@ -17,14 +29,18 @@
           <a class="nav-item"
              [class.active]="activeComponent === 'profile-header'"
              (click)="setActiveComponent('profile-header')">
-            <mat-icon>person</mat-icon>
+            <div class="nav-icon">
+              <mat-icon>person</mat-icon>
+            </div>
             <span>Profile Header</span>
           </a>
 
           <a class="nav-item"
              [class.active]="activeComponent === 'account-info'"
              (click)="setActiveComponent('account-info')">
-            <mat-icon>info</mat-icon>
+            <div class="nav-icon">
+              <mat-icon>info</mat-icon>
+            </div>
             <span>Account Info</span>
           </a>
         </div>
@@ -38,14 +54,18 @@
           <a class="nav-item"
              [class.active]="activeComponent === 'password-update'"
              (click)="setActiveComponent('password-update')">
-            <mat-icon>lock</mat-icon>
+            <div class="nav-icon">
+              <mat-icon>lock</mat-icon>
+            </div>
             <span>Password Update</span>
           </a>
 
           <a class="nav-item"
              [class.active]="activeComponent === 'security-settings'"
              (click)="setActiveComponent('security-settings')">
-            <mat-icon>security</mat-icon>
+            <div class="nav-icon">
+              <mat-icon>security</mat-icon>
+            </div>
             <span>Security Settings</span>
           </a>
         </div>
@@ -56,7 +76,9 @@
     <div class="sidebar-footer" *ngIf="currentUser">
       <div class="user-quick-info">
         <div class="user-avatar">
-
+          <img *ngIf="currentUser?.photoURL; else defaultAvatar"
+               [src]="currentUser.photoURL"
+               [alt]="currentUser.firstName + ' ' + currentUser.lastName">
           <ng-template #defaultAvatar>
             <div class="default-avatar">
               {{ getInitials(currentUser.firstName, currentUser.lastName) }}
@@ -76,12 +98,12 @@
     </div>
 
     <!-- User Menu -->
-    <mat-menu #userMenu="matMenu">
-      <button mat-menu-item routerLink="/dashboard">
+    <mat-menu #userMenu="matMenu" class="user-menu">
+      <button mat-menu-item routerLink="/dashboard" class="menu-item">
         <mat-icon>dashboard</mat-icon>
         <span>Back to Dashboard</span>
       </button>
-      <button mat-menu-item (click)="logout()">
+      <button mat-menu-item (click)="logout()" class="menu-item">
         <mat-icon>logout</mat-icon>
         <span>Logout</span>
       </button>

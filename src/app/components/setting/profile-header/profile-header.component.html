@@ -1,189 +1,213 @@
 <!-- profile-header.component.html -->
-<div class="profile-header-container">
-  <!-- Header Section -->
-  <div class="page-header">
-    <div class="header-content">
-      <h1 class="page-title">Profile Header</h1>
-      <p class="page-subtitle">Manage your profile information and settings</p>
-    </div>
+<div class="dashboard-container">
+  <!-- Animated Background Elements -->
+  <div class="animated-background">
+    <div class="floating-circle circle-1"></div>
+    <div class="floating-circle circle-2"></div>
+    <div class="floating-circle circle-3"></div>
+    <div class="floating-circle circle-4"></div>
+    <div class="floating-icon icon-person"><mat-icon>person</mat-icon></div>
+    <div class="floating-icon icon-chart"><mat-icon>analytics</mat-icon></div>
+    <div class="floating-icon icon-schedule"><mat-icon>schedule</mat-icon></div>
+    <div class="floating-icon icon-settings"><mat-icon>settings</mat-icon></div>
   </div>
 
-  <!-- Profile Card -->
-  <div class="profile-card">
-    <!-- Cover Photo Section -->
-    <div class="cover-photo" [style.background-image]="getCoverPhotoUrl()">
-      <div class="cover-overlay"></div>
-      <button mat-raised-button
-              class="change-cover-btn"
-              (click)="changeCoverPhoto()">
-        <mat-icon>photo_camera</mat-icon>
-        Change Cover
-      </button>
+  <div class="profile-header-container">
+    <!-- Header Section -->
+    <div class="page-header">
+      <div class="header-content">
+        <div class="title-wrapper">
+          <div class="title-icon-wrapper">
+            <mat-icon class="title-icon">account_circle</mat-icon>
+          </div>
+          <div>
+            <h1 class="page-title">Profile Header</h1>
+            <p class="page-subtitle">Manage your profile information and settings</p>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <!-- Profile Info Section -->
-    <div class="profile-info">
-      <div class="profile-avatar-section">
-        <div class="avatar-container">
-          <div class="profile-avatar" [class.uploading]="avatarUploading">
-            <img *ngIf="user?.photoURL && !avatarUploading; else defaultAvatar"
-                 [src]="user?.photoURL"
-                 [alt]="user?.firstName + ' ' + user?.lastName"
-                 class="avatar-image">
-            <ng-template #defaultAvatar>
-              <div class="default-avatar">
-                {{ getInitials(user?.firstName, user?.lastName) }}
-              </div>
-            </ng-template>
+    <!-- Profile Card -->
+    <div class="profile-card">
+      <!-- Cover Photo Section -->
+      <div class="cover-photo" [style.background-image]="getCoverPhotoUrl()">
+        <div class="cover-overlay"></div>
+        <button mat-raised-button
+                class="change-cover-btn"
+                (click)="changeCoverPhoto()">
+          <mat-icon>photo_camera</mat-icon>
+          Change Cover
+        </button>
+      </div>
 
-            <!-- Upload Progress -->
-            <div class="upload-overlay" *ngIf="avatarUploading">
-              <mat-spinner diameter="32"></mat-spinner>
+      <!-- Profile Info Section -->
+      <div class="profile-info">
+        <div class="profile-avatar-section">
+          <div class="avatar-container">
+            <div class="profile-avatar" [class.uploading]="avatarUploading">
+              <img *ngIf="user?.photoURL && !avatarUploading; else defaultAvatar"
+                  [src]="user?.photoURL"
+                  [alt]="user?.firstName + ' ' + user?.lastName"
+                  class="avatar-image">
+              <ng-template #defaultAvatar>
+                <div class="default-avatar">
+                  {{ getInitials(user?.firstName, user?.lastName) }}
+                </div>
+              </ng-template>
+
+              <!-- Upload Progress -->
+              <div class="upload-overlay" *ngIf="avatarUploading">
+                <mat-spinner diameter="32"></mat-spinner>
+              </div>
+            </div>
+
+            <!-- Camera Button -->
+            <button mat-fab
+                    color="primary"
+                    class="avatar-edit-btn"
+                    (click)="changeAvatar()"
+                    [disabled]="avatarUploading"
+                    matTooltip="Change Profile Picture">
+              <mat-icon>photo_camera</mat-icon>
+            </button>
+
+            <!-- Verification Badge -->
+            <div class="verification-badge">
+              <mat-icon matTooltip="Verified Account">verified</mat-icon>
             </div>
           </div>
 
-          <!-- Camera Button -->
-          <button mat-fab
+          <!-- User Details -->
+          <div class="user-details">
+            <h2 class="user-name">{{ user?.firstName }} {{ user?.lastName }}</h2>
+            <p class="user-email">{{ user?.email }}</p>
+
+            <!-- Status Badges -->
+            <div class="status-badges">
+              <span class="status-badge active" *ngIf="user?.isActive">
+                <mat-icon>check_circle</mat-icon>
+                Active Account
+              </span>
+              <span class="status-badge premium" *ngIf="user?.currentSubscription?.isActive">
+                <mat-icon>workspace_premium</mat-icon>
+                Member
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="profile-actions">
+          <button mat-raised-button
                   color="primary"
-                  class="avatar-edit-btn"
-                  (click)="changeAvatar()"
-                  [disabled]="avatarUploading"
-                  matTooltip="Change Profile Picture">
-            <mat-icon>photo_camera</mat-icon>
+                  class="action-btn edit-btn"
+                  (click)="editProfile()">
+            <mat-icon>edit</mat-icon>
+            Edit Profile
           </button>
 
-          <!-- Verification Badge -->
-          <!-- <div class="verification-badge" *ngIf="user?.emailConfirmed"> -->
-          <div class="verification-badge">
-            <mat-icon matTooltip="Verified Account">verified</mat-icon>
-          </div>
-        </div>
-
-        <!-- User Details -->
-        <div class="user-details">
-          <h2 class="user-name">{{ user?.firstName }} {{ user?.lastName }}</h2>
-          <p class="user-email">{{ user?.email }}</p>
-
-          <!-- Status Badges -->
-          <div class="status-badges">
-            <span class="status-badge active" *ngIf="user?.isActive">
-              <mat-icon>check_circle</mat-icon>
-              Active Account
-            </span>
-            <span class="status-badge premium" *ngIf="user?.currentSubscription?.isActive">
-              <mat-icon>workspace_premium</mat-icon>
-              <!-- {{ user.currentSubscription.subscriptionPlanName }} Member -->
-                Member
-            </span>
-          </div>
+          <button mat-stroked-button
+                  class="action-btn settings-btn"
+                  (click)="openSettings()">
+            <mat-icon>settings</mat-icon>
+            Settings
+          </button>
         </div>
       </div>
 
-      <!-- Action Buttons -->
-      <div class="profile-actions">
+      <!-- Statistics Section -->
+      <div class="profile-stats" *ngIf="userStats">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-number">{{ userStats.scheduledPosts || 0 }}</div>
+            <div class="stat-label">Posts Scheduled</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-number">{{ userStats.totalPosts || 0 }}</div>
+            <div class="stat-label">Total Posts</div>
+          </div>
+
+          <div class="stat-item">
+            <div class="stat-number">{{ userStats.successRate || 0 }}%</div>
+            <div class="stat-label">Success Rate</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Actions Section -->
+    <div class="quick-actions-section">
+      <h3 class="section-title">
+        <div class="section-icon-wrapper">
+          <mat-icon>bolt</mat-icon>
+        </div>
+        Quick Actions
+      </h3>
+
+      <div class="actions-grid">
         <button mat-raised-button
-                color="primary"
-                class="action-btn"
-                (click)="editProfile()">
-          <mat-icon>edit</mat-icon>
-          Edit Profile
+                class="quick-action-card new-post"
+                (click)="createNewPost()">
+          <div class="action-icon">
+            <mat-icon>add</mat-icon>
+          </div>
+          <div class="action-content">
+            <div class="action-title">New Post</div>
+            <div class="action-description">Create and schedule a new post</div>
+          </div>
         </button>
 
-        <button mat-stroked-button
-                class="action-btn"
-                (click)="openSettings()">
-          <mat-icon>settings</mat-icon>
-          Settings
+        <button mat-raised-button
+                class="quick-action-card analytics"
+                (click)="viewAnalytics()">
+          <div class="action-icon">
+            <mat-icon>analytics</mat-icon>
+          </div>
+          <div class="action-content">
+            <div class="action-title">Analytics</div>
+            <div class="action-description">View your performance metrics</div>
+          </div>
+        </button>
+
+        <button mat-raised-button
+                class="quick-action-card schedule"
+                (click)="manageSchedule()">
+          <div class="action-icon">
+            <mat-icon>schedule</mat-icon>
+          </div>
+          <div class="action-content">
+            <div class="action-title">Schedule</div>
+            <div class="action-description">Manage your posting schedule</div>
+          </div>
+        </button>
+
+        <button mat-raised-button
+                class="quick-action-card settings"
+                (click)="openAdvancedSettings()">
+          <div class="action-icon">
+            <mat-icon>tune</mat-icon>
+          </div>
+          <div class="action-content">
+            <div class="action-title">Settings</div>
+            <div class="action-description">Configure advanced options</div>
+          </div>
         </button>
       </div>
     </div>
 
-    <!-- Statistics Section -->
-    <div class="profile-stats" *ngIf="userStats">
-      <div class="stats-grid">
-        <div class="stat-item">
-          <div class="stat-number">{{ userStats.scheduledPosts || 0 }}</div>
-          <div class="stat-label">Posts Scheduled</div>
-        </div>
+    <!-- Hidden File Input -->
+    <input #fileInput
+          type="file"
+          accept="image/*"
+          style="display: none;"
+          (change)="onFileSelected($event)">
 
-        <div class="stat-item">
-          <div class="stat-number">{{ userStats.totalPosts || 0 }}</div>
-          <div class="stat-label">Total Posts</div>
-        </div>
-
-        <div class="stat-item">
-          <div class="stat-number">{{ userStats.successRate || 0 }}%</div>
-          <div class="stat-label">Success Rate</div>
-        </div>
-      </div>
-    </div>
+    <input #coverInput
+          type="file"
+          accept="image/*"
+          style="display: none;"
+          (change)="onCoverFileSelected($event)">
   </div>
-
-  <!-- Quick Actions Section -->
-  <div class="quick-actions-section">
-    <h3 class="section-title">Quick Actions</h3>
-
-    <div class="actions-grid">
-      <button mat-raised-button
-              class="quick-action-card new-post"
-              (click)="createNewPost()">
-        <div class="action-icon">
-          <mat-icon>add</mat-icon>
-        </div>
-        <div class="action-content">
-          <div class="action-title">New Post</div>
-          <div class="action-description">Create and schedule a new post</div>
-        </div>
-      </button>
-
-      <button mat-raised-button
-              class="quick-action-card analytics"
-              (click)="viewAnalytics()">
-        <div class="action-icon">
-          <mat-icon>analytics</mat-icon>
-        </div>
-        <div class="action-content">
-          <div class="action-title">Analytics</div>
-          <div class="action-description">View your performance metrics</div>
-        </div>
-      </button>
-
-      <button mat-raised-button
-              class="quick-action-card schedule"
-              (click)="manageSchedule()">
-        <div class="action-icon">
-          <mat-icon>schedule</mat-icon>
-        </div>
-        <div class="action-content">
-          <div class="action-title">Schedule</div>
-          <div class="action-description">Manage your posting schedule</div>
-        </div>
-      </button>
-
-      <button mat-raised-button
-              class="quick-action-card settings"
-              (click)="openAdvancedSettings()">
-        <div class="action-icon">
-          <mat-icon>tune</mat-icon>
-        </div>
-        <div class="action-content">
-          <div class="action-title">Settings</div>
-          <div class="action-description">Configure advanced options</div>
-        </div>
-      </button>
-    </div>
-  </div>
-
-  <!-- Hidden File Input -->
-  <input #fileInput
-         type="file"
-         accept="image/*"
-         style="display: none;"
-         (change)="onFileSelected($event)">
-
-  <input #coverInput
-         type="file"
-         accept="image/*"
-         style="display: none;"
-         (change)="onCoverFileSelected($event)">
 </div>

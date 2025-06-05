@@ -1,318 +1,262 @@
 <!-- security-settings.component.html -->
-<div class="security-settings-container">
-  <!-- Header Section -->
-  <div class="page-header">
-    <div class="header-content">
-      <h1 class="page-title">Security Settings</h1>
-      <p class="page-subtitle">Manage your account security and password settings</p>
-    </div>
+<div class="dashboard-container">
+  <!-- Animated Background Elements -->
+  <div class="animated-background">
+    <div class="floating-circle circle-1"></div>
+    <div class="floating-circle circle-2"></div>
+    <div class="floating-circle circle-3"></div>
+    <div class="floating-circle circle-4"></div>
+    <div class="floating-icon icon-lock"><mat-icon>lock</mat-icon></div>
+    <div class="floating-icon icon-shield"><mat-icon>shield</mat-icon></div>
+    <div class="floating-icon icon-key"><mat-icon>vpn_key</mat-icon></div>
+    <div class="floating-icon icon-devices"><mat-icon>devices</mat-icon></div>
   </div>
 
-  <!-- Password Section -->
-  <div class="security-card">
-    <div class="card-header">
-      <div class="header-info">
-        <h3 class="card-title">
-          <mat-icon>lock</mat-icon>
-          Change Password
-        </h3>
-        <p class="card-description">Update your password to keep your account secure</p>
+  <div class="security-settings-container">
+    <!-- Header Section -->
+    <div class="page-header">
+      <div class="header-content">
+        <div class="title-wrapper">
+          <div class="title-icon-wrapper">
+            <mat-icon class="title-icon">security</mat-icon>
+          </div>
+          <div>
+            <h1 class="page-title">Security Settings</h1>
+            <p class="page-subtitle">Manage your account security and password settings</p>
+          </div>
+        </div>
       </div>
     </div>
 
-    <form [formGroup]="passwordForm" (ngSubmit)="onPasswordSubmit()" class="password-form" novalidate>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">Current Password</label>
-          <mat-form-field appearance="outline" class="security-field">
-            <input
-              matInput
-              formControlName="currentPassword"
-              [type]="hideCurrentPassword ? 'password' : 'text'"
-              placeholder="Enter your current password"
-              autocomplete="current-password">
-            <button
-              mat-icon-button
-              matSuffix
-              (click)="hideCurrentPassword = !hideCurrentPassword"
-              type="button">
-              <mat-icon>{{ hideCurrentPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-            </button>
-            <mat-error *ngIf="passwordForm.get('currentPassword')?.errors?.['required'] && passwordForm.get('currentPassword')?.touched">
-              Current password is required
-            </mat-error>
-          </mat-form-field>
+    <!-- Password Section -->
+    <div class="security-card">
+      <div class="card-header">
+        <div class="header-info">
+          <h3 class="card-title">
+            <div class="section-icon-wrapper">
+              <mat-icon>lock</mat-icon>
+            </div>
+            Change Password
+          </h3>
+          <p class="card-description">Update your password to keep your account secure</p>
         </div>
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">New Password</label>
-          <mat-form-field appearance="outline" class="security-field">
-            <input
-              matInput
-              formControlName="newPassword"
-              [type]="hideNewPassword ? 'password' : 'text'"
-              placeholder="Create a strong password"
-              autocomplete="new-password">
-            <button
-              mat-icon-button
-              matSuffix
-              (click)="hideNewPassword = !hideNewPassword"
-              type="button">
-              <mat-icon>{{ hideNewPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-            </button>
-            <mat-error *ngIf="passwordForm.get('newPassword')?.errors?.['required'] && passwordForm.get('newPassword')?.touched">
-              New password is required
-            </mat-error>
-            <mat-error *ngIf="passwordForm.get('newPassword')?.errors?.['minlength'] && passwordForm.get('newPassword')?.touched">
-              Password must be at least 8 characters
-            </mat-error>
-          </mat-form-field>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label">Confirm New Password</label>
-          <mat-form-field appearance="outline" class="security-field">
-            <input
-              matInput
-              formControlName="confirmPassword"
-              [type]="hideConfirmPassword ? 'password' : 'text'"
-              placeholder="Confirm your new password"
-              autocomplete="new-password">
-            <button
-              mat-icon-button
-              matSuffix
-              (click)="hideConfirmPassword = !hideConfirmPassword"
-              type="button">
-              <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
-            </button>
-            <mat-error *ngIf="passwordForm.errors?.['passwordMismatch'] && passwordForm.get('confirmPassword')?.touched">
-              Passwords do not match
-            </mat-error>
-          </mat-form-field>
-        </div>
-      </div>
-
-      <!-- Password Requirements -->
-      <div class="password-requirements" *ngIf="passwordForm.get('newPassword')?.value">
-        <h4 class="requirements-title">Password must contain:</h4>
-        <div class="requirements-list">
-          <div class="requirement" [class.met]="passwordValidation.hasLength">
-            <mat-icon>{{ passwordValidation.hasLength ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
-            <span>At least 8 characters</span>
-          </div>
-          <div class="requirement" [class.met]="passwordValidation.hasUpper">
-            <mat-icon>{{ passwordValidation.hasUpper ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
-            <span>One uppercase letter</span>
-          </div>
-          <div class="requirement" [class.met]="passwordValidation.hasLower">
-            <mat-icon>{{ passwordValidation.hasLower ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
-            <span>One lowercase letter</span>
-          </div>
-          <div class="requirement" [class.met]="passwordValidation.hasNumber">
-            <mat-icon>{{ passwordValidation.hasNumber ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
-            <span>One number</span>
-          </div>
-          <div class="requirement" [class.met]="passwordValidation.hasSpecial">
-            <mat-icon>{{ passwordValidation.hasSpecial ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
-            <span>One special character</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="form-actions">
-        <button
-          mat-raised-button
-          color="primary"
-          type="submit"
-          [disabled]="!passwordForm.valid || passwordLoading">
-          <mat-spinner diameter="16" *ngIf="passwordLoading"></mat-spinner>
-          <mat-icon *ngIf="!passwordLoading">lock_reset</mat-icon>
-          {{ passwordLoading ? 'Updating...' : 'Update Password' }}
-        </button>
-      </div>
-    </form>
-  </div>
-
-  <!-- Two-Factor Authentication Section -->
-  <!-- <div class="security-card">
-    <div class="card-header">
-      <div class="header-info">
-        <h3 class="card-title">
-          <mat-icon>security</mat-icon>
-          Two-Factor Authentication
-        </h3>
-        <p class="card-description">Add an extra layer of security to your account</p>
-      </div>
-      <div class="header-status">
-        <span class="status-badge" [class.enabled]="securitySettings?.twoFactorEnabled">
-          {{ securitySettings?.twoFactorEnabled ? 'Enabled' : 'Disabled' }}
-        </span>
-      </div>
-    </div>
-
-    <div class="two-factor-content">
-      <div class="two-factor-info" *ngIf="!securitySettings?.twoFactorEnabled">
-        <div class="info-icon">
-          <mat-icon>shield</mat-icon>
-        </div>
-        <div class="info-text">
-          <h4>Secure your account with 2FA</h4>
-          <p>Two-factor authentication adds an extra layer of security by requiring a verification code in addition to your password.</p>
-        </div>
-      </div>
-
-      <div class="two-factor-methods" *ngIf="!securitySettings?.twoFactorEnabled">
-        <div class="method-card" [class.selected]="selectedTwoFactorMethod === 'authenticator'" (click)="selectTwoFactorMethod('authenticator')">
-          <div class="method-icon">
-            <mat-icon>smartphone</mat-icon>
-          </div>
-          <div class="method-info">
-            <h5>Authenticator App</h5>
-            <p>Use Google Authenticator or similar apps</p>
-          </div>
-          <mat-radio-button [checked]="selectedTwoFactorMethod === 'authenticator'"></mat-radio-button>
-        </div>
-
-        <div class="method-card" [class.selected]="selectedTwoFactorMethod === 'sms'" (click)="selectTwoFactorMethod('sms')">
-          <div class="method-icon">
-            <mat-icon>sms</mat-icon>
-          </div>
-          <div class="method-info">
-            <h5>SMS Verification</h5>
-            <p>Receive codes via text message</p>
-          </div>
-          <mat-radio-button [checked]="selectedTwoFactorMethod === 'sms'"></mat-radio-button>
-        </div>
-      </div>
-
-      <div class="two-factor-actions">
-        <button
-          mat-raised-button
-          color="primary"
-          *ngIf="!securitySettings?.twoFactorEnabled"
-          (click)="enableTwoFactor()"
-          [disabled]="!selectedTwoFactorMethod || twoFactorLoading">
-          <mat-spinner diameter="16" *ngIf="twoFactorLoading"></mat-spinner>
-          <mat-icon *ngIf="!twoFactorLoading">security</mat-icon>
-          {{ twoFactorLoading ? 'Setting up...' : 'Enable 2FA' }}
-        </button>
-
-        <button
-          mat-stroked-button
-          color="warn"
-          *ngIf="securitySettings?.twoFactorEnabled"
-          (click)="disableTwoFactor()">
-          <mat-icon>security</mat-icon>
-          Disable 2FA
-        </button>
-      </div>
-
-      <div class="two-factor-status" *ngIf="securitySettings?.twoFactorEnabled">
-        <div class="status-item">
-          <mat-icon class="success-icon">verified_user</mat-icon>
-          <div class="status-details">
-            <h5>Two-Factor Authentication is active</h5>
-            <p>Your account is protected with an additional security layer</p>
+      <form [formGroup]="passwordForm" (ngSubmit)="onPasswordSubmit()" class="password-form" novalidate>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Current Password</label>
+            <mat-form-field appearance="outline" class="security-field">
+              <input
+                matInput
+                formControlName="currentPassword"
+                [type]="hideCurrentPassword ? 'password' : 'text'"
+                placeholder="Enter your current password"
+                autocomplete="current-password">
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="hideCurrentPassword = !hideCurrentPassword"
+                type="button"
+                class="visibility-toggle">
+                <mat-icon>{{ hideCurrentPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              <mat-error *ngIf="passwordForm.get('currentPassword')?.errors?.['required'] && passwordForm.get('currentPassword')?.touched">
+                Current password is required
+              </mat-error>
+            </mat-form-field>
           </div>
         </div>
 
-        <div class="backup-codes" *ngIf="backupCodes.length > 0">
-          <h5>Backup Recovery Codes</h5>
-          <p>Save these codes in a safe place. You can use them to access your account if you lose your 2FA device.</p>
-          <div class="codes-grid">
-            <div class="backup-code" *ngFor="let code of backupCodes">{{ code }}</div>
+        <div class="form-row password-row">
+          <div class="form-group">
+            <label class="form-label">New Password</label>
+            <mat-form-field appearance="outline" class="security-field">
+              <input
+                matInput
+                formControlName="newPassword"
+                [type]="hideNewPassword ? 'password' : 'text'"
+                placeholder="Create a strong password"
+                autocomplete="new-password">
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="hideNewPassword = !hideNewPassword"
+                type="button"
+                class="visibility-toggle">
+                <mat-icon>{{ hideNewPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              <mat-error *ngIf="passwordForm.get('newPassword')?.errors?.['required'] && passwordForm.get('newPassword')?.touched">
+                New password is required
+              </mat-error>
+              <mat-error *ngIf="passwordForm.get('newPassword')?.errors?.['minlength'] && passwordForm.get('newPassword')?.touched">
+                Password must be at least 8 characters
+              </mat-error>
+            </mat-form-field>
           </div>
-          <button mat-button color="primary" (click)="downloadBackupCodes()">
-            <mat-icon>download</mat-icon>
-            Download Codes
-          </button>
-        </div>
-      </div>
-    </div>
-  </div> -->
 
-  <!-- Active Sessions Section -->
-  <div class="security-card">
-    <div class="card-header">
-      <div class="header-info">
-        <h3 class="card-title">
-          <mat-icon>devices</mat-icon>
-          Active Sessions
-        </h3>
-        <p class="card-description">Manage devices that are currently signed in to your account</p>
-      </div>
-      <button mat-button color="warn" (click)="logoutAllSessions()">
-        <mat-icon>logout</mat-icon>
-        Sign out all
-      </button>
-    </div>
+          <div class="form-group">
+            <label class="form-label">Confirm New Password</label>
+            <mat-form-field appearance="outline" class="security-field">
+              <input
+                matInput
+                formControlName="confirmPassword"
+                [type]="hideConfirmPassword ? 'password' : 'text'"
+                placeholder="Confirm your new password"
+                autocomplete="new-password">
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="hideConfirmPassword = !hideConfirmPassword"
+                type="button"
+                class="visibility-toggle">
+                <mat-icon>{{ hideConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+              </button>
+              <mat-error *ngIf="passwordForm.errors?.['passwordMismatch'] && passwordForm.get('confirmPassword')?.touched">
+                Passwords do not match
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
 
-    <div class="sessions-list">
-      <div class="session-item" *ngFor="let session of activeSessions" [class.current]="session.isCurrent">
-        <div class="session-icon">
-          <mat-icon>{{ getDeviceIcon(session.deviceInfo) }}</mat-icon>
+        <!-- Password Requirements -->
+        <div class="password-requirements" *ngIf="passwordForm.get('newPassword')?.value">
+          <h4 class="requirements-title">Password must contain:</h4>
+          <div class="requirements-list">
+            <div class="requirement" [class.met]="passwordValidation.hasLength">
+              <mat-icon>{{ passwordValidation.hasLength ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+              <span>At least 8 characters</span>
+            </div>
+            <div class="requirement" [class.met]="passwordValidation.hasUpper">
+              <mat-icon>{{ passwordValidation.hasUpper ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+              <span>One uppercase letter</span>
+            </div>
+            <div class="requirement" [class.met]="passwordValidation.hasLower">
+              <mat-icon>{{ passwordValidation.hasLower ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+              <span>One lowercase letter</span>
+            </div>
+            <div class="requirement" [class.met]="passwordValidation.hasNumber">
+              <mat-icon>{{ passwordValidation.hasNumber ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+              <span>One number</span>
+            </div>
+            <div class="requirement" [class.met]="passwordValidation.hasSpecial">
+              <mat-icon>{{ passwordValidation.hasSpecial ? 'check_circle' : 'radio_button_unchecked' }}</mat-icon>
+              <span>One special character</span>
+            </div>
+          </div>
         </div>
-        <div class="session-details">
-          <h5>{{ session.deviceInfo }}</h5>
-          <p class="session-location">{{ session.location }}</p>
-          <p class="session-time">
-            {{ session.isCurrent ? 'Current session' : 'Last active: ' + (session.lastActivity | date:'medium') }}
-          </p>
-        </div>
-        <div class="session-actions">
-          <span class="current-badge" *ngIf="session.isCurrent">Current</span>
+
+        <div class="form-actions">
           <button
-            mat-icon-button
-            color="warn"
-            *ngIf="!session.isCurrent"
-            (click)="terminateSession(session.id)"
-            matTooltip="Sign out this device">
-            <mat-icon>close</mat-icon>
+            mat-raised-button
+            color="primary"
+            type="submit"
+            class="update-btn"
+            [disabled]="!passwordForm.valid || passwordLoading">
+            <div class="btn-content">
+              <mat-spinner diameter="16" *ngIf="passwordLoading"></mat-spinner>
+              <mat-icon *ngIf="!passwordLoading">lock_reset</mat-icon>
+              <span>{{ passwordLoading ? 'Updating...' : 'Update Password' }}</span>
+            </div>
           </button>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Security Tips -->
-  <div class="security-tips-card">
-    <div class="tips-header">
-      <mat-icon class="tips-icon">lightbulb</mat-icon>
-      <h3 class="tips-title">Security Tips</h3>
+      </form>
     </div>
 
-    <div class="tips-grid">
-      <div class="tip-item">
-        <mat-icon>lock</mat-icon>
-        <div class="tip-content">
-          <h5>Use strong passwords</h5>
-          <p>Create unique, complex passwords for better security</p>
+    <!-- Active Sessions Section -->
+    <div class="security-card">
+      <div class="card-header">
+        <div class="header-info">
+          <h3 class="card-title">
+            <div class="section-icon-wrapper">
+              <mat-icon>devices</mat-icon>
+            </div>
+            Active Sessions
+          </h3>
+          <p class="card-description">Manage devices that are currently signed in to your account</p>
         </div>
+        <button mat-button color="warn" class="logout-all-btn" (click)="logoutAllSessions()">
+          <mat-icon>logout</mat-icon>
+          Sign out all
+        </button>
       </div>
 
-      <div class="tip-item">
-        <mat-icon>security</mat-icon>
-        <div class="tip-content">
-          <h5>Enable 2FA</h5>
-          <p>Add two-factor authentication for extra protection</p>
+      <div class="sessions-list">
+        <div class="session-item" *ngFor="let session of activeSessions; let i = index" [class.current]="session.isCurrent" [style.animation-delay]="i * 0.1 + 's'">
+          <div class="session-icon">
+            <mat-icon>{{ getDeviceIcon(session.deviceInfo) }}</mat-icon>
+          </div>
+          <div class="session-details">
+            <h5>{{ session.deviceInfo }}</h5>
+            <p class="session-location">{{ session.location }}</p>
+            <p class="session-time">
+              {{ session.isCurrent ? 'Current session' : 'Last active: ' + (session.lastActivity | date:'medium') }}
+            </p>
+          </div>
+          <div class="session-actions">
+            <span class="current-badge" *ngIf="session.isCurrent">Current</span>
+            <button
+              mat-icon-button
+              color="warn"
+              *ngIf="!session.isCurrent"
+              (click)="terminateSession(session.id)"
+              matTooltip="Sign out this device"
+              class="terminate-btn">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
         </div>
       </div>
+    </div>
 
-      <div class="tip-item">
-        <mat-icon>update</mat-icon>
-        <div class="tip-content">
-          <h5>Regular updates</h5>
-          <p>Keep your devices and browsers up to date</p>
+    <!-- Security Tips -->
+    <div class="security-tips-card">
+      <div class="tips-header">
+        <div class="tips-icon-wrapper">
+          <mat-icon>lightbulb</mat-icon>
         </div>
+        <h3 class="tips-title">Security Tips</h3>
       </div>
 
-      <div class="tip-item">
-        <mat-icon>wifi_protected_setup</mat-icon>
-        <div class="tip-content">
-          <h5>Secure networks</h5>
-          <p>Only use trusted Wi-Fi networks for sensitive actions</p>
+      <div class="tips-grid">
+        <div class="tip-item">
+          <div class="tip-icon-wrapper">
+            <mat-icon>lock</mat-icon>
+          </div>
+          <div class="tip-content">
+            <h5>Use strong passwords</h5>
+            <p>Create unique, complex passwords for better security</p>
+          </div>
+        </div>
+
+        <div class="tip-item">
+          <div class="tip-icon-wrapper">
+            <mat-icon>security</mat-icon>
+          </div>
+          <div class="tip-content">
+            <h5>Enable 2FA</h5>
+            <p>Add two-factor authentication for extra protection</p>
+          </div>
+        </div>
+
+        <div class="tip-item">
+          <div class="tip-icon-wrapper">
+            <mat-icon>update</mat-icon>
+          </div>
+          <div class="tip-content">
+            <h5>Regular updates</h5>
+            <p>Keep your devices and browsers up to date</p>
+          </div>
+        </div>
+
+        <div class="tip-item">
+          <div class="tip-icon-wrapper">
+            <mat-icon>wifi_protected_setup</mat-icon>
+          </div>
+          <div class="tip-content">
+            <h5>Secure networks</h5>
+            <p>Only use trusted Wi-Fi networks for sensitive actions</p>
+          </div>
         </div>
       </div>
     </div>
