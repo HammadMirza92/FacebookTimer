@@ -10,6 +10,7 @@ import { Post, PostStatus } from '../../models/post.model';
 import { Template } from '../../models/template.model';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -41,9 +42,7 @@ private predefinedIdeas: string[] = [
   ];
   constructor(
     private authService: AuthService,
-    private facebookPageService: FacebookPageService,
-    private postService: PostService,
-private _snackBar: MatSnackBar,
+    private _snackBar: NotificationService,
     private router: Router
   ) {
     this.currentUser$ = this.authService.currentUser;
@@ -59,32 +58,20 @@ generateContentIdeas(): void {
     const shuffled = [...this.predefinedIdeas].sort(() => 0.5 - Math.random());
     this.contentIdeas = shuffled.slice(0, Math.floor(Math.random() * 2) + 3); // Get 3 to 4 random ideas
     console.log('Generated content ideas:', this.contentIdeas);
-    this._snackBar.open('New content ideas generated!', 'Dismiss', {
-      duration: 2000,
-      horizontalPosition: 'end',
-      verticalPosition: 'top',
-    });
+    this._snackBar.showSuccess('New content ideas generated!');
   }
 copyIdeaToClipboard(idea: string): void {
     navigator.clipboard.writeText(idea).then(() => {
-      this._snackBar.open('Idea copied to clipboard!', 'Close', {
-        duration: 2000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom',
-      });
+      this._snackBar.showSuccess('Idea copied to clipboard!');
     }).catch(err => {
       console.error('Failed to copy text: ', err);
-      this._snackBar.open('Failed to copy idea.', 'Close', { duration: 2000 });
+      this._snackBar.showSuccess('Failed to copy idea.');
     });
   }
 viewInspirationHub(): void {
     console.log('View Inspiration Hub clicked!');
     // Implement navigation to a dedicated content inspiration page/route
-    this._snackBar.open('Navigating to Inspiration Hub (feature coming soon)!', 'Dismiss', {
-      duration: 3000,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom',
-    });
+    this._snackBar.showSuccess('Navigating to Inspiration Hub (feature coming soon)!');
   }
   createNewPost(): void {
     this.router.navigate(['/posts/create']);

@@ -2,3 +2,110 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+// Add this to your global styles.scss file
+
+// Complete reset of all Angular Material snackbar styles
+.mat-snack-bar-container,
+.mat-mdc-snack-bar-container,
+.mat-snack-bar-handset,
+snack-bar-container,
+.mdc-snackbar,
+.mdc-snackbar__surface,
+.mat-mdc-snackbar-surface,
+.mat-mdc-snack-bar-label,
+.mdc-snackbar__label,
+.mat-simple-snackbar,
+simple-snack-bar,
+.mdc-snackbar__actions {
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  min-height: 0 !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  width: auto !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  display: block !important;
+  color: white !important;
+}
+
+simple-snack-bar {
+  display: flex !important;
+  align-items: center !important;
+  background-color: #d32f2f !important;
+  color: white !important;
+  border-radius: 4px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+  padding: 14px 16px !important;
+  border-left: 5px solid #b71c1c !important;
+  margin: 8px !important;
+}
+
+simple-snack-bar > span {
+  flex: 1 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+// Fix the action button
+.mat-simple-snackbar-action {
+  margin-left: 8px !important;
+  padding: 0 !important;
+}
+
+// Button style
+simple-snack-bar button {
+  min-width: auto !important;
+  line-height: normal !important;
+  margin: 0 0 0 8px !important;
+  padding: 5px 8px !important;
+  background: transparent !important;
+  color: white !important;
+  font-weight: 500 !important;
+  text-transform: uppercase !important;
+  border: none !important;
+  cursor: pointer !important;
+}
+
+// Apply specific colors for each type by adding custom class
+.success-snackbar simple-snack-bar {
+  background-color: #43a047 !important;
+  border-left: 5px solid #2e7d32 !important;
+}
+
+.error-snackbar simple-snack-bar {
+  background-color: #d32f2f !important;
+  border-left: 5px solid #b71c1c !important;
+}
+
+.warning-snackbar simple-snack-bar {
+  background-color: #fb8c00 !important;
+  border-left: 5px solid #ef6c00 !important;
+}
+
+.info-snackbar simple-snack-bar {
+  background-color: #1976d2 !important;
+  border-left: 5px solid #0d47a1 !important;
+}
+
+// Add icon support (requires modification to service)
+.snackbar-icon {
+  margin-right: 12px !important;
+}
+
+// Clean up any unwanted borders or outlines
+* {
+  outline: none !important;
+}
+
+// Aggressive override to prevent any unwanted styles
+::ng-deep .mat-snack-bar-container,
+::ng-deep .mat-mdc-snack-bar-container {
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}

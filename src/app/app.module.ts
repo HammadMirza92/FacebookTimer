@@ -53,7 +53,6 @@ import { SubscriptionCardComponent } from './components/subscriptions/subscripti
 import { PaymentHistoryComponent } from './components/subscriptions/payment-history/payment-history.component';
 import { CountdownTimerComponent } from './components/shared/countdown-timer/countdown-timer.component';
 import { NotFoundComponent } from './components/layout/not-found/not-found.component';
-import { AlertComponent } from './components/shared/alert/alert.component';
 import { ColorPickerComponent } from './components/shared/color-picker/color-picker.component';
 import { FontPickerComponent } from './components/shared/font-picker/font-picker.component';
 import { ConfirmDialogComponent } from './components/shared/confirm-dialog/confirm-dialog.component';
@@ -86,6 +85,7 @@ import { ProfileHeaderComponent } from './components/setting/profile-header/prof
 import { PasswordUpdateComponent } from './components/setting/password-update/password-update.component';
 import { AccountInfoComponent } from './components/setting/account-info/account-info.component';
 import { SecuritySettingsComponent } from './components/setting/security-settings/security-settings.component';
+import { CustomSnackBarComponent } from './components/shared/custom-snackbar/custom-snackbar.component';
 
 @NgModule({
   declarations: [
@@ -109,7 +109,6 @@ import { SecuritySettingsComponent } from './components/setting/security-setting
     PaymentHistoryComponent,
     CountdownTimerComponent,
     NotFoundComponent,
-    AlertComponent,
     ColorPickerComponent,
     FontPickerComponent,
     ConfirmDialogComponent,
@@ -122,6 +121,7 @@ import { SecuritySettingsComponent } from './components/setting/security-setting
     PasswordUpdateComponent,
     AccountInfoComponent,
     SecuritySettingsComponent,
+    CustomSnackBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -154,7 +154,7 @@ import { SecuritySettingsComponent } from './components/setting/security-setting
     MatSlideToggleModule,
     MatExpansionModule,
     MatChipsModule,
-    MatBadgeModule
+    MatBadgeModule,
   ],
   providers: [
     AuthService,
