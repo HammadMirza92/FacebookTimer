@@ -12,20 +12,14 @@
 
   .footer-wave {
     position: absolute;
-    top: -100px;
     left: 0;
+    bottom: 0;
     width: 100%;
     height: 100px;
     overflow: hidden;
     line-height: 0;
     transform: rotate(180deg);
 
-    svg {
-      position: relative;
-      display: block;
-      width: 100%;
-      height: 100px;
-    }
   }
 
   .footer-content {

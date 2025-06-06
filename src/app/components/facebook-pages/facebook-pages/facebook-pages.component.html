@@ -1,76 +1,123 @@
+<!-- Facebook Pages Component -->
 <div class="page-container">
-  <div class="page-header">
-    <h1>Facebook Pages</h1>
-    <button mat-raised-button color="primary" (click)="loginWithFacebook()" >
-      <mat-icon>login</mat-icon>
-      Add Facebook Page
-    </button>
-    <button mat-raised-button color="primary" (click)="getPages()" >
-      <mat-icon>refresh</mat-icon>
-      Refresh Pages
-    </button>
+  <!-- Animated Background Elements -->
+  <div class="animated-background">
+    <div class="floating-circle circle-1"></div>
+    <div class="floating-circle circle-2"></div>
+    <div class="floating-circle circle-3"></div>
   </div>
 
-  <div class="page-content" *ngIf="!loading; else loadingTemplate">
-    <div *ngIf="pages.length > 0; else noPagesTemplate">
-      <div class="page-status-banner">
-        <mat-icon color="primary">check_circle</mat-icon>
-        <span>{{ linkSuccessMessage || 'Your Facebook account is connected and pages are linked successfully!' }}</span>
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <div class="title-wrapper">
+        <div class="title-icon">
+          <mat-icon>pages</mat-icon>
+        </div>
+        <h1>Facebook Pages</h1>
       </div>
 
+      <div class="header-actions">
+        <button mat-flat-button class="action-btn refresh-btn" (click)="getPages()">
+          <mat-icon>refresh</mat-icon>
+          <span>Refresh Pages</span>
+        </button>
+
+        <button mat-flat-button class="action-btn add-btn" (click)="loginWithFacebook()">
+          <mat-icon>add_circle</mat-icon>
+          <span>Add Facebook Page</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page Content -->
+  <div class="page-content" *ngIf="!loading; else loadingTemplate">
+    <div *ngIf="pages.length > 0; else noPagesTemplate">
+      <!-- Status Banner -->
+      <div class="page-status-banner">
+        <div class="status-icon">
+          <mat-icon>check_circle</mat-icon>
+        </div>
+        <div class="status-content">
+          <h3>Connected Successfully</h3>
+          <p>{{ linkSuccessMessage || 'Your Facebook account is connected and pages are linked successfully!' }}</p>
+        </div>
+      </div>
+
+      <!-- Page Cards Grid -->
       <div class="page-cards">
-        <mat-card class="page-card" *ngFor="let page of pages">
-          <mat-card-header>
-            <div mat-card-avatar class="page-header-image">
+        <div class="page-card" *ngFor="let page of pages">
+          <div class="card-header">
+            <div class="page-icon">
               <mat-icon>pages</mat-icon>
             </div>
-            <mat-card-title>{{ page.pageName }}</mat-card-title>
-            <mat-card-subtitle *ngIf="page.isActive" class="active-status">Active</mat-card-subtitle>
-            <mat-card-subtitle *ngIf="!page.isActive" class="inactive-status">Inactive</mat-card-subtitle>
-          </mat-card-header>
-
-          <mat-card-content>
-            <div class="page-details">
-              <div class="detail-item">
-                <span class="label">Page ID:</span>
-                <span class="value">{{ page.pageId }}</span>
-              </div>
-              <div class="detail-item">
-                <span class="label">Linked on:</span>
-                <span class="value">{{ page.createdAt | date:'medium' }}</span>
+            <div class="page-info">
+              <h2 class="page-name">{{ page.pageName }}</h2>
+              <div class="page-status" [class.active]="page.isActive" [class.inactive]="!page.isActive">
+                <div class="status-indicator"></div>
+                <span>{{ page.isActive ? 'Active' : 'Inactive' }}</span>
               </div>
             </div>
-          </mat-card-content>
+          </div>
 
-          <mat-card-actions>
-            <a mat-button color="primary" [routerLink]="['/posts/create']" [queryParams]="{pageId: page.id}">CREATE POST</a>
-            <button mat-button (click)="openFacebookPage(page.pageId)">VIEW PAGE</button>
-            <button mat-button color="warn" (click)="unlinkPage(page)">UNLINK</button>
-          </mat-card-actions>
-        </mat-card>
+          <div class="card-content">
+            <div class="page-details">
+              <div class="detail-item">
+                <div class="detail-label">Page ID</div>
+                <div class="detail-value">{{ page.pageId }}</div>
+              </div>
+              <div class="detail-item">
+                <div class="detail-label">Linked on</div>
+                <div class="detail-value">{{ page.createdAt | date:'medium' }}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-actions">
+            <a class="card-btn create-btn" [routerLink]="['/posts/create']" [queryParams]="{pageId: page.id}">
+              <mat-icon>post_add</mat-icon>
+              <span>Create Post</span>
+            </a>
+            <button class="card-btn view-btn" (click)="openFacebookPage(page.pageId)">
+              <mat-icon>open_in_new</mat-icon>
+              <span>View Page</span>
+            </button>
+            <button class="card-btn unlink-btn" (click)="unlinkPage(page)">
+              <mat-icon>link_off</mat-icon>
+              <span>Unlink</span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
+    <!-- Empty State Template -->
     <ng-template #noPagesTemplate>
-      <mat-card class="empty-state-card">
-        <mat-card-content>
-          <div class="empty-state">
+      <div class="empty-state-card">
+        <div class="empty-state-content">
+          <div class="empty-state-icon">
             <mat-icon>pages</mat-icon>
-            <h3>No Facebook Pages Linked</h3>
-            <p>Link your Facebook pages to create and schedule countdown posts.</p>
-            <button mat-raised-button color="primary" (click)="loginWithFacebook()">
-              Link Facebook Page
-            </button>
           </div>
-        </mat-card-content>
-      </mat-card>
+          <h2>No Facebook Pages Linked</h2>
+          <p>Link your Facebook pages to create and schedule countdown posts.</p>
+          <button mat-flat-button class="empty-state-btn" (click)="loginWithFacebook()">
+            <mat-icon>add_circle</mat-icon>
+            <span>Link Facebook Page</span>
+          </button>
+        </div>
+      </div>
     </ng-template>
   </div>
 
+  <!-- Loading Template -->
   <ng-template #loadingTemplate>
     <div class="loading-container">
-      <mat-spinner></mat-spinner>
-      <p>Loading your Facebook pages...</p>
+      <div class="loading-spinner">
+        <mat-spinner diameter="48"></mat-spinner>
+      </div>
+      <h3>Loading your Facebook pages...</h3>
+      <p>This may take a few moments</p>
     </div>
   </ng-template>
 </div>

@@ -10,7 +10,6 @@
   </div>
 
   <div class="dashboard-content" *ngIf="!loading; else loadingTemplate">
-    <!-- Quick actions -->
     <div class="quick-actions">
       <h2>Quick Actions</h2>
       <div class="actions-container">
@@ -29,118 +28,30 @@
       </div>
     </div>
 
-    <!-- Recent posts -->
-    <div class="recent-posts">
-      <div class="section-header">
-        <h2>Recent Posts</h2>
-        <button mat-button color="primary" (click)="viewAllPosts()" *ngIf="recentPosts.length > 0">
-          View All
-          <mat-icon>chevron_right</mat-icon>
-        </button>
-      </div>
-
-      <div *ngIf="recentPosts.length > 0; else noPostsTemplate">
-        <mat-card class="post-card" *ngFor="let post of recentPosts">
-          <mat-card-header>
-            <div mat-card-avatar class="post-header-image">
-              <mat-icon>schedule</mat-icon>
-            </div>
-            <mat-card-title>{{ post.title }}</mat-card-title>
-            <mat-card-subtitle>{{ post.facebookPageName }}</mat-card-subtitle>
-            <span class="status-chip" [ngClass]="getPostStatusClass(post.status)">
-              {{ post.status }}
-            </span>
-          </mat-card-header>
-
+    <div class="content-inspiration">
+      <h2><mat-icon>lightbulb_outline</mat-icon> Content Inspiration</h2>
+      <p class="section-description">Get fresh ideas to spark your next engaging post!</p>
+      <div class="inspiration-list">
+        <mat-card *ngFor="let idea of contentIdeas; let i = index" class="idea-card">
           <mat-card-content>
-            <p class="post-description">{{ post.description }}</p>
-            <p class="post-metadata">
-              <span><mat-icon>event</mat-icon> Event: {{ post.eventDateTime | date:'medium' }}</span>
-              <span><mat-icon>view_quilt</mat-icon> Template: {{ post.templateName }}</span>
-              <span *ngIf="post.scheduledFor">
-                <mat-icon>schedule</mat-icon> Scheduled: {{ post.scheduledFor | date:'medium' }}
-              </span>
-            </p>
+            <p>{{ idea }}</p>
           </mat-card-content>
-
-          <mat-card-actions>
-            <a mat-button color="primary" [routerLink]="['/posts/edit', post.id]">EDIT</a>
-            <a mat-button [href]="'https://www.facebook.com/' + post.facebookPostId" target="_blank" *ngIf="post.facebookPostId">VIEW ON FACEBOOK</a>
+          <mat-card-actions align="end">
+            <button mat-icon-button matTooltip="Copy idea" (click)="copyIdeaToClipboard(idea)">
+              <mat-icon>content_copy</mat-icon>
+            </button>
           </mat-card-actions>
         </mat-card>
+        <p *ngIf="contentIdeas.length === 0">No ideas to display yet. Click 'Generate Ideas' to get started!</p>
       </div>
-
-      <ng-template #noPostsTemplate>
-        <mat-card class="empty-state-card">
-          <mat-card-content>
-            <div class="empty-state">
-              <mat-icon>schedule</mat-icon>
-              <h3>No Posts Yet</h3>
-              <p>Get started by creating your first countdown post!</p>
-              <button mat-raised-button color="primary" (click)="createNewPost()">
-                Create Post
-              </button>
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </ng-template>
+      <button mat-flat-button color="primary" (click)="generateContentIdeas()">
+        <mat-icon>autorenew</mat-icon> Generate More Ideas
+      </button>
+      <button mat-button (click)="viewInspirationHub()" class="view-hub-button">
+        <mat-icon>arrow_forward</mat-icon> View Inspiration Hub
+      </button>
     </div>
-
-    <!-- Facebook pages -->
-    <div class="linked-pages">
-      <div class="section-header">
-        <h2>Facebook Pages</h2>
-        <button mat-button color="primary" routerLink="/facebook-pages">
-          {{hasFacebookPages ? 'Manage Pages' : 'Link Page'}}
-          <mat-icon>chevron_right</mat-icon>
-        </button>
-      </div>
-
-      <!-- Show this when user has linked pages -->
-      <div *ngIf="hasFacebookPages">
-        <div class="page-status-banner">
-          <mat-icon color="primary">check_circle</mat-icon>
-          <span>You have successfully linked {{pages.length}} Facebook {{pages.length > 1 ? 'pages' : 'page'}}!</span>
-          <button mat-button color="primary" (click)="manageFacebookPages()">
-            Need to change? Click here
-          </button>
-        </div>
-
-        <div class="pages-grid">
-          <mat-card class="page-card" *ngFor="let page of pages">
-            <mat-card-header>
-              <div mat-card-avatar class="page-header-image">
-                <mat-icon>pages</mat-icon>
-              </div>
-              <mat-card-title>{{ page.pageName }}</mat-card-title>
-              <mat-card-subtitle>Page ID: {{ page.pageId }}</mat-card-subtitle>
-            </mat-card-header>
-
-            <mat-card-actions>
-              <a mat-button color="primary" [routerLink]="['/posts/create']" [queryParams]="{pageId: page.id}">CREATE POST</a>
-              <a mat-button [href]="'https://www.facebook.com/' + page.pageId" target="_blank">VIEW PAGE</a>
-            </mat-card-actions>
-          </mat-card>
-        </div>
-      </div>
-
-      <!-- Only show no pages template if user has no linked pages -->
-      <ng-template #noPagesTemplate>
-        <mat-card class="empty-state-card">
-          <mat-card-content>
-            <div class="empty-state">
-              <mat-icon>pages</mat-icon>
-              <h3>No Facebook Pages Linked</h3>
-              <p>Link your Facebook pages to get started</p>
-              <button mat-raised-button color="primary" (click)="linkFacebookPage()">
-                Link Facebook Page
-              </button>
-            </div>
-          </mat-card-content>
-        </mat-card>
-      </ng-template>
     </div>
-  </div>
 
   <ng-template #loadingTemplate>
     <div class="loading-container">

@@ -9,6 +9,7 @@ import { FacebookPage } from '../../models/facebook-page.model';
 import { Post, PostStatus } from '../../models/post.model';
 import { Template } from '../../models/template.model';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,54 +24,68 @@ export class DashboardComponent implements OnInit {
   loading = true;
   postStatusEnum = PostStatus;
   hasFacebookPages = false;
-
+  contentIdeas: string[] = [];
+private predefinedIdeas: string[] = [
+    "Share a 'behind-the-scenes' look at your recent project.",
+    "Ask your audience a 'fill-in-the-blank' question related to your niche.",
+    "Create a short video tutorial or a quick tip series.",
+    "Post a 'this or that' poll to boost engagement.",
+    "Share a personal anecdote related to your industry and ask for similar stories.",
+    "Highlight a customer success story or testimonial.",
+    "Do a 'throwback Thursday' with an old post that performed well.",
+    "Share a valuable resource or tool you use and explain why.",
+    "Host a live Q&A session on a trending topic.",
+    "Create a 'did you know?' fact about your product/service or industry.",
+    "Run a mini-challenge for your followers (e.g., 5-day challenge).",
+    "Share an inspiring quote and elaborate on its meaning for your audience."
+  ];
   constructor(
     private authService: AuthService,
     private facebookPageService: FacebookPageService,
     private postService: PostService,
-    private templateService: TemplateService,
+private _snackBar: MatSnackBar,
     private router: Router
   ) {
     this.currentUser$ = this.authService.currentUser;
   }
 
   ngOnInit(): void {
-    this.loadDashboardData();
+   setTimeout(() => {
+      this.loading = false;
+      this.generateContentIdeas(); // Generate initial ideas after loading
+    }, 1500); // Simulate network delay
   }
-
-  loadDashboardData(): void {
-    // Load Facebook pages separately to handle its specific logic
-    const tokenfb = localStorage.getItem('fb_access_token');
-    if(tokenfb){
-      this.facebookPageService.linkFbPages(tokenfb).subscribe({
-        next: (pages) => {
-          this.pages = pages;
-          this.hasFacebookPages = this.pages.length > 0;
-        },
-        error: (error) => {
-          console.error('Error loading Facebook pages:', error);
-        }
-      });
-    }
-
-    forkJoin({
-      posts: this.postService.getUserPosts(),
-      templates: this.templateService.getTemplates()
-    }).subscribe({
-      next: result => {
-        this.recentPosts = result.posts
-          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-          .slice(0, 5); // Get most recent 5 posts
-        this.templates = result.templates;
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('Error loading dashboard data:', error);
-        this.loading = false;
-      }
+generateContentIdeas(): void {
+    const shuffled = [...this.predefinedIdeas].sort(() => 0.5 - Math.random());
+    this.contentIdeas = shuffled.slice(0, Math.floor(Math.random() * 2) + 3); // Get 3 to 4 random ideas
+    console.log('Generated content ideas:', this.contentIdeas);
+    this._snackBar.open('New content ideas generated!', 'Dismiss', {
+      duration: 2000,
+      horizontalPosition: 'end',
+      verticalPosition: 'top',
     });
   }
-
+copyIdeaToClipboard(idea: string): void {
+    navigator.clipboard.writeText(idea).then(() => {
+      this._snackBar.open('Idea copied to clipboard!', 'Close', {
+        duration: 2000,
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom',
+      });
+    }).catch(err => {
+      console.error('Failed to copy text: ', err);
+      this._snackBar.open('Failed to copy idea.', 'Close', { duration: 2000 });
+    });
+  }
+viewInspirationHub(): void {
+    console.log('View Inspiration Hub clicked!');
+    // Implement navigation to a dedicated content inspiration page/route
+    this._snackBar.open('Navigating to Inspiration Hub (feature coming soon)!', 'Dismiss', {
+      duration: 3000,
+      horizontalPosition: 'center',
+      verticalPosition: 'bottom',
+    });
+  }
   createNewPost(): void {
     this.router.navigate(['/posts/create']);
   }
