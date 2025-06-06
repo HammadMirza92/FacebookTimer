@@ -1,62 +1,739 @@
 <div class="dashboard-container">
-  <div class="page-header">
-    <h1>Dashboard</h1>
-    <div class="user-welcome" *ngIf="(currentUser$ | async) as user">
-      <p>Welcome back, {{ user.firstName }}!</p>
-      <div class="subscription-info" *ngIf="user.currentSubscription">
-        <p class="plan-name">Your {{ user.currentSubscription.subscriptionPlanName }} plan expires in {{ user.currentSubscription.daysRemaining }} days</p>
-      </div>
+  <!-- Animated Background -->
+  <div class="animated-background">
+    <div class="bg-shapes">
+      <div class="shape shape-1"></div>
+      <div class="shape shape-2"></div>
+      <div class="shape shape-3"></div>
+      <div class="shape shape-4"></div>
+      <div class="shape shape-5"></div>
+      <div class="shape shape-6"></div>
     </div>
+    <div class="floating-particles">
+      <div class="particle" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12]"></div>
+    </div>
+    <div class="grid-overlay"></div>
   </div>
 
-  <div class="dashboard-content" *ngIf="!loading; else loadingTemplate">
-    <div class="quick-actions">
-      <h2>Quick Actions</h2>
-      <div class="actions-container">
-        <button mat-raised-button color="primary" (click)="createNewPost()">
-          <mat-icon>add</mat-icon>
-          Create New Post
-        </button>
-        <button mat-raised-button color="accent" (click)="linkFacebookPage()">
-          <mat-icon>link</mat-icon>
-          {{hasFacebookPages ? 'Manage Facebook Pages' : 'Link Facebook Page'}}
-        </button>
-        <button mat-stroked-button (click)="viewAllTemplates()">
-          <mat-icon>view_quilt</mat-icon>
-          View Templates
-        </button>
-      </div>
-    </div>
+  <!-- Main Dashboard Content -->
+  <div class="dashboard-wrapper">
+    <!-- Professional Header -->
+    <header class="dashboard-header">
+      <div class="header-content">
+        <div class="brand-section">
+          <div class="brand-logo">
+            <mat-icon>dashboard</mat-icon>
+          </div>
+          <div class="brand-text">
+            <h1>Marketing Dashboard</h1>
+            <p class="brand-subtitle">Professional Content Management Platform</p>
+          </div>
+        </div>
 
-    <div class="content-inspiration">
-      <h2><mat-icon>lightbulb_outline</mat-icon> Content Inspiration</h2>
-      <p class="section-description">Get fresh ideas to spark your next engaging post!</p>
-      <div class="inspiration-list">
-        <mat-card *ngFor="let idea of contentIdeas; let i = index" class="idea-card">
-          <mat-card-content>
-            <p>{{ idea }}</p>
-          </mat-card-content>
-          <mat-card-actions align="end">
-            <button mat-icon-button matTooltip="Copy idea" (click)="copyIdeaToClipboard(idea)">
-              <mat-icon>content_copy</mat-icon>
-            </button>
-          </mat-card-actions>
-        </mat-card>
-        <p *ngIf="contentIdeas.length === 0">No ideas to display yet. Click 'Generate Ideas' to get started!</p>
-      </div>
-      <button mat-flat-button color="primary" (click)="generateContentIdeas()">
-        <mat-icon>autorenew</mat-icon> Generate More Ideas
-      </button>
-      <button mat-button (click)="viewInspirationHub()" class="view-hub-button">
-        <mat-icon>arrow_forward</mat-icon> View Inspiration Hub
-      </button>
-    </div>
-    </div>
+        <div class="header-stats">
+          <div class="stat-pill">
+            <mat-icon>trending_up</mat-icon>
+            <span>{{ gameStats.totalScore }} Points</span>
+          </div>
+          <div class="stat-pill">
+            <mat-icon>emoji_events</mat-icon>
+            <span>{{ gameStats.achievements.length }} Awards</span>
+          </div>
+        </div>
 
-  <ng-template #loadingTemplate>
-    <div class="loading-container">
-      <mat-spinner></mat-spinner>
-      <p>Loading your dashboard...</p>
-    </div>
-  </ng-template>
+        <div class="user-profile" *ngIf="(currentUser$ | async) as user">
+          <div class="profile-info">
+            <div class="user-details">
+              <h3>{{ user.firstName }} {{ user.lastName }}</h3>
+              <p class="user-role">Marketing Professional</p>
+              <div class="subscription-badge" *ngIf="user.currentSubscription">
+                <mat-icon>verified</mat-icon>
+                <span>{{ user.currentSubscription.subscriptionPlanName }}</span>
+              </div>
+            </div>
+            <div class="profile-avatar">
+              <!-- <img [src]="user.profileImage || '/assets/default-avatar.jpg'"
+                   [alt]="user.firstName"
+                   onerror="this.src='/assets/default-avatar.jpg'"> -->
+              <div class="status-indicator online"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="dashboard-nav">
+        <div class="nav-tabs">
+          <button class="nav-tab active" (click)="setActiveTab('overview')">
+            <mat-icon>dashboard</mat-icon>
+            <span>Overview</span>
+          </button>
+          <button class="nav-tab" (click)="setActiveTab('content')">
+            <mat-icon>edit</mat-icon>
+            <span>Content</span>
+          </button>
+          <button class="nav-tab" (click)="setActiveTab('analytics')">
+            <mat-icon>analytics</mat-icon>
+            <span>Analytics</span>
+          </button>
+          <button class="nav-tab" (click)="setActiveTab('games')">
+            <mat-icon>games</mat-icon>
+            <span>Games</span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Dashboard Content -->
+    <main class="dashboard-main" *ngIf="!loading; else loadingTemplate">
+
+      <!-- Key Metrics Section -->
+      <section class="metrics-section">
+        <div class="section-header">
+          <h2>
+            <mat-icon>insights</mat-icon>
+            Performance Overview
+          </h2>
+          <p>Track your marketing performance and engagement metrics</p>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-card primary">
+            <div class="metric-header">
+              <div class="metric-icon">
+                <mat-icon>trending_up</mat-icon>
+              </div>
+              <div class="metric-trend positive">
+                <mat-icon>arrow_upward</mat-icon>
+                <span>+12%</span>
+              </div>
+            </div>
+            <div class="metric-content">
+              <h3>{{ gameStats.totalScore | number }}</h3>
+              <p>Total Score</p>
+              <div class="metric-progress">
+                <div class="progress-bar" [style.width.%]="getScoreProgress()"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="metric-card success">
+            <div class="metric-header">
+              <div class="metric-icon">
+                <mat-icon>games</mat-icon>
+              </div>
+              <div class="metric-trend positive">
+                <mat-icon>arrow_upward</mat-icon>
+                <span>+{{ gameStats.gamesPlayed }}</span>
+              </div>
+            </div>
+            <div class="metric-content">
+              <h3>{{ gameStats.gamesPlayed }}</h3>
+              <p>Games Completed</p>
+              <div class="metric-progress">
+                <div class="progress-bar" [style.width.%]="getGamesProgress()"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="metric-card warning">
+            <div class="metric-header">
+              <div class="metric-icon">
+                <mat-icon>emoji_events</mat-icon>
+              </div>
+              <div class="metric-trend positive">
+                <mat-icon>arrow_upward</mat-icon>
+                <span>+{{ gameStats.achievements.length }}</span>
+              </div>
+            </div>
+            <div class="metric-content">
+              <h3>{{ gameStats.achievements.length }}</h3>
+              <p>Achievements</p>
+              <div class="metric-progress">
+                <div class="progress-bar" [style.width.%]="getAchievementProgress()"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="metric-card info">
+            <div class="metric-header">
+              <div class="metric-icon">
+                <mat-icon>lightbulb</mat-icon>
+              </div>
+              <div class="metric-trend neutral">
+                <mat-icon>remove</mat-icon>
+                <span>{{ contentIdeas.length }}</span>
+              </div>
+            </div>
+            <div class="metric-content">
+              <h3>{{ contentIdeas.length }}</h3>
+              <p>Ideas Ready</p>
+              <div class="metric-progress">
+                <div class="progress-bar" [style.width.%]="getIdeasProgress()"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Actions Section -->
+      <section class="actions-section">
+        <div class="section-header">
+          <h2>
+            <mat-icon>rocket_launch</mat-icon>
+            Quick Actions
+          </h2>
+          <p>Jump into your most important tasks</p>
+        </div>
+
+        <div class="actions-grid">
+          <div class="action-card featured" (click)="createNewPost()">
+            <div class="action-background"></div>
+            <div class="action-content">
+              <div class="action-icon">
+                <mat-icon>add_circle</mat-icon>
+              </div>
+              <div class="action-text">
+                <h4>Create New Post</h4>
+                <p>Start crafting your next engaging content piece</p>
+              </div>
+              <div class="action-arrow">
+                <mat-icon>arrow_forward</mat-icon>
+              </div>
+            </div>
+          </div>
+
+          <div class="action-card" (click)="linkFacebookPage()">
+            <div class="action-background"></div>
+            <div class="action-content">
+              <div class="action-icon">
+                <mat-icon>link</mat-icon>
+              </div>
+              <div class="action-text">
+                <h4>{{ hasFacebookPages ? 'Manage Pages' : 'Connect Facebook' }}</h4>
+                <p>{{ hasFacebookPages ? 'Manage your connected pages' : 'Link your Facebook pages' }}</p>
+              </div>
+              <div class="action-arrow">
+                <mat-icon>arrow_forward</mat-icon>
+              </div>
+            </div>
+          </div>
+
+          <div class="action-card" (click)="viewAllTemplates()">
+            <div class="action-background"></div>
+            <div class="action-content">
+              <div class="action-icon">
+                <mat-icon>view_quilt</mat-icon>
+              </div>
+              <div class="action-text">
+                <h4>Browse Templates</h4>
+                <p>Explore our professional template library</p>
+              </div>
+              <div class="action-arrow">
+                <mat-icon>arrow_forward</mat-icon>
+              </div>
+            </div>
+          </div>
+
+          <div class="action-card" (click)="viewAnalytics()">
+            <div class="action-background"></div>
+            <div class="action-content">
+              <div class="action-icon">
+                <mat-icon>analytics</mat-icon>
+              </div>
+              <div class="action-text">
+                <h4>View Analytics</h4>
+                <p>Deep dive into your performance metrics</p>
+              </div>
+              <div class="action-arrow">
+                <mat-icon>arrow_forward</mat-icon>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive Games Section -->
+      <section class="games-section-wrapper">
+        <div class="games-section">
+          <div class="section-header">
+            <h2>
+              <mat-icon>games</mat-icon>
+              Take a Break - Interactive Games
+            </h2>
+            <p class="section-description">Boost your creativity with fun, marketing-themed games!</p>
+          </div>
+
+          <!-- Game Stats Display -->
+          <div class="game-stats-display" *ngIf="gameStats.gamesPlayed > 0">
+            <div class="stats-container">
+              <div class="stat-item">
+                <div class="stat-icon">
+                  <mat-icon>sports_esports</mat-icon>
+                </div>
+                <div class="stat-data">
+                  <span class="stat-number">{{ gameStats.gamesPlayed }}</span>
+                  <span class="stat-label">Games Played</span>
+                </div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-icon">
+                  <mat-icon>stars</mat-icon>
+                </div>
+                <div class="stat-data">
+                  <span class="stat-number">{{ gameStats.totalScore }}</span>
+                  <span class="stat-label">Total Score</span>
+                </div>
+              </div>
+              <div class="stat-item" *ngIf="gameStats.achievements.length > 0">
+                <div class="stat-icon">
+                  <mat-icon>emoji_events</mat-icon>
+                </div>
+                <div class="stat-data">
+                  <span class="stat-number">{{ gameStats.achievements.length }}</span>
+                  <span class="stat-label">Achievements</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Game Selection Grid -->
+          <div class="game-selection" *ngIf="!activeGame">
+            <div class="games-grid">
+              <div class="game-card quiz-card" (click)="startGame('quiz')">
+                <div class="game-card-header">
+                  <div class="game-icon">
+                    <mat-icon>quiz</mat-icon>
+                  </div>
+                  <div class="game-badge">Marketing</div>
+                </div>
+                <div class="game-card-content">
+                  <h3>Marketing Quiz</h3>
+                  <p>Test your marketing knowledge with challenging questions</p>
+                  <div class="game-features">
+                    <span class="feature-tag">10 Questions</span>
+                    <span class="feature-tag">Timed</span>
+                  </div>
+                </div>
+                <div class="game-card-footer">
+                  <div class="play-button">
+                    <mat-icon>play_arrow</mat-icon>
+                    <span>Start Quiz</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="game-card word-card" (click)="startGame('wordScramble')">
+                <div class="game-card-header">
+                  <div class="game-icon">
+                    <mat-icon>shuffle</mat-icon>
+                  </div>
+                  <div class="game-badge">Word Play</div>
+                </div>
+                <div class="game-card-content">
+                  <h3>Word Scramble</h3>
+                  <p>Unscramble marketing terms to improve your vocabulary</p>
+                  <div class="game-features">
+                    <span class="feature-tag">Unlimited</span>
+                    <span class="feature-tag">Hints</span>
+                  </div>
+                </div>
+                <div class="game-card-footer">
+                  <div class="play-button">
+                    <mat-icon>play_arrow</mat-icon>
+                    <span>Start Game</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="game-card memory-card" (click)="startGame('memory')">
+                <div class="game-card-header">
+                  <div class="game-icon">
+                    <mat-icon>memory</mat-icon>
+                  </div>
+                  <div class="game-badge">Brain Training</div>
+                </div>
+                <div class="game-card-content">
+                  <h3>Memory Match</h3>
+                  <p>Test your memory skills with this classic card matching game</p>
+                  <div class="game-features">
+                    <span class="feature-tag">3 Levels</span>
+                    <span class="feature-tag">Strategy</span>
+                  </div>
+                </div>
+                <div class="game-card-footer">
+                  <div class="play-button">
+                    <mat-icon>play_arrow</mat-icon>
+                    <span>Start Game</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Game Display -->
+          <div class="active-game-container" *ngIf="activeGame">
+            <div class="game-header">
+              <div class="game-title">
+                <mat-icon>{{ getGameIcon(activeGame) }}</mat-icon>
+                <h3>{{ getGameDisplayName(activeGame) }}</h3>
+              </div>
+              <div class="game-controls">
+                <button mat-icon-button (click)="pauseGame()" *ngIf="canPauseGame()" matTooltip="Pause Game">
+                  <mat-icon>pause</mat-icon>
+                </button>
+                <button mat-icon-button (click)="closeGame()" matTooltip="Close Game">
+                  <mat-icon>close</mat-icon>
+                </button>
+              </div>
+            </div>
+
+            <!-- Quiz Game Implementation -->
+            <div class="quiz-game-container" *ngIf="activeGame === 'quiz' && currentQuiz">
+              <div class="quiz-progress-bar">
+                <div class="progress-info">
+                  <span>Question {{ quizQuestionIndex + 1 }} of {{ totalQuizQuestions }}</span>
+                  <div class="timer-display" *ngIf="!quizAnswered">
+                    <mat-icon>timer</mat-icon>
+                    <span>{{ triviaTimeLeft }}s</span>
+                  </div>
+                </div>
+                <div class="progress-track">
+                  <div class="progress-fill" [style.width.%]="getQuizProgress()"></div>
+                </div>
+              </div>
+
+              <div class="quiz-content">
+                <div class="question-card">
+                  <h4>{{ currentQuiz.question }}</h4>
+                  <div class="quiz-options">
+                    <button
+                      *ngFor="let option of currentQuiz.options; let i = index"
+                      class="quiz-option"
+                      [class.correct]="quizAnswered && i === currentQuiz.correctAnswer"
+                      [class.incorrect]="quizAnswered && selectedAnswer === i && i !== currentQuiz.correctAnswer"
+                      [class.selected]="selectedAnswer === i"
+                      [disabled]="quizAnswered"
+                      (click)="answerQuestion(i)">
+                      <div class="option-letter">{{ getOptionLetter(i) }}</div>
+                      <span>{{ option }}</span>
+                      <div class="option-indicator">
+                        <mat-icon *ngIf="quizAnswered && i === currentQuiz.correctAnswer">check_circle</mat-icon>
+                        <mat-icon *ngIf="quizAnswered && selectedAnswer === i && i !== currentQuiz.correctAnswer">cancel</mat-icon>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="quiz-explanation" *ngIf="showQuizResult">
+                  <div class="explanation-card">
+                    <mat-icon>lightbulb</mat-icon>
+                    <div class="explanation-content">
+                      <h5>Explanation</h5>
+                      <p>{{ currentQuiz.explanation }}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="quiz-score-display">
+                  <div class="score-card">
+                    <mat-icon>stars</mat-icon>
+                    <span>Score: {{ quizScore }} / {{ quizQuestionIndex + (quizAnswered ? 1 : 0) }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Word Scramble Game Implementation -->
+            <div class="word-game-container" *ngIf="activeGame === 'wordScramble' && currentWordGame">
+              <div class="word-game-content">
+                <div class="word-display-card">
+                  <h4>Unscramble this marketing term:</h4>
+                  <div class="scrambled-word">{{ currentWordGame.scrambled }}</div>
+                  <div class="word-hint">
+                    <mat-icon>lightbulb</mat-icon>
+                    <span>Hint: {{ currentWordGame.hint }}</span>
+                  </div>
+                </div>
+
+                <div class="word-input-section" *ngIf="!wordGameCompleted">
+                  <mat-form-field appearance="outline" class="word-input-field">
+                    <mat-label>Your answer</mat-label>
+                    <input matInput
+                           [(ngModel)]="userGuess"
+                           (keyup.enter)="submitWordGuess()"
+                           placeholder="Type your guess..."
+                           autocomplete="off">
+                  </mat-form-field>
+                  <button mat-raised-button
+                          color="primary"
+                          class="submit-button"
+                          (click)="submitWordGuess()"
+                          [disabled]="!userGuess.trim()">
+                    <mat-icon>send</mat-icon>
+                    Submit
+                  </button>
+                </div>
+
+                <div class="word-game-stats">
+                  <div class="attempts-display">
+                    <mat-icon>try</mat-icon>
+                    <span>Attempts: {{ wordGameAttempts }} / {{ maxWordAttempts }}</span>
+                  </div>
+                </div>
+
+                <div class="word-success-message" *ngIf="wordGameCompleted">
+                  <div class="success-card">
+                    <mat-icon class="success-icon">check_circle</mat-icon>
+                    <div class="success-content">
+                      <h5>Correct!</h5>
+                      <p>The word was "{{ currentWordGame.word }}"</p>
+                      <p class="next-word-info">Getting next word...</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Memory Game Implementation -->
+            <div class="memory-game-container" *ngIf="activeGame === 'memory'">
+              <!-- Difficulty Selection -->
+              <div class="difficulty-selector" *ngIf="!memoryGameStarted && !memoryTimerActive">
+                <h4>Choose Your Challenge Level</h4>
+                <div class="difficulty-options">
+                  <button class="difficulty-button easy"
+                          [class.selected]="memoryDifficulty === 'easy'"
+                          (click)="setMemoryDifficulty('easy')">
+                    <mat-icon>sentiment_satisfied</mat-icon>
+                    <div class="difficulty-info">
+                      <span class="difficulty-name">Easy</span>
+                      <span class="difficulty-desc">6 pairs</span>
+                    </div>
+                  </button>
+
+                  <button class="difficulty-button medium"
+                          [class.selected]="memoryDifficulty === 'medium'"
+                          (click)="setMemoryDifficulty('medium')">
+                    <mat-icon>sentiment_neutral</mat-icon>
+                    <div class="difficulty-info">
+                      <span class="difficulty-name">Medium</span>
+                      <span class="difficulty-desc">10 pairs</span>
+                    </div>
+                  </button>
+
+                  <button class="difficulty-button hard"
+                          [class.selected]="memoryDifficulty === 'hard'"
+                          (click)="setMemoryDifficulty('hard')">
+                    <mat-icon>sentiment_very_dissatisfied</mat-icon>
+                    <div class="difficulty-info">
+                      <span class="difficulty-name">Hard</span>
+                      <span class="difficulty-desc">16 pairs</span>
+                    </div>
+                  </button>
+                </div>
+
+                <button mat-raised-button
+                        color="accent"
+                        class="start-memory-button"
+                        (click)="startMemoryGame()">
+                  <mat-icon>play_arrow</mat-icon>
+                  Start Memory Game
+                </button>
+              </div>
+
+              <!-- Memory Timer Preview -->
+              <div class="memory-timer-preview" *ngIf="memoryTimerActive && !memoryGameStarted">
+                <div class="timer-circle">
+                  <div class="timer-number">{{ memoryGameTimer }}</div>
+                  <div class="timer-label">Memorize!</div>
+                </div>
+                <p class="timer-instruction">
+                  Study the card positions carefully. The game will start when the timer reaches zero.
+                </p>
+              </div>
+
+              <!-- Memory Game Stats -->
+              <div class="memory-game-stats" *ngIf="memoryGameStarted">
+                <div class="memory-stat-item">
+                  <mat-icon>psychology</mat-icon>
+                  <div class="stat-content">
+                    <span class="stat-label">Difficulty</span>
+                    <span class="stat-value difficulty-{{ memoryDifficulty }}">{{ memoryDifficulty | titlecase }}</span>
+                  </div>
+                </div>
+                <div class="memory-stat-item">
+                  <mat-icon>touch_app</mat-icon>
+                  <div class="stat-content">
+                    <span class="stat-label">Moves</span>
+                    <span class="stat-value">{{ memoryMoves }}</span>
+                  </div>
+                </div>
+                <div class="memory-stat-item">
+                  <mat-icon>pair</mat-icon>
+                  <div class="stat-content">
+                    <span class="stat-label">Pairs</span>
+                    <span class="stat-value">{{ matchedPairs }} / {{ getTotalPairs() }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Memory Cards Grid -->
+              <div class="memory-grid"
+                   [class.grid-easy]="memoryDifficulty === 'easy'"
+                   [class.grid-medium]="memoryDifficulty === 'medium'"
+                   [class.grid-hard]="memoryDifficulty === 'hard'"
+                   *ngIf="memoryCards.length > 0">
+                <div *ngFor="let card of memoryCards; let i = index"
+                     class="memory-card"
+                     [class.flipped]="card.flipped || card.matched"
+                     [class.matched]="card.matched"
+                     [class.preview-mode]="showMemoryPreview"
+                     (click)="flipMemoryCard(i)">
+                  <div class="card-inner">
+                    <div class="card-front">
+                      <div class="card-logo">
+                        <mat-icon>diamond</mat-icon>
+                      </div>
+                    </div>
+                    <div class="card-back">
+                      <span class="card-emoji">{{ card.icon }}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Memory Game Controls -->
+              <div class="memory-controls" *ngIf="memoryGameStarted">
+                <button mat-stroked-button class="restart-button" (click)="restartMemoryGame()">
+                  <mat-icon>refresh</mat-icon>
+                  Restart Game
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Achievements Section -->
+          <div class="achievements-section" *ngIf="gameStats.achievements.length > 0">
+            <div class="achievements-header">
+              <h3>
+                <mat-icon>emoji_events</mat-icon>
+                Your Achievements
+              </h3>
+            </div>
+            <div class="achievements-grid">
+              <div *ngFor="let achievement of gameStats.achievements" class="achievement-badge">
+                <div class="achievement-icon">
+                  <mat-icon>{{ getAchievementIcon(achievement) }}</mat-icon>
+                </div>
+                <div class="achievement-content">
+                  <span class="achievement-title">{{ formatAchievementName(achievement) }}</span>
+                  <span class="achievement-date">Recently earned</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Content Inspiration Section -->
+      <section class="inspiration-section-wrapper">
+        <div class="inspiration-section">
+          <div class="section-header">
+            <h2>
+              <mat-icon>lightbulb</mat-icon>
+              Content Inspiration
+            </h2>
+            <p class="section-description">Fresh ideas to spark your next viral post</p>
+          </div>
+
+          <div class="inspiration-content">
+            <!-- Ideas Grid -->
+            <div class="ideas-grid" *ngIf="contentIdeas.length > 0">
+              <div *ngFor="let idea of contentIdeas; let i = index" class="idea-card">
+                <div class="idea-header">
+                  <div class="idea-number">{{ i + 1 }}</div>
+                  <div class="idea-category">{{ getIdeaCategory(idea.text) }}</div>
+                </div>
+                <div class="idea-content">
+                  <p>{{ idea.text }}</p>
+                </div>
+                <div class="idea-actions">
+                  <button mat-icon-button
+                          class="action-button copy-button"
+                          (click)="copyIdeaToClipboard(idea.text)"
+                          matTooltip="Copy to clipboard">
+                    <mat-icon>content_copy</mat-icon>
+                  </button>
+                  <button mat-icon-button
+                          class="action-button favorite-button"
+                          (click)="toggleFavoriteIdea(i)"
+                          [class.favorited]="isIdeaFavorited(i)"
+                          matTooltip="Add to favorites">
+                    <mat-icon>{{ isIdeaFavorited(i) ? 'favorite' : 'favorite_border' }}</mat-icon>
+                  </button>
+                  <button mat-icon-button
+                          class="action-button share-button"
+                          (click)="shareIdea(idea.text)"
+                          matTooltip="Share idea">
+                    <mat-icon>share</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Empty State -->
+            <div class="empty-state" *ngIf="contentIdeas.length === 0">
+              <div class="empty-state-content">
+                <mat-icon>lightbulb_outline</mat-icon>
+                <h4>No Ideas Generated Yet</h4>
+                <p>Click the button below to generate fresh content ideas that will engage your audience</p>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="inspiration-actions">
+              <button mat-raised-button
+                      color="primary"
+                      class="generate-ideas-button"
+                      (click)="generateContentIdeas()">
+                <mat-icon>autorenew</mat-icon>
+                Generate Fresh Ideas
+              </button>
+
+              <button mat-stroked-button
+                      class="view-hub-button"
+                      (click)="viewInspirationHub()">
+                <mat-icon>explore</mat-icon>
+                Explore Inspiration Hub
+              </button>
+
+              <button mat-button
+                      class="save-ideas-button"
+                      (click)="saveAllIdeas()"
+                      *ngIf="contentIdeas.length > 0">
+                <mat-icon>bookmark</mat-icon>
+                Save All Ideas
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Loading Template -->
+    <ng-template #loadingTemplate>
+      <div class="loading-container">
+        <div class="loading-content">
+          <div class="loading-spinner">
+            <mat-spinner diameter="60"></mat-spinner>
+          </div>
+          <div class="loading-text">
+            <h3>Loading Dashboard</h3>
+            <p>Preparing your marketing command center...</p>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
 </div>
