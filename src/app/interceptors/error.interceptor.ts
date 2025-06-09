@@ -28,7 +28,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           // Auto logout if 401 response returned from API
           this.authService.logout();
           this.notificationService.showError('Session expired. Please login again.');
-          this.router.navigate(['/login']);
+          this.router.navigate(['/auth/login']);
         } else if (error.status === 403) {
           this.notificationService.showError('You do not have permission to access this resource.');
         } else if (error.status === 404) {

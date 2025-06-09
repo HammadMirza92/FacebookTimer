@@ -201,7 +201,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
       next: () => {
         this.notificationService.showSuccess('Registration successful!');
         this.loading = false;
-        this.router.navigate(['/login'], {
+        this.router.navigate(['/auth/login'], {
           queryParams: { email: registerData.email }
         });
       },

@@ -24,7 +24,7 @@ export class AuthGuard {
     }
 
     this.notificationService.showWarning('Please login to access this page.');
-    this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+    this.router.navigate(['/auth/login'], { queryParams: { returnUrl: state.url } });
     return false;
   }
 }

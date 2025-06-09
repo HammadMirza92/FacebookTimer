@@ -122,7 +122,7 @@ export class AuthService {
     this.currentUserSubject.next(null);
 
     // Navigate to login
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth/login']);
   }
 
   forgotPassword(email: string): Observable<any> {
