@@ -77,6 +77,8 @@
 
     mat-icon {
       color: rgba(24, 119, 242, 0.8);
+        width: 32px;
+      height: 32px;
       font-size: 32px;
       animation: iconRotate 8s ease-in-out infinite;
       text-shadow: 0 2px 8px rgba(24, 119, 242, 0.3);
@@ -1048,7 +1050,7 @@
           transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
           position: relative;
           overflow: hidden;
-          animation: buttonSlideIn 0.8s ease-out 1.2s both;
+          animation: buttonSlideIn 0.2s ease-out 0.4s both;
 
           &::before {
             content: '';

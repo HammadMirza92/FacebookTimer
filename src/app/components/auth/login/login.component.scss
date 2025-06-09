@@ -74,10 +74,13 @@
     backdrop-filter: blur(15px);
     border: 2px solid rgba(24, 119, 242, 0.3);
     box-shadow: 0 8px 32px rgba(24, 119, 242, 0.2);
+    overflow: hidden;
 
     mat-icon {
       color: rgba(24, 119, 242, 0.8);
-      font-size: 32px;
+      width: 32px;
+  height: 32px;
+  font-size: 32px;
       animation: iconRotate 8s ease-in-out infinite;
       text-shadow: 0 2px 8px rgba(24, 119, 242, 0.3);
     }
@@ -92,6 +95,8 @@
     &.element-2 {
       top: 20%;
       right: 12%;
+      width: 80px;
+      height: 80px;
       animation-delay: 1.5s;
       background: linear-gradient(135deg, rgba(66, 165, 245, 0.2), rgba(100, 181, 246, 0.15));
     }
@@ -929,7 +934,7 @@
           transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
           position: relative;
           overflow: hidden;
-          animation: buttonSlideIn 0.8s ease-out 0.8s both;
+          animation: buttonSlideIn 0.2s ease-out 0.2s both;
           // color: #298af3;
           &::before {
             content: '';

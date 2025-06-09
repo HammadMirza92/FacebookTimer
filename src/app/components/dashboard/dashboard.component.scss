@@ -53,6 +53,7 @@
         mat-icon {
           color: #ffffff;
           font-size: 1.25rem;
+          margin-top: 5px!important;
         }
       }
 
@@ -89,6 +90,7 @@
         mat-icon {
           font-size: 1rem;
           color: #4f46e5;
+          margin-top: 5px!important;
         }
 
         span {
@@ -135,6 +137,7 @@
 
             mat-icon {
               font-size: 0.75rem;
+              margin-top: 5px!important;
             }
           }
         }
@@ -196,19 +199,23 @@
           color: #334155;
         }
 
-        &.active {
+        .active {
           color: #4f46e5;
           border-bottom-color: #4f46e5;
         }
 
         mat-icon {
           font-size: 1rem;
+          margin-top: 5px!important;
         }
       }
     }
   }
 }
-
+.nav-tab.active {
+  color: #4f46e5!important;
+  border-bottom-color: #4f46e5!important;
+}
 // ===========================
 // MAIN CONTENT AREA
 // ===========================
@@ -238,6 +245,7 @@
     mat-icon {
       font-size: 1.5rem;
       color: #4f46e5;
+      margin-top: 5px!important;
     }
   }
 
@@ -255,7 +263,6 @@
 
 .metrics-section {
   margin-bottom: 3rem;
-
   .metrics-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -306,6 +313,7 @@
           mat-icon {
             font-size: 1.5rem;
             color: #ffffff;
+            margin-top: 5px!important;
           }
         }
 
@@ -409,7 +417,7 @@
       &:hover {
         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         transform: translateY(-1px);
-        border-color: var(--primary-200);
+        border-color: #e0e7ff;
       }
 
       &.featured {
@@ -576,7 +584,7 @@
         &:hover {
           box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
           transform: translateY(-1px);
-          border-color: var(--primary-200);
+          border-color: #e0e7ff;
         }
 
         .game-card-header {
@@ -649,7 +657,7 @@
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
-            width: 100%;
+            width: 90%;
             padding: 0.75rem;
             background-color: #f1f5f9;
             border: 1px solid #e2e8f0;
@@ -668,6 +676,7 @@
 
             mat-icon {
               font-size: 1rem;
+              margin-top: 6px;
             }
           }
         }
@@ -690,7 +699,6 @@
 
         .game-title {
           display: flex;
-          align-items: center;
           gap: 0.5rem;
 
           mat-icon {
@@ -710,8 +718,8 @@
           gap: 0.5rem;
 
           button {
-            width: 2.5rem;
-            height: 2.5rem;
+            // width: 2.5rem;
+            // height: 2.5rem;
             border-radius: 9999px;
             border: 1px solid #e2e8f0;
             background-color: #ffffff;
@@ -756,6 +764,7 @@
 
             mat-icon {
               font-size: 0.875rem;
+              margin-top: 10px;
             }
           }
         }
@@ -807,7 +816,7 @@
             transition: all 150ms ease-out;
 
             &:hover {
-              border-color: var(--primary-200);
+              border-color: #e0e7ff;
               background-color: #eef2ff;
             }
 
@@ -877,7 +886,7 @@
           display: flex;
           gap: 0.75rem;
           background-color: #eff6ff;
-          border: 1px solid var(--info-200);
+          border: 1px solid #90cdf4;
           border-radius: 0.5rem;
           padding: 1rem;
 
@@ -919,7 +928,8 @@
           font-weight: 600;
 
           mat-icon {
-            font-size: 1rem;
+            font-size: 1.25rem;
+            margin-top: 6px;
           }
         }
       }
@@ -1030,12 +1040,12 @@
           .success-card {
             text-align: center;
             background-color: #f0fdf4;
-            border: 1px solid var(--success-200);
+            border: 1px solid #bbf7d0;
             border-radius: 0.5rem;
             padding: 1.5rem;
 
             .success-icon {
-              font-size: 3rem;
+              font-size: 1.5rem;
               color: #22c55e;
               margin-bottom: 0.75rem;
             }
@@ -1044,7 +1054,7 @@
               h5 {
                 font-size: 1.25rem;
                 font-weight: 600;
-                color: var(--success-600);
+                color: #16a34a;
                 margin-bottom: 0.5rem;
               }
 
@@ -1098,7 +1108,7 @@
               min-width: 8rem;
 
               &:hover {
-                border-color: var(--primary-200);
+                border-color: #bfdbfe;
                 background-color: #eef2ff;
               }
 
@@ -1108,7 +1118,7 @@
               }
 
               mat-icon {
-                font-size: 2rem;
+                font-size: 1.5rem;
 
                 &.easy {
                   color: #22c55e;
@@ -1331,7 +1341,7 @@
             }
 
             &:hover:not(.flipped):not(.matched) .card-inner {
-              transform: scale(1.05);
+              transform: scale(0.8);
             }
           }
         }
@@ -1493,7 +1503,7 @@
           &:hover {
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
             transform: translateY(-1px);
-            border-color: var(--primary-200);
+            border-color: #bfdbfe;
           }
 
           .idea-header {
@@ -1517,8 +1527,8 @@
             }
 
             .idea-category {
-              background-color: var(--info-100);
-              color: var(--info-700);
+              background-color: #e0f2fe;
+              color: #0369a1;
               padding: 0.25rem 0.5rem;
               border-radius: 0.25rem;
               font-size: 0.75rem;
@@ -1542,8 +1552,8 @@
             gap: 0.5rem;
 
             .action-button {
-              width: 2.25rem;
-              height: 2.25rem;
+              width: 2.5rem;
+              height: 2.5rem;
               border-radius: 9999px;
               border: 1px solid #e2e8f0;
               background-color: #ffffff;
@@ -1553,17 +1563,18 @@
               display: flex;
               align-items: center;
               justify-content: center;
+              margin-top: 20px;
 
               &:hover {
-                border-color: var(--primary-200);
+                border-color: #bfdbfe;
                 background-color: #eef2ff;
                 color: #4f46e5;
               }
 
               &.copy-button:hover {
-                border-color: var(--success-200);
+                border-color: #bbf7d0;
                 background-color: #f0fdf4;
-                color: var(--success-600);
+                color: #16a34a;
               }
 
               &.favorite-button {
@@ -1574,20 +1585,21 @@
                 }
 
                 &:hover {
-                  border-color: var(--error-200);
+                  border-color: #fecaca;
                   background-color: #fef2f2;
-                  color: var(--error-600);
+                  color: #dc2626;
                 }
               }
 
               &.share-button:hover {
-                border-color: var(--info-200);
+                border-color: #bae6fd;
                 background-color: #eff6ff;
-                color: var(--info-600);
+                color: #0284c7;
               }
 
               mat-icon {
                 font-size: 1rem;
+                margin-top: 5px!important;
               }
             }
           }
@@ -2177,4 +2189,8 @@ mat-icon {
   .dashboard-header {
     background-color: rgba(255, 255, 255, 0.98);
   }
+}
+.close-game-icon{
+  width: 40px!important;
+  height: 40px!important;
 }

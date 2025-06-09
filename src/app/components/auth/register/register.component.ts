@@ -193,12 +193,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
       firstName: this.registerForm.value.firstName.trim(),
       lastName: this.registerForm.value.lastName.trim(),
       email: this.registerForm.value.email.trim().toLowerCase(),
-      password: this.registerForm.value.password
+      password: this.registerForm.value.password,
+      confirmPassword: this.registerForm.value.confirmPassword
     };
 
     const subscription = this.authService.register(registerData).subscribe({
       next: () => {
-        this.notificationService.showSuccess('Registration successful! Please check your email to verify your account.');
+        this.notificationService.showSuccess('Registration successful!');
         this.loading = false;
         this.router.navigate(['/login'], {
           queryParams: { email: registerData.email }

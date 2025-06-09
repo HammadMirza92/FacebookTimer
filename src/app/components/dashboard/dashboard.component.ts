@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { AuthService } from '../../services/auth.service';
@@ -10,7 +10,6 @@ import { FacebookPage } from '../../models/facebook-page.model';
 import { Post, PostStatus } from '../../models/post.model';
 import { Template } from '../../models/template.model';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { NotificationService } from 'src/app/services/notification.service';
 
 interface QuizQuestion {
@@ -58,7 +57,7 @@ interface ContentIdea {
   id: number;
 }
 
-type TabType = 'overview' | 'content' | 'analytics' | 'games';
+type TabType = 'overview' | 'action' | 'games' | 'content';
 type GameType = 'quiz' | 'wordScramble' | 'memory' | null;
 type DifficultyLevel = 'easy' | 'medium' | 'hard';
 
@@ -69,6 +68,11 @@ type DifficultyLevel = 'easy' | 'medium' | 'hard';
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
+  @ViewChild('metricsSection', { static: false }) metricsSection!: ElementRef;
+  @ViewChild('actionsSection', { static: false }) actionsSection!: ElementRef;
+  @ViewChild('gameSection', { static: false }) gameSection!: ElementRef;
+  @ViewChild('contentSection', { static: false }) contentSection!: ElementRef;
+
   private gameStatsSubject = new BehaviorSubject<GameStats>({
     gamesPlayed: 0,
     totalScore: 0,
@@ -330,9 +334,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
   // Navigation Methods
   setActiveTab(tab: TabType): void {
     this.activeTab = tab;
+    if (tab === 'action') {
+       this.actionsSection.nativeElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    } else if (tab === 'games') {
+       this.gameSection.nativeElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    } else if (tab === 'content') {
+       this.contentSection.nativeElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    } else {
+       this.metricsSection.nativeElement.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
     this.notificationService.showSuccess(`Switched to ${tab} view`);
   }
-
   // Service Integration Methods
   private loadRecentPosts(): void {
     // In real implementation, load from PostService

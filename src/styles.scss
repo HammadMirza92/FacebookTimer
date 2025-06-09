@@ -1,4 +1,139 @@
-/* You can add global styles to this file, and also import other style files */
+/* Import Poppins font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* Apply Poppins font to ALL HTML elements with !important */
+*, *::before, *::after {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+html {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+body {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Text elements */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+p, span, div, section, article, aside, header, footer, nav, main {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* List elements */
+ul, ol, li, dl, dt, dd {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Table elements */
+table, thead, tbody, tfoot, tr, td, th, caption {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Form elements */
+form, fieldset, legend, label {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+input, textarea, select, option, optgroup {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+button {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Interactive elements */
+a, abbr, acronym {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Content elements */
+blockquote, cite, q {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Code elements */
+code, pre, samp, kbd, var {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Inline elements */
+em, i, strong, b, small, big, sub, sup {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Other elements */
+address, details, summary {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+time, mark, del, ins {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Media elements text */
+figure, figcaption {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Angular Material and other framework overrides */
+.mat-button, .mat-raised-button, .mat-icon-button, .mat-fab, .mat-mini-fab {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.mat-form-field, .mat-input-element, .mat-select, .mat-option {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.mat-toolbar, .mat-card, .mat-dialog-container {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Bootstrap overrides if you're using Bootstrap */
+.btn, .form-control, .form-select, .navbar, .card {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Ensure all text content uses Poppins */
+[class*="text-"], [class*="font-"] {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Any remaining elements that might be missed */
+canvas, svg, iframe, object, embed, applet {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Pseudo-elements */
+::placeholder {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+::before, ::after {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+/* Universal selector to catch everything */
+* {
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.material-icons,
+[class^="mat-icon"],
+[class*=" mat-icon"],
+[class^="ico"],
+[class*=" ico"],
+[class^="icon"],
+[class*=" icon"] {
+  font-family: 'Material Icons' !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  speak: none;
+}
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
