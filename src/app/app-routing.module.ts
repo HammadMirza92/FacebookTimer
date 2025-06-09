@@ -15,12 +15,13 @@ import { NotFoundComponent } from './components/layout/not-found/not-found.compo
 import { AuthGuard } from './guards/auth.guard';
 import { SubscriptionGuard } from './guards/subscription.guard';
 import { SettingComponent } from './components/setting/setting.component';
+import { TemplateAdminComponent } from './components/templatess/template-admin/template-admin.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'settings', component: SettingComponent },
+  { path: 'settings', component: SettingComponent , canActivate: [AuthGuard] },
   { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'templates', component: TemplateLibraryComponent, canActivate: [AuthGuard] },
   { path: 'facebook-pages', component: FacebookPagesComponent, canActivate: [AuthGuard] },
@@ -29,7 +30,9 @@ const routes: Routes = [
   { path: 'posts/edit/:id', component: CreatePostComponent, canActivate: [AuthGuard] },
   { path: 'subscription/plans', component: SubscriptionPlansComponent, canActivate: [AuthGuard] },
   { path: 'subscription/history', component: PaymentHistoryComponent, canActivate: [AuthGuard] },
-  { path: '**', component: NotFoundComponent }
+   {path: 'test', component: TemplateAdminComponent },
+  { path: '**', component: NotFoundComponent },
+
 ];
 
 @NgModule({

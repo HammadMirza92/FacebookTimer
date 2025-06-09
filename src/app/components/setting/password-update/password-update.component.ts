@@ -204,8 +204,6 @@ export class PasswordUpdateComponent implements OnInit {
       },
       error: (error) => {
         this.loading = false;
-        console.error('Password change error:', error);
-
         let errorMessage = 'Failed to change password';
         if (error.error?.message) {
           errorMessage = error.error.message;
