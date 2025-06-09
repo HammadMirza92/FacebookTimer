@@ -3,8 +3,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, Observable } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { UserService } from '../../services/user.service';
-import { NotificationService } from '../../services/notification.service';
+import { UserService } from '../user.service';
+import { NotificationService } from 'src/app/services/notification.service';
 
 export interface User {
   id: string;

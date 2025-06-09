@@ -2,9 +2,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { UserService } from './../../../services/user.service';
 import { NotificationService } from '../../../services/notification.service';
-import { User } from '../setting.component';
+import { User, UserService } from '../user.service';
 
 interface AccountStats {
   loginCount: number;

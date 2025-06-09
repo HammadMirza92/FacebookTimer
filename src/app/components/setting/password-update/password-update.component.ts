@@ -1,8 +1,8 @@
 // password-update.component.ts
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { UserService } from '../../../services/user.service';
 import { NotificationService } from '../../../services/notification.service';
+import { UserService } from '../user.service';
 
 interface PasswordValidation {
   hasLength: boolean;

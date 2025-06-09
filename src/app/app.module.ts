@@ -37,11 +37,7 @@ import { TemplateEditComponent } from './components/templatess/template-edit/tem
 import { TemplateAdminComponent } from './components/templatess/template-admin/template-admin.component';
 import { TemplatePreviewComponent } from './components/templatess/template-preview/template-preview.component';
 import { GoogleAuthService } from './services/GoogleAuthService.service';
-import { SettingComponent } from './components/setting/setting.component';
-import { ProfileHeaderComponent } from './components/setting/profile-header/profile-header.component';
-import { PasswordUpdateComponent } from './components/setting/password-update/password-update.component';
-import { AccountInfoComponent } from './components/setting/account-info/account-info.component';
-import { SecuritySettingsComponent } from './components/setting/security-settings/security-settings.component';
+
 import { MatLoadingSnackbarModule } from './components/mat-and-snackbar/mat-loading-snackbar.module';
 
 @NgModule({
@@ -63,11 +59,6 @@ import { MatLoadingSnackbarModule } from './components/mat-and-snackbar/mat-load
     TemplateAdminComponent,
     TemplatePreviewComponent,
 
-    SettingComponent,
-    ProfileHeaderComponent,
-    PasswordUpdateComponent,
-    AccountInfoComponent,
-    SecuritySettingsComponent,
   ],
   imports: [
     BrowserModule,

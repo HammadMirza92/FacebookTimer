@@ -2,9 +2,9 @@
 import { Component, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { UserService } from '../../../services/user.service';
 import { NotificationService } from '../../../services/notification.service';
-import { User, UserStats } from '../setting.component';
+import { User, UserStats } from '../setting-sidebar/setting.component';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-profile-header',

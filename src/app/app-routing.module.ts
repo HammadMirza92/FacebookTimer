@@ -1,19 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { DashboardComponent } from './components/dashboard/main-dashboard/dashboard.component';
 import { TemplateLibraryComponent } from './components/templatess/template-library/template-library.component';
-import { FacebookPagesComponent } from './components/facebook-pages/facebook-pages/facebook-pages.component';
-import { CreatePostComponent } from './components/posts/create-post/create-post.component';
-import { PostListComponent } from './components/posts/post-list/post-list.component';
 import { SubscriptionPlansComponent } from './components/subscriptions/subscription-plans/subscription-plans.component';
 import { PaymentHistoryComponent } from './components/subscriptions/payment-history/payment-history.component';
 import { NotFoundComponent } from './components/layout/not-found/not-found.component';
 
 import { AuthGuard } from './guards/auth.guard';
 import { SubscriptionGuard } from './guards/subscription.guard';
-import { SettingComponent } from './components/setting/setting.component';
-import { TemplateAdminComponent } from './components/templatess/template-admin/template-admin.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
@@ -32,11 +26,13 @@ const routes: Routes = [
     path: 'posts', loadChildren: () => import('./components/posts/posts.module').then(m => m.PostsModule),
     canActivate: [AuthGuard]
   },
-  { path: 'settings', component: SettingComponent , canActivate: [AuthGuard] },
+  {
+    path: 'settings', loadChildren: () => import('./components/setting/setting.module').then(m => m.SettingModule),
+    canActivate: [AuthGuard]
+  },
   { path: 'templates', component: TemplateLibraryComponent, canActivate: [AuthGuard] },
   { path: 'subscription/plans', component: SubscriptionPlansComponent, canActivate: [AuthGuard] },
   { path: 'subscription/history', component: PaymentHistoryComponent, canActivate: [AuthGuard] },
-   {path: 'test', component: TemplateAdminComponent },
   { path: '**', component: NotFoundComponent },
 
 ];
