@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
-import { Observable, Subject, BehaviorSubject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { AuthService } from '../../auth/auth.service';
 import { FacebookPageService } from '../../facebook-pages/facebook-page.service';

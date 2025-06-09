@@ -4,7 +4,7 @@ import { NotificationService } from '../../../services/notification.service';
 import { Post, PostStatus } from '../../../models/post.model';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '../../mat-and-snackbar/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-post-list',

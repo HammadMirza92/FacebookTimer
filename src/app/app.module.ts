@@ -12,19 +12,10 @@ import { SidenavComponent } from './components/layout/sidenav/sidenav.component'
 import { FooterComponent } from './components/layout/footer/footer.component';
 import { TemplateLibraryComponent } from './components/templatess/template-library/template-library.component';
 import { TemplateCardComponent } from './components/templatess/templates-card/template-card.component';
-import { CreatePostComponent } from './components/posts/create-post/create-post.component';
-import { PostPreviewComponent } from './components/posts/post-preview/post-preview.component';
-import { PostListComponent } from './components/posts/post-list/post-list.component';
-import { PostItemComponent } from './components/posts/post-item/post-item.component';
 import { SubscriptionPlansComponent } from './components/subscriptions/subscription-plans/subscription-plans.component';
 import { SubscriptionCardComponent } from './components/subscriptions/subscription-card/subscription-card.component';
 import { PaymentHistoryComponent } from './components/subscriptions/payment-history/payment-history.component';
-import { CountdownTimerComponent } from './components/shared/countdown-timer/countdown-timer.component';
 import { NotFoundComponent } from './components/layout/not-found/not-found.component';
-import { ColorPickerComponent } from './components/shared/color-picker/color-picker.component';
-import { FontPickerComponent } from './components/shared/font-picker/font-picker.component';
-import { ConfirmDialogComponent } from './components/shared/confirm-dialog/confirm-dialog.component';
-import { LoadingSpinnerComponent } from './components/shared/loading-spinner/loading-spinner.component';
 
 // Services
 import { TemplateService } from './services/template.service';
@@ -51,8 +42,7 @@ import { ProfileHeaderComponent } from './components/setting/profile-header/prof
 import { PasswordUpdateComponent } from './components/setting/password-update/password-update.component';
 import { AccountInfoComponent } from './components/setting/account-info/account-info.component';
 import { SecuritySettingsComponent } from './components/setting/security-settings/security-settings.component';
-import { CustomSnackBarComponent } from './components/shared/custom-snackbar/custom-snackbar.component';
-import { MaterialModule } from './components/shared/mat-UI/material.module';
+import { MatLoadingSnackbarModule } from './components/mat-and-snackbar/mat-loading-snackbar.module';
 
 @NgModule({
   declarations: [
@@ -61,30 +51,23 @@ import { MaterialModule } from './components/shared/mat-UI/material.module';
     NavbarComponent,
     SidenavComponent,
     FooterComponent,
+    NotFoundComponent,
+
     TemplateLibraryComponent,
     TemplateCardComponent,
-    CreatePostComponent,
-    PostPreviewComponent,
-    PostListComponent,
-    PostItemComponent,
     SubscriptionPlansComponent,
     SubscriptionCardComponent,
     PaymentHistoryComponent,
-    CountdownTimerComponent,
-    NotFoundComponent,
-    ColorPickerComponent,
-    FontPickerComponent,
-    ConfirmDialogComponent,
-    LoadingSpinnerComponent,
+
     TemplateEditComponent,
     TemplateAdminComponent,
     TemplatePreviewComponent,
+
     SettingComponent,
     ProfileHeaderComponent,
     PasswordUpdateComponent,
     AccountInfoComponent,
     SecuritySettingsComponent,
-    CustomSnackBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -92,7 +75,7 @@ import { MaterialModule } from './components/shared/mat-UI/material.module';
     HttpClientModule,
     FormsModule,
     AppRoutingModule,
-    MaterialModule,
+    MatLoadingSnackbarModule,
     ReactiveFormsModule
   ],
   providers: [

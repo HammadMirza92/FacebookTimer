@@ -6,7 +6,6 @@ import { SubscriptionPlan } from '../../../models/subscription-plan.model';
 import { UserSubscription } from '../../../models/user-subscription.model';
 import { User } from '../../../models/user.model';
 import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -73,22 +72,22 @@ export class SubscriptionPlansComponent implements OnInit {
       ? `Are you sure you want to upgrade to the ${plan.name} plan? You will be charged $${plan.price} immediately.`
       : `Are you sure you want to subscribe to the ${plan.name} plan? You will be charged $${plan.price}.`;
 
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '400px',
-      data: {
-        title: dialogTitle,
-        message: dialogMessage,
-        confirmText: this.currentSubscription ? 'Upgrade' : 'Subscribe',
-        cancelText: 'Cancel',
-        color: 'primary'
-      }
-    });
+  //   const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+  //     width: '400px',
+  //     data: {
+  //       title: dialogTitle,
+  //       message: dialogMessage,
+  //       confirmText: this.currentSubscription ? 'Upgrade' : 'Subscribe',
+  //       cancelText: 'Cancel',
+  //       color: 'primary'
+  //     }
+  //   });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.processSubscription(plan);
-      }
-    });
+  //   dialogRef.afterClosed().subscribe(result => {
+  //     if (result) {
+  //       this.processSubscription(plan);
+  //     }
+  //   });
   }
 
   processSubscription(plan: SubscriptionPlan): void {
@@ -121,37 +120,37 @@ export class SubscriptionPlansComponent implements OnInit {
       return;
     }
 
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '400px',
-      data: {
-        title: 'Cancel Subscription Auto-Renewal',
-        message: 'Are you sure you want to cancel your subscription auto-renewal? Your subscription will remain active until the end date, but will not renew automatically.',
-        confirmText: 'Cancel Auto-Renewal',
-        cancelText: 'Keep Auto-Renewal',
-        color: 'warn'
-      }
-    });
+    // const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+    //   width: '400px',
+    //   data: {
+    //     title: 'Cancel Subscription Auto-Renewal',
+    //     message: 'Are you sure you want to cancel your subscription auto-renewal? Your subscription will remain active until the end date, but will not renew automatically.',
+    //     confirmText: 'Cancel Auto-Renewal',
+    //     cancelText: 'Keep Auto-Renewal',
+    //     color: 'warn'
+    //   }
+    // });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.subscriptionService.cancelSubscription().subscribe({
-          next: () => {
-            this.notificationService.showSuccess('Subscription auto-renewal has been canceled');
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result) {
+    //     this.subscriptionService.cancelSubscription().subscribe({
+    //       next: () => {
+    //         this.notificationService.showSuccess('Subscription auto-renewal has been canceled');
 
-            // Update current subscription
-            this.subscriptionService.getCurrentSubscription().subscribe(subscription => {
-              this.currentSubscription = subscription;
+    //         // Update current subscription
+    //         this.subscriptionService.getCurrentSubscription().subscribe(subscription => {
+    //           this.currentSubscription = subscription;
 
-              // Update current user (to refresh subscription info in the UI)
-              this.authService.getCurrentUser().subscribe();
-            });
-          },
-          error: error => {
-            this.notificationService.showError(error.error || 'Failed to cancel subscription auto-renewal');
-          }
-        });
-      }
-    });
+    //           // Update current user (to refresh subscription info in the UI)
+    //           this.authService.getCurrentUser().subscribe();
+    //         });
+    //       },
+    //       error: error => {
+    //         this.notificationService.showError(error.error || 'Failed to cancel subscription auto-renewal');
+    //       }
+    //     });
+    //   }
+    // });
   }
 
   isCurrentPlan(plan: SubscriptionPlan): boolean {

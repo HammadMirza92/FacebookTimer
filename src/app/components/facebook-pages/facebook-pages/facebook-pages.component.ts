@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { FacebookPageService } from '../facebook-page.service';
 import { NotificationService } from '../../../services/notification.service';
 import { FacebookPage } from '../../../models/facebook-page.model';
-import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
+import { ConfirmDialogComponent } from '../../mat-and-snackbar/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-facebook-pages',

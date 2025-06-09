@@ -28,11 +28,12 @@ const routes: Routes = [
     path: 'facebook-pages', loadChildren: () => import('./components/facebook-pages/facebook-pages.module').then(m => m.FacebookPagesModule),
     canActivate: [AuthGuard]
   },
+  {
+    path: 'posts', loadChildren: () => import('./components/posts/posts.module').then(m => m.PostsModule),
+    canActivate: [AuthGuard]
+  },
   { path: 'settings', component: SettingComponent , canActivate: [AuthGuard] },
   { path: 'templates', component: TemplateLibraryComponent, canActivate: [AuthGuard] },
-  { path: 'posts', component: PostListComponent, canActivate: [AuthGuard] },
-  { path: 'posts/create', component: CreatePostComponent, canActivate: [AuthGuard] },
-  { path: 'posts/edit/:id', component: CreatePostComponent, canActivate: [AuthGuard] },
   { path: 'subscription/plans', component: SubscriptionPlansComponent, canActivate: [AuthGuard] },
   { path: 'subscription/history', component: PaymentHistoryComponent, canActivate: [AuthGuard] },
    {path: 'test', component: TemplateAdminComponent },
