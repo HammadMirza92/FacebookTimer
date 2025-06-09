@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DashboardComponent } from './components/dashboard/main-dashboard/dashboard.component';
 import { TemplateLibraryComponent } from './components/templatess/template-library/template-library.component';
 import { FacebookPagesComponent } from './components/facebook-pages/facebook-pages/facebook-pages.component';
 import { CreatePostComponent } from './components/posts/create-post/create-post.component';
@@ -18,20 +18,13 @@ import { TemplateAdminComponent } from './components/templatess/template-admin/t
 const routes: Routes = [
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   {
-    path: 'auth',
-    loadChildren: () => {
-      console.log('🔍 Attempting to load auth module...');
-      return import('./components/auth/auth.module').then(m => {
-        console.log('✅ Auth module loaded:', m);
-        return m.AuthModule;
-      }).catch(err => {
-        console.error('❌ Failed to load auth module:', err);
-        throw err;
-      });
-    }
+    path: 'auth', loadChildren: () => import('./components/auth/auth.module').then(m => m.AuthModule)
+  },
+  {
+    path: 'dashboard', loadChildren: () => import('./components/dashboard/dashboard.module').then(m => m.DashboardModule),
+    canActivate: [AuthGuard]
   },
   { path: 'settings', component: SettingComponent , canActivate: [AuthGuard] },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard] },
   { path: 'templates', component: TemplateLibraryComponent, canActivate: [AuthGuard] },
   { path: 'facebook-pages', component: FacebookPagesComponent, canActivate: [AuthGuard] },
   { path: 'posts', component: PostListComponent, canActivate: [AuthGuard] },
@@ -45,7 +38,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { enableTracing: true })], // Add enableTracing
+  imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

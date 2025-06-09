@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Components
 import { AppComponent } from './app.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DashboardComponent } from './components/dashboard/main-dashboard/dashboard.component';
 import { NavbarComponent } from './components/layout/navbar/navbar.component';
 import { SidenavComponent } from './components/layout/sidenav/sidenav.component';
 import { FooterComponent } from './components/layout/footer/footer.component';
@@ -62,7 +62,7 @@ import { MaterialModule } from './components/shared/mat-UI/material.module';
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent,
+
     NavbarComponent,
     SidenavComponent,
     FooterComponent,
