@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { filter, map, Observable, startWith, Subject, takeUntil } from 'rxjs';
-import { AuthService } from '../../../services/auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { User } from '../../../models/user.model';
 import { NavigationEnd, Router } from '@angular/router';
 interface UserStats {

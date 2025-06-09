@@ -4,7 +4,7 @@ import { NotificationService } from '../../../services/notification.service';
 import { Template } from '../../../models/template.model';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { AuthService } from '../../../services/auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { User } from '../../../models/user.model';
 
 @Component({

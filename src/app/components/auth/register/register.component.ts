@@ -2,7 +2,7 @@ import { Component, OnInit, NgZone, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { AuthService } from '../../../services/auth.service';
+import { AuthService } from '../auth.service';
 import { NotificationService } from '../../../services/notification.service';
 import { GoogleAuthService } from '../../../services/GoogleAuthService.service';
 

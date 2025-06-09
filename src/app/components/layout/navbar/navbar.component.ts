@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AuthService } from '../../../services/auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { NotificationService } from '../../../services/notification.service';
 import { User } from '../../../models/user.model';
 import { Router } from '@angular/router';
@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 export class NavbarComponent implements OnInit {
   @Output() toggleSidenavEvent = new EventEmitter<void>();
   currentUser$: Observable<User | null>;
-  subscriptionAlert$: Observable<boolean>;
+  // subscriptionAlert$: Observable<boolean>;
   notificationCount = 0;
   constructor(
     private authService: AuthService,
@@ -21,11 +21,11 @@ export class NavbarComponent implements OnInit {
     private router: Router
   ) {
     this.currentUser$ = this.authService.currentUser;
-    this.subscriptionAlert$ = this.notificationService.subscriptionAlert;
+    // this.subscriptionAlert$ = this.notificationService.subscriptionAlert;
   }
 
   ngOnInit(): void {
-    this.notificationService.checkSubscriptionAlert();
+    // this.notificationService.checkSubscriptionAlert();
   }
 
   toggleSidenav(): void {

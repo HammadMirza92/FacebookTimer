@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
-import { AuthService } from './services/auth.service';
+import { AuthService } from './components/auth/auth.service';
 
 @Component({
   selector: 'app-root',

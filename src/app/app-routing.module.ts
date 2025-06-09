@@ -24,9 +24,12 @@ const routes: Routes = [
     path: 'dashboard', loadChildren: () => import('./components/dashboard/dashboard.module').then(m => m.DashboardModule),
     canActivate: [AuthGuard]
   },
+  {
+    path: 'facebook-pages', loadChildren: () => import('./components/facebook-pages/facebook-pages.module').then(m => m.FacebookPagesModule),
+    canActivate: [AuthGuard]
+  },
   { path: 'settings', component: SettingComponent , canActivate: [AuthGuard] },
   { path: 'templates', component: TemplateLibraryComponent, canActivate: [AuthGuard] },
-  { path: 'facebook-pages', component: FacebookPagesComponent, canActivate: [AuthGuard] },
   { path: 'posts', component: PostListComponent, canActivate: [AuthGuard] },
   { path: 'posts/create', component: CreatePostComponent, canActivate: [AuthGuard] },
   { path: 'posts/edit/:id', component: CreatePostComponent, canActivate: [AuthGuard] },

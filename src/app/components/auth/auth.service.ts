@@ -5,11 +5,11 @@ import { BehaviorSubject, Observable, throwError, timer } from 'rxjs';
 import { catchError, map, tap, retry, retryWhen, delayWhen } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
-import { environment } from '../environments/environment';
-import { User } from '../models/user.model';
-import { Login } from '../models/login.model';
-import { Register } from '../models/register.model';
-import { AuthResponse } from '../models/auth-response.model';
+import { environment } from '../../environments/environment';
+import { User } from '../../models/user.model';
+import { Login } from '../../models/login.model';
+import { Register } from '../../models/register.model';
+import { AuthResponse } from '../../models/auth-response.model';
 
 export interface GoogleAuthRequest {
   credential: string;

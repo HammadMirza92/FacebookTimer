@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SubscriptionService } from '../../../services/subscription.service';
 import { NotificationService } from '../../../services/notification.service';
-import { AuthService } from '../../../services/auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { SubscriptionPlan } from '../../../models/subscription-plan.model';
 import { UserSubscription } from '../../../models/user-subscription.model';
 import { User } from '../../../models/user.model';

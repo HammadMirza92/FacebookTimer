@@ -1,32 +1,28 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { BehaviorSubject, Observable, interval } from 'rxjs';
-import { take, switchMap, filter } from 'rxjs/operators';
-
-import { SubscriptionService } from './subscription.service';
-import { AuthService } from './auth.service';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationService {
-  private subscriptionAlertSubject = new BehaviorSubject<boolean>(false);
-  public subscriptionAlert: Observable<boolean> = this.subscriptionAlertSubject.asObservable();
+  // private subscriptionAlertSubject = new BehaviorSubject<boolean>(false);
+  // public subscriptionAlert: Observable<boolean> = this.subscriptionAlertSubject.asObservable();
 
   constructor(
     private snackBar: MatSnackBar,
-    private subscriptionService: SubscriptionService,
-    private authService: AuthService
+    // private subscriptionService: SubscriptionService,
+    // private authService: AuthService
   ) {
     // Check for subscription renewal alerts every hour when logged in
-    interval(3600000) // 1 hour
-      .pipe(
-        filter(() => this.authService.isAuthenticated()),
-        switchMap(() => this.subscriptionService.checkRenewalAlert())
-      )
-      .subscribe(result => {
-        this.subscriptionAlertSubject.next(result.needsRenewalAlert);
-      });
+    // interval(3600000) // 1 hour
+    //   .pipe(
+    //     filter(() => this.authService.isAuthenticated()),
+    //     switchMap(() => this.subscriptionService.checkRenewalAlert())
+    //   )
+    //   .subscribe(result => {
+    //     this.subscriptionAlertSubject.next(result.needsRenewalAlert);
+    //   });
 
     // Apply global styles when service is initialized
     this.applyGlobalStyles();
@@ -121,17 +117,17 @@ export class NotificationService {
   /**
    * Check for subscription alerts
    */
-  checkSubscriptionAlert(): void {
-    if (this.authService.isAuthenticated()) {
-      this.subscriptionService.checkRenewalAlert()
-        .pipe(take(1))
-        .subscribe(result => {
-          this.subscriptionAlertSubject.next(result.needsRenewalAlert);
+//   checkSubscriptionAlert(): void {
+//     if (this.authService.isAuthenticated()) {
+//       this.subscriptionService.checkRenewalAlert()
+//         .pipe(take(1))
+//         .subscribe(result => {
+//           this.subscriptionAlertSubject.next(result.needsRenewalAlert);
 
-          if (result.needsRenewalAlert) {
-            this.showWarning('Your subscription is expiring soon. Please renew to avoid service interruption.', 8000);
-          }
-        });
-    }
-  }
+//           if (result.needsRenewalAlert) {
+//             this.showWarning('Your subscription is expiring soon. Please renew to avoid service interruption.', 8000);
+//           }
+//         });
+//     }
+//   }
 }

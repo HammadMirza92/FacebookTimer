@@ -7,14 +7,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // Components
 import { AppComponent } from './app.component';
-import { DashboardComponent } from './components/dashboard/main-dashboard/dashboard.component';
 import { NavbarComponent } from './components/layout/navbar/navbar.component';
 import { SidenavComponent } from './components/layout/sidenav/sidenav.component';
 import { FooterComponent } from './components/layout/footer/footer.component';
 import { TemplateLibraryComponent } from './components/templatess/template-library/template-library.component';
 import { TemplateCardComponent } from './components/templatess/templates-card/template-card.component';
-import { FacebookPagesComponent } from './components/facebook-pages/facebook-pages/facebook-pages.component';
-import { LinkFacebookPageComponent } from './components/facebook-pages/link-facebook-page/link-facebook-page.component';
 import { CreatePostComponent } from './components/posts/create-post/create-post.component';
 import { PostPreviewComponent } from './components/posts/post-preview/post-preview.component';
 import { PostListComponent } from './components/posts/post-list/post-list.component';
@@ -30,7 +27,6 @@ import { ConfirmDialogComponent } from './components/shared/confirm-dialog/confi
 import { LoadingSpinnerComponent } from './components/shared/loading-spinner/loading-spinner.component';
 
 // Services
-import { AuthService } from './services/auth.service';
 import { FacebookPageService } from './services/facebook-page.service';
 import { TemplateService } from './services/template.service';
 import { PostService } from './services/post.service';
@@ -68,8 +64,6 @@ import { MaterialModule } from './components/shared/mat-UI/material.module';
     FooterComponent,
     TemplateLibraryComponent,
     TemplateCardComponent,
-    FacebookPagesComponent,
-    LinkFacebookPageComponent,
     CreatePostComponent,
     PostPreviewComponent,
     PostListComponent,
@@ -103,7 +97,6 @@ import { MaterialModule } from './components/shared/mat-UI/material.module';
     ReactiveFormsModule
   ],
   providers: [
-    AuthService,
     FacebookPageService,
     TemplateService,
     PostService,

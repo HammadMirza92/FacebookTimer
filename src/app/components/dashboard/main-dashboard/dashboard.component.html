@@ -41,14 +41,14 @@
           </div>
         </div>
 
-        <div class="user-profile" *ngIf="(currentUser$ | async) as user">
+        <div class="user-profile" *ngIf="currentUser">
           <div class="profile-info">
             <div class="user-details">
-              <h3>{{ user.firstName }} {{ user.lastName }}</h3>
+              <h3>{{ currentUser.firstName }} {{ currentUser.lastName }}</h3>
               <p class="user-role">Marketing Professional</p>
-              <div class="subscription-badge" *ngIf="user.currentSubscription">
+              <div class="subscription-badge" *ngIf="currentUser.currentSubscription">
                 <mat-icon>verified</mat-icon>
-                <span>{{ user.currentSubscription.subscriptionPlanName }}</span>
+                <span>{{ currentUser.currentSubscription.subscriptionPlanName }}</span>
               </div>
             </div>
             <div class="profile-avatar">

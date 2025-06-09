@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
-import { AuthService } from '../../../services/auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { FacebookPageService } from '../../../services/facebook-page.service';
 import { PostService } from '../../../services/post.service';
 import { TemplateService } from '../../../services/template.service';
@@ -81,7 +81,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   });
 
   // Core Properties
-  currentUser$: Observable<User | null>;
+  currentUser:any;
   pages: FacebookPage[] = [];
   templates: Template[] = [];
   recentPosts: Post[] = [];
@@ -267,13 +267,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private router: Router,
     private cdr: ChangeDetectorRef
   ) {
-    this.currentUser$ = this.authService.currentUser;
+    this.currentUser = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')!) : 'Howdey, Buddy!';
     this.initializeComponent();
   }
 
   ngOnInit(): void {
     this.loadInitialData();
-    this.subscribeToUserData();
     this.loadGameStats();
     this.startDashboardAnimations();
   }
@@ -303,21 +302,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.checkConnectedServices();
       this.cdr.detectChanges();
     }, 1800);
-  }
-
-  private subscribeToUserData(): void {
-    this.currentUser$.pipe(takeUntil(this.destroy$)).subscribe(user => {
-      if (user) {
-        this.loadUserSpecificData(user);
-      }
-    });
-  }
-
-  private loadUserSpecificData(user: User): void {
-    // Load user-specific data like posts, templates, etc.
-    this.loadRecentPosts();
-    this.loadTemplates();
-    this.checkFacebookPages();
   }
 
   private startDashboardAnimations(): void {
@@ -357,21 +341,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     this.notificationService.showSuccess(`Switched to ${tab} view`);
   }
-  // Service Integration Methods
-  private loadRecentPosts(): void {
-    // In real implementation, load from PostService
-    this.recentPosts = [];
-  }
 
-  private loadTemplates(): void {
-    // In real implementation, load from TemplateService
-    this.templates = [];
-  }
-
-  private checkFacebookPages(): void {
-    // In real implementation, check FacebookPageService
-    this.hasFacebookPages = Math.random() > 0.5;
-  }
 
   private checkConnectedServices(): void {
     // Check various connected services
