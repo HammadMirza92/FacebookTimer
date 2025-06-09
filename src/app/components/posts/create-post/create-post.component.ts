@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, Subscription } from 'rxjs';
 import { PostService } from '../../../services/post.service';
-import { FacebookPageService } from '../../../services/facebook-page.service';
+import { FacebookPageService } from '../../facebook-pages/facebook-page.service';
 import { TemplateService } from '../../../services/template.service';
 import { NotificationService } from '../../../services/notification.service';
 import { FacebookPage } from '../../../models/facebook-page.model';

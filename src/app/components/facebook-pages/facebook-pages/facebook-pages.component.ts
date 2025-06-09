@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { FacebookPageService } from '../../../services/facebook-page.service';
+import { FacebookPageService } from '../facebook-page.service';
 import { NotificationService } from '../../../services/notification.service';
 import { FacebookPage } from '../../../models/facebook-page.model';
 import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';

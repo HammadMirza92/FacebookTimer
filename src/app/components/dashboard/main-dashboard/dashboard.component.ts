@@ -2,11 +2,9 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef, ViewChild, ElementRef 
 import { Observable, Subject, BehaviorSubject } from 'rxjs';
 import { takeUntil, debounceTime } from 'rxjs/operators';
 import { AuthService } from '../../auth/auth.service';
-import { FacebookPageService } from '../../../services/facebook-page.service';
+import { FacebookPageService } from '../../facebook-pages/facebook-page.service';
 import { PostService } from '../../../services/post.service';
 import { TemplateService } from '../../../services/template.service';
-import { User } from '../../../models/user.model';
-import { FacebookPage } from '../../../models/facebook-page.model';
 import { Post, PostStatus } from '../../../models/post.model';
 import { Template } from '../../../models/template.model';
 import { Router } from '@angular/router';
@@ -82,12 +80,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   // Core Properties
   currentUser:any;
-  pages: FacebookPage[] = [];
   templates: Template[] = [];
   recentPosts: Post[] = [];
   loading = true;
   postStatusEnum = PostStatus;
-  hasFacebookPages = false;
   activeTab: TabType = 'overview';
 
   // Content Ideas
@@ -299,7 +295,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       this.loading = false;
       this.generateContentIdeas();
-      this.checkConnectedServices();
       this.cdr.detectChanges();
     }, 1800);
   }
@@ -341,13 +336,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
     this.notificationService.showSuccess(`Switched to ${tab} view`);
   }
-
-
-  private checkConnectedServices(): void {
-    // Check various connected services
-    this.hasFacebookPages = Math.random() > 0.4;
-  }
-
   // Progress Calculation Methods
   getScoreProgress(): number {
     const maxScore = 1000;
@@ -960,11 +948,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   linkFacebookPage(): void {
-    if (this.hasFacebookPages) {
-      this.notificationService.showSuccess('Opening Facebook page manager... 📘');
-    } else {
-      this.notificationService.showSuccess('Setting up Facebook integration... 🔗');
-    }
+
+    this.notificationService.showSuccess('Opening Facebook page manager... 📘');
     this.router.navigate(['/facebook-pages']);
   }
 

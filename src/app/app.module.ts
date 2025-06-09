@@ -27,7 +27,6 @@ import { ConfirmDialogComponent } from './components/shared/confirm-dialog/confi
 import { LoadingSpinnerComponent } from './components/shared/loading-spinner/loading-spinner.component';
 
 // Services
-import { FacebookPageService } from './services/facebook-page.service';
 import { TemplateService } from './services/template.service';
 import { PostService } from './services/post.service';
 import { SubscriptionService } from './services/subscription.service';
@@ -97,7 +96,6 @@ import { MaterialModule } from './components/shared/mat-UI/material.module';
     ReactiveFormsModule
   ],
   providers: [
-    FacebookPageService,
     TemplateService,
     PostService,
     GoogleAuthService,

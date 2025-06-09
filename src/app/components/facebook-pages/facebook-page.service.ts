@@ -3,9 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { environment } from '../environments/environment';
-import { FacebookPage } from '../models/facebook-page.model';
-import { LinkPage } from '../models/link-page.model';
+import { environment } from '../../environments/environment';
+import { FacebookPage } from '../../models/facebook-page.model';
+import { LinkPage } from '../../models/link-page.model';
 
 @Injectable({
   providedIn: 'root'
