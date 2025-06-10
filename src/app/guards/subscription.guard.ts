@@ -3,8 +3,8 @@ import { Router, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@a
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 
-import { SubscriptionService } from '../services/subscription.service';
 import { NotificationService } from '../services/notification.service';
+import { SubscriptionService } from '../components/subscriptions/subscription.service';
 
 @Injectable({
   providedIn: 'root'

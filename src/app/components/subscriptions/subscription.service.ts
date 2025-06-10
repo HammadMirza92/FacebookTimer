@@ -3,11 +3,11 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-import { environment } from '../environments/environment';
-import { SubscriptionPlan } from '../models/subscription-plan.model';
-import { UserSubscription } from '../models/user-subscription.model';
-import { Subscribe } from '../models/subscribe.model';
-import { PaymentResult } from '../models/payment-result.model';
+import { environment } from '../../environments/environment';
+import { SubscriptionPlan } from '../../models/subscription-plan.model';
+import { UserSubscription } from '../../models/user-subscription.model';
+import { Subscribe } from '../../models/subscribe.model';
+import { PaymentResult } from '../../models/payment-result.model';
 
 @Injectable({
   providedIn: 'root'

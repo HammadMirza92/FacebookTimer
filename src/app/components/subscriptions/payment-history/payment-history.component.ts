@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { SubscriptionService } from '../../../services/subscription.service';
 import { NotificationService } from '../../../services/notification.service';
 import { PaymentResult, PaymentStatus } from '../../../models/payment-result.model';
+import { SubscriptionService } from '../subscription.service';
 
 @Component({
   selector: 'app-payment-history',

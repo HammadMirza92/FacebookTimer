@@ -12,15 +12,11 @@ import { SidenavComponent } from './components/layout/sidenav/sidenav.component'
 import { FooterComponent } from './components/layout/footer/footer.component';
 import { TemplateLibraryComponent } from './components/templatess/template-library/template-library.component';
 import { TemplateCardComponent } from './components/templatess/templates-card/template-card.component';
-import { SubscriptionPlansComponent } from './components/subscriptions/subscription-plans/subscription-plans.component';
-import { SubscriptionCardComponent } from './components/subscriptions/subscription-card/subscription-card.component';
-import { PaymentHistoryComponent } from './components/subscriptions/payment-history/payment-history.component';
 import { NotFoundComponent } from './components/layout/not-found/not-found.component';
 
 // Services
 import { TemplateService } from './services/template.service';
 import { PostService } from './services/post.service';
-import { SubscriptionService } from './services/subscription.service';
 import { NotificationService } from './services/notification.service';
 
 // Interceptors
@@ -51,9 +47,6 @@ import { MatLoadingSnackbarModule } from './components/mat-and-snackbar/mat-load
 
     TemplateLibraryComponent,
     TemplateCardComponent,
-    SubscriptionPlansComponent,
-    SubscriptionCardComponent,
-    PaymentHistoryComponent,
 
     TemplateEditComponent,
     TemplateAdminComponent,
@@ -73,7 +66,6 @@ import { MatLoadingSnackbarModule } from './components/mat-and-snackbar/mat-load
     TemplateService,
     PostService,
     GoogleAuthService,
-    SubscriptionService,
     NotificationService,
     AuthGuard,
     SubscriptionGuard,

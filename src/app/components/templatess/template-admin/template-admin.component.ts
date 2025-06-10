@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TemplateService } from '../../../services/template.service';
 import { NotificationService } from '../../../services/notification.service';
-import { SubscriptionService } from '../../../services/subscription.service';
 import { SubscriptionPlan } from '../../../models/subscription-plan.model';
 import { Template } from '../../../models/template.model';
 
@@ -24,13 +23,13 @@ export class TemplateAdminComponent implements OnInit {
     private fb: FormBuilder,
     private templateService: TemplateService,
     private notificationService: NotificationService,
-    private SubscriptionService: SubscriptionService
+   // private SubscriptionService: SubscriptionService
   ) { }
 
   ngOnInit(): void {
     this.initForm();
     this.loadTemplates();
-    this.loadSubscriptionPlans();
+    //this.loadSubscriptionPlans();
   }
 
   initForm(): void {
@@ -73,17 +72,17 @@ export class TemplateAdminComponent implements OnInit {
     });
   }
 
-  loadSubscriptionPlans(): void {
-    this.SubscriptionService.getSubscriptionPlans().subscribe({
-      next: (plans) => {
-        this.subscriptionPlans = plans;
-      },
-      error: (error) => {
-        this.notificationService.showError('Failed to load subscription plans');
-        console.error('Error loading plans:', error);
-      }
-    });
-  }
+  // loadSubscriptionPlans(): void {
+  //   this.SubscriptionService.getSubscriptionPlans().subscribe({
+  //     next: (plans) => {
+  //       this.subscriptionPlans = plans;
+  //     },
+  //     error: (error) => {
+  //       this.notificationService.showError('Failed to load subscription plans');
+  //       console.error('Error loading plans:', error);
+  //     }
+  //   });
+  // }
 
   onSubmit(): void {
     if (this.templateForm.invalid) {

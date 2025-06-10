@@ -30,9 +30,11 @@ const routes: Routes = [
     path: 'settings', loadChildren: () => import('./components/setting/setting.module').then(m => m.SettingModule),
     canActivate: [AuthGuard]
   },
+  {
+    path: 'subscription', loadChildren: () => import('./components/subscriptions/subscription.module').then(m => m.SubscriptionModule),
+    canActivate: [AuthGuard]
+  },
   { path: 'templates', component: TemplateLibraryComponent, canActivate: [AuthGuard] },
-  { path: 'subscription/plans', component: SubscriptionPlansComponent, canActivate: [AuthGuard] },
-  { path: 'subscription/history', component: PaymentHistoryComponent, canActivate: [AuthGuard] },
   { path: '**', component: NotFoundComponent },
 
 ];

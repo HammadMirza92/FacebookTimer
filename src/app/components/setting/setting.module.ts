@@ -8,6 +8,7 @@ import { SecuritySettingsComponent } from './security-settings/security-settings
 import { AccountInfoComponent } from './account-info/account-info.component';
 import { PasswordUpdateComponent } from './password-update/password-update.component';
 import { ProfileHeaderComponent } from './profile-header/profile-header.component';
+import { UserService } from './user.service';
 
 
 
@@ -26,6 +27,7 @@ import { ProfileHeaderComponent } from './profile-header/profile-header.componen
     SettingRoutingModule
   ],
   providers: [
+    UserService
   ]
 })
 export class SettingModule {}
