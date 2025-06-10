@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TemplateService } from '../../../services/template.service';
+import { TemplateService } from '../template.service';
 import { NotificationService } from '../../../services/notification.service';
 import { SubscriptionPlan } from '../../../models/subscription-plan.model';
 import { Template } from '../../../models/template.model';

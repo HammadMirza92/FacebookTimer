@@ -1,0 +1,24 @@
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+mat-sidenav-container {
+  flex: 1;
+}
+
+mat-sidenav {
+  width: 250px;
+}
+
+.content-wrapper {
+  padding: 20px;
+  min-height: calc(100vh - 64px - 53px); // Viewport height minus navbar and footer
+}
+
+@media (max-width: 768px) {
+  .content-wrapper {
+    min-height: calc(100vh - 56px - 87px); // Adjust for mobile navbar and footer
+  }
+}

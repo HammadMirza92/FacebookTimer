@@ -1,50 +1,46 @@
-import { Component, OnInit } from '@angular/core';
-import { MediaMatcher } from '@angular/cdk/layout';
+// app.component.ts
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { Router, NavigationEnd } from '@angular/router';
+import { MediaMatcher } from '@angular/cdk/layout';
 import { filter } from 'rxjs/operators';
-import { AuthService } from './components/auth/auth.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
+  showLayout = true;
   mobileQuery: MediaQueryList;
+  showSidenav = true;
   opened = true;
-  showSidenav = false;
-  isLoggedIn = false;
+
+  private _mobileQueryListener: () => void;
 
   constructor(
-    private media: MediaMatcher,
     private router: Router,
-    private authService: AuthService
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher
   ) {
-    this.mobileQuery = this.media.matchMedia('(max-width: 768px)');
-    this.opened = !this.mobileQuery.matches;
-
-    // Close sidenav on mobile when navigating
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      if (this.mobileQuery.matches) {
-        this.opened = false;
-      }
-    });
+    this.mobileQuery = media.matchMedia('(max-width: 600px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
   }
 
-  ngOnInit(): void {
-    // Try to auto-login user
-    this.authService.autoLogin();
-
-    // Update authentication status
-    this.authService.currentUser.subscribe(user => {
-      this.isLoggedIn = !!user;
-      this.showSidenav = this.isLoggedIn;
-    });
+  ngOnInit() {
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event) => {
+        const navigationEndEvent = event as NavigationEnd;
+        this.showLayout = !navigationEndEvent.url.startsWith('/auth');
+      });
   }
 
-  toggleSidenav(): void {
-    this.opened = !this.opened;
+  ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
+
+  toggleSidenav() {
+    this.showSidenav = !this.showSidenav;
   }
 }

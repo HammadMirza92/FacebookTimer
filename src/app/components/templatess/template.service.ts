@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { Template } from 'src/app/models/template.model';
+import { environment } from 'src/app/environments/environment';
 
-import { environment } from '../environments/environment';
-import { Template } from '../models/template.model';
 
 @Injectable({
   providedIn: 'root'

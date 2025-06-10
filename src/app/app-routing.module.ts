@@ -34,7 +34,10 @@ const routes: Routes = [
     path: 'subscription', loadChildren: () => import('./components/subscriptions/subscription.module').then(m => m.SubscriptionModule),
     canActivate: [AuthGuard]
   },
-  { path: 'templates', component: TemplateLibraryComponent, canActivate: [AuthGuard] },
+  {
+    path: 'templates', loadChildren: () => import('./components/templatess/templatess.module').then(m => m.TemplatesModule),
+    canActivate: [AuthGuard]
+  },
   { path: '**', component: NotFoundComponent },
 
 ];

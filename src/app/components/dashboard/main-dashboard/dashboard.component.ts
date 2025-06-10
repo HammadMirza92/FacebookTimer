@@ -4,7 +4,6 @@ import { takeUntil, debounceTime } from 'rxjs/operators';
 import { AuthService } from '../../auth/auth.service';
 import { FacebookPageService } from '../../facebook-pages/facebook-page.service';
 import { PostService } from '../../../services/post.service';
-import { TemplateService } from '../../../services/template.service';
 import { Post, PostStatus } from '../../../models/post.model';
 import { Template } from '../../../models/template.model';
 import { Router } from '@angular/router';
@@ -256,9 +255,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private facebookPageService: FacebookPageService,
-    private postService: PostService,
-    private templateService: TemplateService,
     private notificationService: NotificationService,
     private router: Router,
     private cdr: ChangeDetectorRef

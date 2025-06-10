@@ -4,7 +4,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, Subscription } from 'rxjs';
 import { PostService } from '../../../services/post.service';
 import { FacebookPageService } from '../../facebook-pages/facebook-page.service';
-import { TemplateService } from '../../../services/template.service';
 import { NotificationService } from '../../../services/notification.service';
 import { FacebookPage } from '../../../models/facebook-page.model';
 import { Template } from '../../../models/template.model';
@@ -12,6 +11,7 @@ import { Post } from '../../../models/post.model';
 import { MatDialog } from '@angular/material/dialog';
 import { PostPreviewComponent } from '../post-preview/post-preview.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { TemplateService } from '../../templatess/template.service';
 
 @Component({
   selector: 'app-create-post',

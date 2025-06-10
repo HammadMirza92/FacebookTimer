@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { TemplateService } from '../../../services/template.service';
+import { TemplateService } from '../template.service';
 import { PostService } from '../../../services/post.service';
 import { NotificationService } from '../../../services/notification.service';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';

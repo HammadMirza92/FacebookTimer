@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Template } from '../../../models/template.model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { TemplateService } from '../../../services/template.service';
+import { TemplateService } from '../template.service';
 
 @Component({
   selector: 'app-template-preview',

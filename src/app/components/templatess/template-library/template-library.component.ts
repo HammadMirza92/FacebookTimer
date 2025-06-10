@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TemplateService } from '../../../services/template.service';
+import { TemplateService } from '../template.service';
 import { NotificationService } from '../../../services/notification.service';
 import { Template } from '../../../models/template.model';
 import { Router } from '@angular/router';

@@ -1,5 +1,4 @@
-<!-- app.component.html -->
-<div *ngIf="showLayout; else authLayout" class="app-container">
+<div class="app-container">
   <app-navbar (toggleSidenavEvent)="toggleSidenav()"></app-navbar>
 
   <mat-sidenav-container>
@@ -19,7 +18,3 @@
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
-
-<ng-template #authLayout>
-  <router-outlet></router-outlet>
-</ng-template>
