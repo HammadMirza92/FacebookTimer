@@ -1,101 +1,120 @@
 <div class="posts-container">
   <div class="page-header">
-    <h1>My Posts</h1>
-    <button mat-raised-button color="primary" (click)="createNewPost()">
+    <div class="header-content">
+      <h1>My Posts</h1>
+      <p class="subtitle">Manage and schedule your Facebook content</p>
+    </div>
+    <button mat-raised-button color="primary" class="create-button" (click)="createNewPost()" [@scaleIn]>
       <mat-icon>add</mat-icon>
       Create New Post
     </button>
   </div>
 
-  <div class="filters">
-    <mat-form-field appearance="outline" class="search-field">
-      <mat-label>Search posts</mat-label>
-      <input matInput [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()" placeholder="Search by title, description or page">
-      <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
+  <div class="filters-container" [@fadeIn]>
+    <mat-card class="filters-card">
+      <div class="filters">
+        <mat-form-field appearance="outline" class="search-field">
+          <mat-label>Search posts</mat-label>
+          <input matInput [(ngModel)]="searchTerm" (ngModelChange)="onSearchChange()" placeholder="Search by title, description or page">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
 
-    <mat-form-field appearance="outline" class="filter-field">
-      <mat-label>Filter by status</mat-label>
-      <mat-select [(ngModel)]="filterStatus" (ngModelChange)="onFilterChange()">
-        <mat-option value="all">All Statuses</mat-option>
-        <mat-option [value]="postStatusEnum.Draft">Drafts</mat-option>
-        <mat-option [value]="postStatusEnum.Scheduled">Scheduled</mat-option>
-        <mat-option [value]="postStatusEnum.Published">Published</mat-option>
-        <mat-option [value]="postStatusEnum.Failed">Failed</mat-option>
-        <mat-option [value]="postStatusEnum.Cancelled">Cancelled</mat-option>
-      </mat-select>
-    </mat-form-field>
+        <div class="filter-controls">
+          <!-- <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Filter by status</mat-label>
+            <mat-select [(ngModel)]="filterStatus" (ngModelChange)="onFilterChange()">
+              <mat-option value="all">All Statuses</mat-option>
+              <mat-option [value]="postStatusEnum.Draft">Drafts</mat-option>
+              <mat-option [value]="postStatusEnum.Scheduled">Scheduled</mat-option>
+              <mat-option [value]="postStatusEnum.Published">Published</mat-option>
+              <mat-option [value]="postStatusEnum.Failed">Failed</mat-option>
+              <mat-option [value]="postStatusEnum.Cancelled">Cancelled</mat-option>
+            </mat-select>
+          </mat-form-field> -->
 
-    <mat-form-field appearance="outline" class="sort-field">
-      <mat-label>Sort by</mat-label>
-      <mat-select [(ngModel)]="sortOrder" (ngModelChange)="onSortChange()">
-        <mat-option value="newest">Newest First</mat-option>
-        <mat-option value="oldest">Oldest First</mat-option>
-        <mat-option value="event-nearest">Event Date (Nearest)</mat-option>
-        <mat-option value="event-furthest">Event Date (Furthest)</mat-option>
-      </mat-select>
-    </mat-form-field>
+          <mat-form-field appearance="outline" class="sort-field">
+            <mat-label>Sort by</mat-label>
+            <mat-select [(ngModel)]="sortOrder" (ngModelChange)="onSortChange()">
+              <mat-option value="newest">Newest First</mat-option>
+              <mat-option value="oldest">Oldest First</mat-option>
+              <mat-option value="event-nearest">Event Date (Nearest)</mat-option>
+              <mat-option value="event-furthest">Event Date (Furthest)</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </mat-card>
   </div>
 
-  <div class="posts-content" *ngIf="!loading; else loadingTemplate">
+  <div class="posts-content" *ngIf="!loading; else loadingTemplate" [@staggerIn]="filteredPosts.length">
     <div *ngIf="filteredPosts.length > 0; else noPostsTemplate">
       <div class="post-cards">
-        <mat-card class="post-card" *ngFor="let post of filteredPosts">
-          <mat-card-header>
-            <div mat-card-avatar class="post-header-image">
-              <mat-icon>schedule</mat-icon>
-            </div>
-            <mat-card-title>{{ post.title }}</mat-card-title>
-            <mat-card-subtitle>{{ post.facebookPageName }}</mat-card-subtitle>
-            <span class="status-chip" [ngClass]="getStatusClass(post.status)">
-              {{ post.status }}
-            </span>
-          </mat-card-header>
+       <!-- This shows how to modify your post cards to handle published status more consistently -->
+<div class="post-card-wrapper" *ngFor="let post of filteredPosts; let i = index" [@cardAnimation]="{value: '', params: {delay: i * 100}}">
+  <mat-card class="post-card" [ngClass]="'post-status-' + post.status">
+    <div class="card-banner"></div>
 
-          <mat-card-content>
-            <p class="post-description">{{ post.description }}</p>
-            <div class="post-metadata">
-              <div class="metadata-item">
-                <mat-icon>event</mat-icon>
-                <span>Event: {{ post.eventDateTime | date:'medium' }}</span>
-              </div>
-              <div class="metadata-item">
-                <mat-icon>view_quilt</mat-icon>
-                <span>Template: {{ post.templateName }}</span>
-              </div>
-              <div class="metadata-item" *ngIf="post.scheduledFor">
-                <mat-icon>schedule</mat-icon>
-                <span>Scheduled: {{ post.scheduledFor | date:'medium' }}</span>
-              </div>
-              <div class="metadata-item" *ngIf="post.publishedAt">
-                <mat-icon>publish</mat-icon>
-                <span>Published: {{ post.publishedAt | date:'medium' }}</span>
-              </div>
-            </div>
-          </mat-card-content>
+    <mat-card-header>
+      <div mat-card-avatar class="post-header-image published">
+        <mat-icon>check_circle</mat-icon>
+      </div>
+      <mat-card-title>{{ post.title }}</mat-card-title>
+      <mat-card-subtitle>
+        <mat-icon class="subtitle-icon">business</mat-icon>
+        {{ post.facebookPageName }}
+      </mat-card-subtitle>
+      <span class="status-chip published">
+        {{ post.status }}
+      </span>
+    </mat-card-header>
 
-          <mat-card-actions>
-            <button mat-button color="primary" *ngIf="canEdit(post)" (click)="editPost(post)">EDIT</button>
-            <button mat-button color="accent" *ngIf="canPublish(post)" (click)="publishPost(post)">PUBLISH</button>
-            <button mat-button color="warn" *ngIf="canCancel(post)" (click)="cancelPost(post)">CANCEL</button>
-            <button mat-button *ngIf="post.facebookPostId" (click)="viewOnFacebook(post.facebookPostId)">VIEW ON FACEBOOK</button>
-            <button mat-icon-button color="warn" *ngIf="canDelete(post)" (click)="deletePost(post)" aria-label="Delete post">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </mat-card-actions>
-        </mat-card>
+    <mat-card-content>
+      <p class="post-description">{{ post.description }}</p>
+
+      <div class="post-metadata">
+        <div class="metadata-item">
+          <mat-icon>event</mat-icon>
+          <span>Event: {{ post.eventDateTime | date:'medium' }}</span>
+        </div>
+        <div class="metadata-item">
+          <mat-icon>view_quilt</mat-icon>
+          <span>Template: {{ post.templateName }}</span>
+        </div>
+        <div class="metadata-item" *ngIf="post.publishedAt">
+          <mat-icon>publish</mat-icon>
+          <span>Published: {{ post.publishedAt | date:'medium' }}</span>
+        </div>
+      </div>
+    </mat-card-content>
+
+    <mat-card-actions>
+      <div class="action-buttons">
+        <button mat-button *ngIf="post.facebookPostId" (click)="viewOnFacebook(post.facebookPostId)" class="action-button">
+          <mat-icon>visibility</mat-icon>
+          <span>VIEW ON FACEBOOK</span>
+        </button>
+      </div>
+      <button mat-icon-button color="warn" *ngIf="canDelete(post)" (click)="deletePost(post)" aria-label="Delete post" class="delete-button">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div>
       </div>
     </div>
 
     <ng-template #noPostsTemplate>
-      <mat-card class="empty-state-card">
+      <mat-card class="empty-state-card" [@fadeIn]>
         <mat-card-content>
           <div class="empty-state">
-            <mat-icon>schedule</mat-icon>
+            <div class="empty-state-icon">
+              <mat-icon>schedule</mat-icon>
+            </div>
             <h3>No Posts Found</h3>
             <p *ngIf="searchTerm || filterStatus !== 'all'">No posts match your search or filter criteria.</p>
             <p *ngIf="!searchTerm && filterStatus === 'all'">You haven't created any posts yet.</p>
-            <button mat-raised-button color="primary" (click)="createNewPost()">
+            <button mat-raised-button color="primary" (click)="createNewPost()" class="create-button">
+              <mat-icon>add</mat-icon>
               Create Your First Post
             </button>
           </div>
@@ -105,8 +124,8 @@
   </div>
 
   <ng-template #loadingTemplate>
-    <div class="loading-container">
-      <mat-spinner></mat-spinner>
+    <div class="loading-container" [@fadeIn]>
+      <mat-spinner diameter="40"></mat-spinner>
       <p>Loading posts...</p>
     </div>
   </ng-template>

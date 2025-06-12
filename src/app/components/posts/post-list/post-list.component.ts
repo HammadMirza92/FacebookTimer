@@ -5,11 +5,50 @@ import { Post, PostStatus } from '../../../models/post.model';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../mat-and-snackbar/confirm-dialog/confirm-dialog.component';
+import {
+  trigger,
+  state,
+  style,
+  animate,
+  transition,
+  query,
+  stagger
+} from '@angular/animations';
 
 @Component({
   selector: 'app-post-list',
   templateUrl: './post-list.component.html',
-  styleUrls: ['./post-list.component.scss']
+  styleUrls: ['./post-list.component.scss'],
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('400ms ease-in', style({ opacity: 1 }))
+      ])
+    ]),
+    trigger('scaleIn', [
+      transition(':enter', [
+        style({ transform: 'scale(0.9)', opacity: 0 }),
+        animate('300ms ease-out', style({ transform: 'scale(1)', opacity: 1 }))
+      ])
+    ]),
+    trigger('staggerIn', [
+      transition('* => *', [
+        query(':enter', [
+          style({ opacity: 0, transform: 'translateY(20px)' }),
+          stagger('100ms', [
+            animate('400ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+          ])
+        ], { optional: true })
+      ])
+    ]),
+    trigger('cardAnimation', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(20px)' }),
+        animate('{{delay}}ms 300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ])
+  ]
 })
 export class PostListComponent implements OnInit {
   posts: Post[] = [];
@@ -158,7 +197,7 @@ export class PostListComponent implements OnInit {
         this.postService.deletePost(post.id).subscribe({
           next: (result) => {
             if(result.warning){
-              this.notificationService.showSuccess(result.warning,5000);
+              this.notificationService.showSuccess(result.warning, 5000);
             } else {
               this.notificationService.showSuccess('Post has been deleted');
             }
@@ -191,6 +230,24 @@ export class PostListComponent implements OnInit {
         return 'status-cancelled';
       default:
         return '';
+    }
+  }
+
+  // New helper method for status icons
+  getStatusIcon(status: PostStatus): string {
+    switch (status) {
+      case PostStatus.Draft:
+        return 'edit';
+      case PostStatus.Scheduled:
+        return 'schedule';
+      case PostStatus.Published:
+        return 'check_circle';
+      case PostStatus.Failed:
+        return 'error';
+      case PostStatus.Cancelled:
+        return 'cancel';
+      default:
+        return 'help';
     }
   }
 
