@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree } from '@angular/router';
-import { Observable } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 
 import { AuthService } from '../components/auth/auth.service';
 import { NotificationService } from '../services/notification.service';
@@ -24,7 +24,20 @@ export class AuthGuard {
     }
 
     this.notificationService.showWarning('Please login to access this page.');
-    this.router.navigate(['/auth/login'], { queryParams: { returnUrl: state.url } });
-    return false;
+    return this.authService.currentUser.pipe(
+      take(1),
+      map(user => {
+        if (user) {
+          // User is logged in
+          return true;
+        }
+
+        // Not logged in, redirect to login
+        this.router.navigate(['/auth/login'], {
+          queryParams: { returnUrl: state.url }
+        });
+        return false;
+      })
+    );
   }
 }

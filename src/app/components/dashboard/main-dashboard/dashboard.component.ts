@@ -365,7 +365,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       favorited: false
     }));
 
-    this.notificationService.showSuccess(`Generated ${numberOfIdeas} fresh content ideas! 💡`);
+   // this.notificationService.showSuccess(`Generated ${numberOfIdeas} fresh content ideas! 💡`);
   }
 
   getIdeaCategory(idea: string): string {

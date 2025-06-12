@@ -43,10 +43,37 @@ userStats: UserStats = {
   }
 
   ngOnInit(): void {
+    this.refreshUserState();
+    this.router.events.pipe(
+    filter(event => event instanceof NavigationEnd),
+    takeUntil(this.destroy$)
+  ).subscribe(() => {
+    this.refreshUserState();
+  });
     this.loadUserData();
     this.loadUserStats();
     this.loadNavigationCounts();
   }
+  private refreshUserState(): void {
+  // If we're authenticated according to the service but don't have a user object
+  if (this.authService.isAuthenticated() && !this.authService.currentUserValue) {
+    this.authService.getCurrentUser().pipe(
+      takeUntil(this.destroy$)
+    ).subscribe({
+      next: (user) => {
+        // User data loaded successfully
+        this.loadUserData();
+      },
+      error: (error) => {
+        console.error('Error refreshing user state in sidenav:', error);
+        // If there's an authentication error, let the auth service handle the logout
+        if (error.status === 401) {
+          this.authService.logout();
+        }
+      }
+    });
+  }
+}
    ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();

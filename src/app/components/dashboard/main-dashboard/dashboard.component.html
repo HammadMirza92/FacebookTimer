@@ -111,7 +111,7 @@
             </div>
             <div class="metric-content">
               <h3>{{ gameStats.totalScore | number }}</h3>
-              <p>Total Score</p>
+              <p>Today's Total Score</p>
               <div class="metric-progress">
                 <div class="progress-bar" [style.width.%]="getScoreProgress()"></div>
               </div>
@@ -130,7 +130,7 @@
             </div>
             <div class="metric-content">
               <h3>{{ gameStats.gamesPlayed }}</h3>
-              <p>Games Completed</p>
+              <p>Today's Games Completed</p>
               <div class="metric-progress">
                 <div class="progress-bar" [style.width.%]="getGamesProgress()"></div>
               </div>
@@ -149,7 +149,7 @@
             </div>
             <div class="metric-content">
               <h3>{{ gameStats.achievements.length }}</h3>
-              <p>Achievements</p>
+              <p>Today's Achievements</p>
               <div class="metric-progress">
                 <div class="progress-bar" [style.width.%]="getAchievementProgress()"></div>
               </div>
@@ -161,14 +161,14 @@
               <div class="metric-icon">
                 <mat-icon>lightbulb</mat-icon>
               </div>
-              <div class="metric-trend neutral">
-                <mat-icon>remove</mat-icon>
+              <div class="metric-trend positive">
+                <mat-icon>arrow_upward</mat-icon>
                 <span>{{ contentIdeas.length }}</span>
               </div>
             </div>
             <div class="metric-content">
               <h3>{{ contentIdeas.length }}</h3>
-              <p>Ideas Ready</p>
+              <p>Ideas Ready For You</p>
               <div class="metric-progress">
                 <div class="progress-bar" [style.width.%]="getIdeasProgress()"></div>
               </div>
@@ -274,7 +274,7 @@
                 </div>
                 <div class="stat-data">
                   <span class="stat-number">{{ gameStats.gamesPlayed }}</span>
-                  <span class="stat-label">Games Played</span>
+                  <span class="stat-label">Today's Games Played</span>
                 </div>
               </div>
               <div class="stat-item">
@@ -283,7 +283,7 @@
                 </div>
                 <div class="stat-data">
                   <span class="stat-number">{{ gameStats.totalScore }}</span>
-                  <span class="stat-label">Total Score</span>
+                  <span class="stat-label">Today's Total Score</span>
                 </div>
               </div>
               <div class="stat-item" *ngIf="gameStats.achievements.length > 0">
@@ -292,7 +292,7 @@
                 </div>
                 <div class="stat-data">
                   <span class="stat-number">{{ gameStats.achievements.length }}</span>
-                  <span class="stat-label">Achievements</span>
+                  <span class="stat-label">Today's Achievements</span>
                 </div>
               </div>
             </div>

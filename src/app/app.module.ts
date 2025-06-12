@@ -37,7 +37,6 @@ import { RouterModule } from '@angular/router';
     SidenavComponent,
     FooterComponent,
     NotFoundComponent,
-
   ],
   imports: [
     BrowserModule,

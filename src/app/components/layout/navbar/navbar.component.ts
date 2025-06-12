@@ -1,9 +1,9 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs';
+import { filter, Observable, of, switchMap, take } from 'rxjs';
 import { AuthService } from '../../auth/auth.service';
 import { NotificationService } from '../../../services/notification.service';
 import { User } from '../../../models/user.model';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
@@ -25,7 +25,27 @@ export class NavbarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.notificationService.checkSubscriptionAlert();
+   this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      switchMap(() => {
+        // If we're authenticated according to local storage but don't have a user object
+        // fetch the current user from the API
+        if (this.authService.isAuthenticated() && !this.authService.currentUserValue) {
+          return this.authService.getCurrentUser();
+        }
+        // Otherwise, just return the current user value
+        return of(this.authService.currentUserValue);
+      })
+    ).subscribe({
+      error: (error) => {
+        console.error('Error refreshing user state:', error);
+        // If there's an error (like an expired token), log the user out
+        if (error.status === 401) {
+          this.authService.logout();
+          this.notificationService.showError('Your session has expired. Please log in again.');
+        }
+      }
+    });
   }
 
   toggleSidenav(): void {

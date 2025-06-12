@@ -53,9 +53,10 @@ export class AuthService {
   }
 
   register(registerData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, registerData)
+    return this.http.post<AuthResponse>(`${this.apiUrl}/register`, registerData)
       .pipe(
         retry(2),
+        map(response => this.handleAuthSuccess(response)),
         catchError(this.handleAuthError.bind(this))
       );
   }
