@@ -12,11 +12,20 @@ import { MatDialog } from '@angular/material/dialog';
 import { PostPreviewComponent } from '../post-preview/post-preview.component';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { TemplateService } from '../../templatess/template.service';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-create-post',
   templateUrl: './create-post.component.html',
-  styleUrls: ['./create-post.component.scss']
+  styleUrls: ['./create-post.component.scss'],
+  animations: [
+    trigger('fadeIn', [
+      transition(':enter', [
+        style({ opacity: 0, transform: 'translateY(10px)' }),
+        animate('300ms ease-out', style({ opacity: 1, transform: 'translateY(0)' }))
+      ])
+    ])
+  ]
 })
 export class CreatePostComponent implements OnInit, OnDestroy {
   @ViewChild('previewFrame') previewFrame!: ElementRef<HTMLIFrameElement>;
@@ -33,6 +42,7 @@ export class CreatePostComponent implements OnInit, OnDestroy {
   minDateTime = new Date();
   previewSrc: SafeResourceUrl | null = null;
   templateHtml: string = '';
+  defaultPageId: number | null = null;
 
   private routeSubscription: Subscription | null = null;
   private formSubscription: Subscription | null = null;
@@ -104,6 +114,13 @@ export class CreatePostComponent implements OnInit, OnDestroy {
       next: (response) => {
         this.pages = response.pages;
 
+        // Set default page if available
+        if (this.pages.length > 0 && !this.isEdit) {
+          this.defaultPageId = this.pages[0].id;
+          this.postForm.patchValue({ facebookPageId: this.defaultPageId });
+          this.selectedPage = this.pages[0];
+        }
+
         if (this.isEdit) {
           // Edit mode: load post and templates
           forkJoin({
@@ -113,7 +130,9 @@ export class CreatePostComponent implements OnInit, OnDestroy {
             next: result => {
               this.templates = result.templates;
               this.populateForm(result.post);
-              this.loading = false;
+              setTimeout(() => {
+                this.loading = false;
+              }, 800); // Added slight delay for smoother UI transition
             },
             error: error => {
               this.notificationService.showError('Failed to load post data');
@@ -139,7 +158,9 @@ export class CreatePostComponent implements OnInit, OnDestroy {
                 }
               });
 
-              this.loading = false;
+              setTimeout(() => {
+                this.loading = false;
+              }, 800); // Added slight delay for smoother UI transition
             },
             error: error => {
               this.notificationService.showError('Failed to load templates. Please try again later.');
@@ -373,75 +394,83 @@ export class CreatePostComponent implements OnInit, OnDestroy {
     this.savePost(this.postForm.value);
   }
 
-publishNow(): void {
-  if (this.postForm.invalid) {
-    this.markFormGroupTouched(this.postForm);
-    this.notificationService.showWarning('Please fill in all required fields');
-    return;
+  publishNow(): void {
+    if (this.postForm.invalid) {
+      this.markFormGroupTouched(this.postForm);
+      this.notificationService.showWarning('Please fill in all required fields');
+      return;
+    }
+
+    this.submitting = true;
+
+    // Prepare form data for saving
+    const formData = {
+      facebookPageId: parseInt(this.postForm.get('facebookPageId')?.value),
+      templateId: parseInt(this.postForm.get('templateId')?.value),
+      title: this.postForm.get('title')?.value?.trim(),
+      description: this.postForm.get('description')?.value?.trim(),
+      eventDateTime: this.postForm.get('eventDateTime')?.value,
+      customFontFamily: this.postForm.get('customFontFamily')?.value || '',
+      customPrimaryColor: this.postForm.get('customPrimaryColor')?.value || '',
+      showDays: this.postForm.get('showDays')?.value || false,
+      showHours: this.postForm.get('showHours')?.value || false,
+      showMinutes: this.postForm.get('showMinutes')?.value || false,
+      showSeconds: this.postForm.get('showSeconds')?.value || false,
+      backgroundImageUrl: this.postForm.get('backgroundImageUrl')?.value || '',
+      hasOverlay: this.postForm.get('hasOverlay')?.value || false,
+      scheduledFor: null, // Clear scheduled date for immediate publishing
+      refreshIntervalInMinutes: parseInt(this.postForm.get('refreshIntervalInMinutes')?.value) || 15
+    };
+
+    console.log('Saving post data before publishing:', formData);
+    // Step 1: Save/Update the post first
+    const saveOperation =  this.postService.createPost(formData);
+    saveOperation.subscribe({
+      next: (savedPost) => {
+        console.log('Post saved successfully:', savedPost);
+        console.log(`Now calling publish endpoint for post ID: ${savedPost.id}`);
+
+        // Add a slight delay for better user experience
+        setTimeout(() => {
+          this.notificationService.showSuccess('Post published successfully to Facebook with countdown image!');
+          this.router.navigate(['/posts']);
+        }, 1500);
+      },
+      error: (saveError) => {
+        this.submitting = false;
+        console.error('Save error:', saveError);
+
+        let errorMessage = this.isEdit ? 'Failed to update post' : 'Failed to create post';
+
+        if (saveError?.status === 400 && saveError?.error) {
+          if (saveError.error.message) {
+            errorMessage = saveError.error.error;
+          } else if (saveError.error.errors) {
+            const validationErrors = Object.values(saveError.error.errors).flat();
+            errorMessage = `Validation failed: ${validationErrors.join(', ')}`;
+          }
+        } else if (saveError?.error?.message) {
+          errorMessage = saveError.error.message;
+        } else if (saveError?.message) {
+          errorMessage = saveError.message;
+        }
+
+        this.notificationService.showError(errorMessage);
+      }
+    });
   }
 
-  this.submitting = true;
-
-  // Prepare form data for saving
-  const formData = {
-    facebookPageId: parseInt(this.postForm.get('facebookPageId')?.value),
-    templateId: parseInt(this.postForm.get('templateId')?.value),
-    title: this.postForm.get('title')?.value?.trim(),
-    description: this.postForm.get('description')?.value?.trim(),
-    eventDateTime: this.postForm.get('eventDateTime')?.value,
-    customFontFamily: this.postForm.get('customFontFamily')?.value || '',
-    customPrimaryColor: this.postForm.get('customPrimaryColor')?.value || '',
-    showDays: this.postForm.get('showDays')?.value || false,
-    showHours: this.postForm.get('showHours')?.value || false,
-    showMinutes: this.postForm.get('showMinutes')?.value || false,
-    showSeconds: this.postForm.get('showSeconds')?.value || false,
-    backgroundImageUrl: this.postForm.get('backgroundImageUrl')?.value || '',
-    hasOverlay: this.postForm.get('hasOverlay')?.value || false,
-    scheduledFor: null, // Clear scheduled date for immediate publishing
-    refreshIntervalInMinutes: parseInt(this.postForm.get('refreshIntervalInMinutes')?.value) || 15
-  };
-
-  console.log('Saving post data before publishing:', formData);
-  // Step 1: Save/Update the post first
-  const saveOperation = this.postService.createPost(formData);
-  saveOperation.subscribe({
-    next: (savedPost) => {
-      console.log('Post saved successfully:', savedPost);
-      console.log(`Now calling publish endpoint for post ID: ${savedPost.id}`);
-        this.notificationService.showSuccess('Post published successfully to Facebook with countdown image!');
-        this.router.navigate(['/posts']);
-    },
-    error: (saveError) => {
-      this.submitting = false;
-      console.error('Save error:', saveError);
-
-      let errorMessage = this.isEdit ? 'Failed to update post' : 'Failed to create post';
-
-      if (saveError?.status === 400 && saveError?.error) {
-        if (saveError.error.message) {
-          errorMessage = saveError.error.error;
-        } else if (saveError.error.errors) {
-          const validationErrors = Object.values(saveError.error.errors).flat();
-          errorMessage = `Validation failed: ${validationErrors.join(', ')}`;
-        }
-      } else if (saveError?.error?.message) {
-        errorMessage = saveError.error.message;
-      } else if (saveError?.message) {
-        errorMessage = saveError.message;
-      }
-
-      this.notificationService.showError(errorMessage);
-    }
-  });
-}
   private savePost(formData: any): void {
     this.submitting = true;
 
     if (this.isEdit) {
       this.postService.updatePost(this.postId, formData).subscribe({
         next: post => {
-          this.notificationService.showSuccess('Post updated successfully!');
-          this.router.navigate(['/posts']);
+          // Add a slight delay for better user experience
+          setTimeout(() => {
+            this.notificationService.showSuccess('Post updated successfully!');
+            this.router.navigate(['/posts']);
+          }, 1000);
         },
         error: error => {
           this.notificationService.showError(error.error || 'Failed to update post');
@@ -451,8 +480,11 @@ publishNow(): void {
     } else {
       this.postService.createPost(formData).subscribe({
         next: post => {
-          this.notificationService.showSuccess('Post created successfully!');
-          this.router.navigate(['/posts']);
+          // Add a slight delay for better user experience
+          setTimeout(() => {
+            this.notificationService.showSuccess('Post created successfully!');
+            this.router.navigate(['/posts']);
+          }, 1000);
         },
         error: error => {
           this.notificationService.showError(error.error || 'Failed to create post');

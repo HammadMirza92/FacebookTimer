@@ -1,96 +1,367 @@
+// Animation keyframes
+@keyframes backgroundAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+}
+
 .create-post-container {
-  padding: 20px;
+  position: relative;
+  padding: 24px;
   max-width: 1400px;
   margin: 0 auto;
+  overflow: hidden;
+
+  // Animated background gradient
+  .animated-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+    background: linear-gradient(135deg, rgba(103, 58, 183, 0.05) 0%, rgba(33, 150, 243, 0.05) 50%, rgba(103, 58, 183, 0.05) 100%);
+    background-size: 400% 400%;
+    animation: backgroundAnimation 15s ease infinite;
+    pointer-events: none;
+  }
 
   .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 30px;
+    animation: fadeIn 0.6s ease-out;
 
-    h1 {
-      margin: 0;
-      color: #333;
-      font-weight: 500;
+    .header-content {
+      h1 {
+        margin: 0 0 8px;
+        color: #333;
+        font-weight: 500;
+        font-size: 28px;
+      }
+
+      .subtitle {
+        color: rgba(0, 0, 0, 0.6);
+        margin: 0;
+        font-size: 16px;
+      }
+    }
+
+    .back-button {
+      color: #666;
+      transition: all 0.2s ease;
+
+      &:hover {
+        color: #333;
+        background-color: rgba(0, 0, 0, 0.04);
+      }
+
+      mat-icon {
+        margin-right: 4px;
+      }
     }
   }
 
+  // Loading animations
+  .loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out;
+
+    .spinner-container {
+      text-align: center;
+      padding: 30px;
+
+      .spinner-animation {
+        position: relative;
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 16px;
+
+        .spinner-circle {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          border: 4px solid transparent;
+          border-radius: 50%;
+
+          &:nth-child(1) {
+            border-top-color: #673AB7;
+            animation: rotate 1s linear infinite;
+          }
+
+          &:nth-child(2) {
+            border-right-color: #2196F3;
+            animation: rotate 1s linear infinite reverse;
+            width: 80%;
+            height: 80%;
+            top: 10%;
+            left: 10%;
+          }
+
+          &:nth-child(3) {
+            border-bottom-color: #FF5722;
+            animation: rotate 1s linear infinite;
+            width: 60%;
+            height: 60%;
+            top: 20%;
+            left: 20%;
+          }
+        }
+      }
+
+      p {
+        color: #555;
+        font-weight: 500;
+        font-size: 16px;
+        margin: 0;
+      }
+    }
+  }
+
+  .content-loading {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .create-post-content {
+    transition: opacity 0.3s ease;
+  }
+
+  // Form container and cards
   .form-container {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 40px;
+    gap: 30px;
 
     @media (max-width: 1024px) {
       grid-template-columns: 1fr;
-      gap: 30px;
     }
   }
 
   .form-column {
-    h2 {
-      margin-top: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    animation: fadeIn 0.6s ease-out;
+
+    &.preview-column {
+      animation: fadeIn 0.8s ease-out;
+    }
+  }
+
+  .section-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 24px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
       margin-bottom: 20px;
-      color: #333;
-      font-weight: 500;
-      font-size: 1.5rem;
+
+      mat-icon {
+        color: #673AB7;
+        margin-right: 12px;
+      }
+
+      h2 {
+        margin: 0;
+        color: #333;
+        font-weight: 500;
+        font-size: 20px;
+      }
     }
 
     h3 {
-      margin-top: 30px;
-      margin-bottom: 15px;
+      margin: 24px 0 12px;
       color: #555;
       font-weight: 500;
-      font-size: 1.2rem;
+      font-size: 16px;
     }
 
+    // Form fields styling
     .full-width {
       width: 100%;
       margin-bottom: 16px;
     }
 
+    // Facebook page and template selection styling
+    .page-select-option, .template-select-option {
+      display: flex;
+      align-items: center;
+
+      .page-icon, .template-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: #673AB7;
+        color: white;
+        margin-right: 8px;
+        font-size: 12px;
+        font-weight: bold;
+      }
+
+      .template-icon {
+        background-color: #2196F3;
+      }
+    }
+
+    // Timer units styling
     .timer-units-container {
       display: flex;
       flex-wrap: wrap;
       gap: 16px;
       margin-bottom: 20px;
+    }
 
-      mat-checkbox {
-        margin-right: 16px;
+    // Customization options
+    .customization-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin: 16px 0;
+
+      @media (max-width: 600px) {
+        grid-template-columns: 1fr;
       }
     }
 
-    .color-picker-row {
-      margin-bottom: 20px;
-    }
+    // Background options
+    .background-options {
+      margin-top: 16px;
 
-    .overlay-checkbox {
-      margin-bottom: 20px;
+      .overlay-checkbox {
+        margin-top: 8px;
+      }
     }
   }
 
+  // Preview card specific styling
+  .preview-card {
+    // flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
   .preview-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
     border: 1px solid #e0e0e0;
     border-radius: 8px;
     overflow: hidden;
     background: #f9f9f9;
 
     .preview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       background: #fff;
-      padding: 15px;
+      padding: 12px 16px;
       border-bottom: 1px solid #e0e0e0;
 
-      .preview-page-name {
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 5px;
+      .preview-page-info {
+        display: flex;
+        align-items: center;
+
+        .page-avatar {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          background-color: #673AB7;
+          color: white;
+          font-weight: bold;
+          margin-right: 12px;
+        }
+
+        .page-details {
+          .preview-page-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 2px;
+          }
+
+          .preview-template-name {
+            font-size: 12px;
+            color: #666;
+          }
+        }
       }
 
-      .preview-template-name {
-        font-size: 0.9rem;
-        color: #666;
+      .preview-status {
+        mat-chip {
+          font-size: 12px;
+          height: 24px;
+        }
       }
     }
 
-    // Template Preview with iframe (similar to template card)
+    // Template Preview with iframe
     .template-preview-container {
+      flex: 1;
       position: relative;
       width: 100%;
       min-height: 400px;
@@ -101,14 +372,12 @@
         width: 100%;
         height: 400px;
         overflow: hidden;
-        border-radius: 4px;
+        border-radius: 0;
 
         .template-iframe {
           width: 100%;
           height: 100%;
           border: none;
-          border-radius: 4px;
-          background: #fff;
           display: block;
         }
       }
@@ -116,6 +385,7 @@
 
     // Fallback Preview (non-template)
     .preview-content {
+      flex: 1;
       position: relative;
       width: 100%;
       min-height: 400px;
@@ -129,7 +399,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 4px;
         overflow: hidden;
 
         .preview-overlay {
@@ -172,15 +441,24 @@
     }
 
     .preview-footer {
-      padding: 15px;
+      padding: 16px;
       text-align: center;
       background: #fff;
       border-top: 1px solid #e0e0e0;
+
+      button {
+        border-radius: 20px;
+        padding: 0 20px;
+      }
     }
   }
 
+  // Action buttons section
+  .action-card {
+    padding: 20px;
+  }
+
   .action-buttons {
-    margin-top: 30px;
     display: flex;
     justify-content: flex-end;
     gap: 12px;
@@ -192,69 +470,110 @@
 
     button {
       min-width: 140px;
+      border-radius: 20px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+      &:hover:not([disabled]) {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
 
       @media (max-width: 768px) {
         flex: 1;
         min-width: auto;
-        margin: 4px;
       }
 
       mat-icon {
         margin-right: 8px;
       }
     }
-  }
 
-  .loading-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 300px;
-    color: #666;
-
-    mat-spinner {
-      margin-bottom: 20px;
+    .cancel-button {
+      color: #666;
     }
 
-    p {
-      font-size: 1.1rem;
-      margin: 0;
+    .draft-button {
+      background-color: #673AB7;
+    }
+
+    .schedule-button {
+      background-color: #2196F3;
+    }
+
+    .publish-button {
+      background-color: #FF5722;
+    }
+  }
+
+  // Submitting overlay
+  .submitting-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    animation: fadeIn 0.3s ease-out;
+
+    .spinner-container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+      text-align: center;
+      min-width: 200px;
+
+      .pulse-spinner {
+        width: 50px;
+        height: 50px;
+        background-color: #673AB7;
+        border-radius: 50%;
+        margin: 0 auto 20px;
+        animation: pulse 1.5s ease-in-out infinite;
+      }
+
+      p {
+        margin: 0;
+        color: #555;
+        font-weight: 500;
+      }
     }
   }
 }
 
-// Additional responsive styles
+// Additional responsive adjustments
 @media (max-width: 768px) {
   .create-post-container {
-    padding: 15px;
+    padding: 16px;
 
-    .form-container {
-      gap: 20px;
+    .page-header {
+      flex-direction: column;
+      align-items: flex-start;
+
+      .header-content {
+        margin-bottom: 16px;
+
+        h1 {
+          font-size: 24px;
+        }
+      }
     }
 
-    .form-column {
-      h2 {
-        font-size: 1.3rem;
-      }
+    .section-card {
+      padding: 16px;
 
-      h3 {
-        font-size: 1.1rem;
-        margin-top: 20px;
+      .section-header {
+        h2 {
+          font-size: 18px;
+        }
       }
     }
 
     .preview-wrapper {
-      .template-preview-container {
-        .iframe-container {
-          height: 300px;
-
-          .template-iframe {
-            height: 300px;
-          }
-        }
-      }
-
       .preview-content {
         .preview-background {
           height: 300px;
@@ -270,38 +589,12 @@
           }
         }
       }
-    }
-  }
-}
 
-// Loading overlay styles
-.submitting-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(255, 255, 255, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-
-  .spinner-container {
-    background: white;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-    text-align: center;
-
-    mat-spinner {
-      margin-bottom: 15px;
-    }
-
-    p {
-      margin: 0;
-      color: #666;
-      font-weight: 500;
+      .template-preview-container {
+        .iframe-container {
+          height: 300px;
+        }
+      }
     }
   }
 }

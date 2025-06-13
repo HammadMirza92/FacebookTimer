@@ -1,177 +1,254 @@
 <div class="create-post-container">
+  <div class="animated-background"></div>
+
   <div class="page-header">
-    <h1>{{ isEdit ? 'Edit Post' : 'Create New Post' }}</h1>
+    <div class="header-content">
+      <h1>{{ isEdit ? 'Edit Post' : 'Create New Post' }}</h1>
+      <p class="subtitle">Create a beautiful countdown post for your Facebook page</p>
+    </div>
+    <button mat-button class="back-button" (click)="cancel()">
+      <mat-icon>arrow_back</mat-icon>
+      Back to posts
+    </button>
   </div>
 
-  <div class="create-post-content" *ngIf="!loading; else loadingTemplate">
+  <div class="loading-overlay" *ngIf="loading">
+    <div class="spinner-container">
+      <div class="spinner-animation">
+        <div class="spinner-circle"></div>
+        <div class="spinner-circle"></div>
+        <div class="spinner-circle"></div>
+      </div>
+      <p>Loading your content...</p>
+    </div>
+  </div>
+
+  <div class="create-post-content" [class.content-loading]="loading">
     <form [formGroup]="postForm" (ngSubmit)="saveAsDraft()">
       <div class="form-container">
         <div class="form-column">
-          <h2>Basic Information</h2>
-
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Facebook Page</mat-label>
-            <mat-select formControlName="facebookPageId" (selectionChange)="onPageChange()" required>
-              <mat-option *ngFor="let page of pages" [value]="page.id">{{ page.pageName }}</mat-option>
-            </mat-select>
-            <mat-error *ngIf="f['facebookPageId'].errors?.['required']">Facebook Page is required</mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Template</mat-label>
-            <mat-select formControlName="templateId" (selectionChange)="onTemplateChange()" required>
-              <mat-option *ngFor="let template of templates" [value]="template.id">{{ template.name }}</mat-option>
-            </mat-select>
-            <mat-error *ngIf="f['templateId'].errors?.['required']">Template is required</mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Post Title</mat-label>
-            <input matInput formControlName="title" placeholder="Enter title (e.g., EVENT NAME IS COMING!)" required>
-            <mat-error *ngIf="f['title'].errors?.['required']">Title is required</mat-error>
-            <mat-error *ngIf="f['title'].errors?.['maxlength']">Title must be less than 100 characters</mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Post Description</mat-label>
-            <textarea matInput formControlName="description" placeholder="Enter description" rows="4" required></textarea>
-            <mat-error *ngIf="f['description'].errors?.['required']">Description is required</mat-error>
-            <mat-error *ngIf="f['description'].errors?.['maxlength']">Description must be less than 500 characters</mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Event Date & Time</mat-label>
-            <input matInput [matDatepicker]="eventDatePicker" formControlName="eventDateTime" placeholder="Select date and time" required>
-            <mat-datepicker-toggle matSuffix [for]="eventDatePicker"></mat-datepicker-toggle>
-            <mat-datepicker #eventDatePicker></mat-datepicker>
-            <mat-error *ngIf="f['eventDateTime'].errors?.['required']">Event date and time is required</mat-error>
-          </mat-form-field>
-
-          <h3>Display Options</h3>
-
-          <div class="timer-units-container">
-            <mat-checkbox formControlName="showDays">Days</mat-checkbox>
-            <mat-checkbox formControlName="showHours">Hours</mat-checkbox>
-            <mat-checkbox formControlName="showMinutes">Minutes</mat-checkbox>
-            <mat-checkbox formControlName="showSeconds">Seconds</mat-checkbox>
-          </div>
-
-          <app-font-picker formControlName="customFontFamily" [label]="'Font'"></app-font-picker>
-
-          <div class="color-picker-row">
-            <app-color-picker formControlName="customPrimaryColor" [label]="'Color'"></app-color-picker>
-          </div>
-
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Background Image URL (optional)</mat-label>
-            <input matInput formControlName="backgroundImageUrl" placeholder="Enter image URL">
-          </mat-form-field>
-
-          <mat-checkbox formControlName="hasOverlay" class="overlay-checkbox">
-            Add dark overlay to background
-          </mat-checkbox>
-
-          <h3>Scheduling Options</h3>
-
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Schedule For (Optional)</mat-label>
-            <input matInput [matDatepicker]="scheduleDatePicker" formControlName="scheduledFor" [min]="minDateTime" placeholder="Leave empty to save as draft">
-            <mat-datepicker-toggle matSuffix [for]="scheduleDatePicker"></mat-datepicker-toggle>
-            <mat-datepicker #scheduleDatePicker></mat-datepicker>
-            <mat-hint>If set, the post will be automatically published at this time</mat-hint>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Refresh Interval (minutes)</mat-label>
-            <mat-select formControlName="refreshIntervalInMinutes">
-              <mat-option [value]="5">5 minutes</mat-option>
-              <mat-option [value]="15">15 minutes</mat-option>
-              <mat-option [value]="30">30 minutes</mat-option>
-              <mat-option [value]="60">1 hour</mat-option>
-            </mat-select>
-            <mat-hint>How often the countdown timer should update on Facebook</mat-hint>
-          </mat-form-field>
-        </div>
-
-        <div class="form-column">
-          <h2>Preview</h2>
-          <div class="preview-wrapper">
-            <div class="preview-header">
-              <div class="preview-page-name" *ngIf="selectedPage">{{ selectedPage.pageName }}</div>
-              <div class="preview-template-name" *ngIf="selectedTemplate">Template: {{ selectedTemplate.name }}</div>
+          <div class="section-card">
+            <div class="section-header">
+              <mat-icon>settings</mat-icon>
+              <h2>Basic Information</h2>
             </div>
 
-            <!-- Template Preview Container with iframe (similar to template card) -->
-            <div class="template-preview-container" *ngIf="selectedTemplate && selectedTemplate.htmlTemplate">
-              <div class="iframe-container">
-                <iframe
-                  #previewFrame
-                  frameborder="0"
-                  class="template-iframe"
-                  (load)="onPreviewLoad()"
-                  scrolling="no">
-                </iframe>
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Facebook Page</mat-label>
+              <mat-select formControlName="facebookPageId" (selectionChange)="onPageChange()" required>
+                <mat-option *ngFor="let page of pages" [value]="page.id">
+                  <div class="page-select-option">
+                    <span class="page-icon">{{ page.pageName.charAt(0) }}</span>
+                    <span>{{ page.pageName }}</span>
+                  </div>
+                </mat-option>
+              </mat-select>
+              <mat-hint *ngIf="pages.length === 0">Loading your Facebook pages...</mat-hint>
+              <mat-error *ngIf="f['facebookPageId'].errors?.['required']">Facebook Page is required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Template</mat-label>
+              <mat-select formControlName="templateId" (selectionChange)="onTemplateChange()" required>
+                <mat-option *ngFor="let template of templates" [value]="template.id">
+                  <div class="template-select-option">
+                    <span class="template-icon">
+                      <mat-icon>insert_drive_file</mat-icon>
+                    </span>
+                    <span>{{ template.name }}</span>
+                  </div>
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="f['templateId'].errors?.['required']">Template is required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Post Title</mat-label>
+              <input matInput formControlName="title" placeholder="Enter title (e.g., EVENT NAME IS COMING!)" required>
+              <mat-hint align="end">{{ (f['title'].value?.length || 0) }}/100</mat-hint>
+              <mat-error *ngIf="f['title'].errors?.['required']">Title is required</mat-error>
+              <mat-error *ngIf="f['title'].errors?.['maxlength']">Title must be less than 100 characters</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Post Description</mat-label>
+              <textarea matInput formControlName="description" placeholder="Enter description" rows="4" required></textarea>
+              <mat-hint align="end">{{ (f['description'].value?.length || 0) }}/500</mat-hint>
+              <mat-error *ngIf="f['description'].errors?.['required']">Description is required</mat-error>
+              <mat-error *ngIf="f['description'].errors?.['maxlength']">Description must be less than 500 characters</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Event Date & Time</mat-label>
+              <input matInput [matDatepicker]="eventDatePicker" formControlName="eventDateTime" placeholder="Select date and time" required>
+              <mat-datepicker-toggle matSuffix [for]="eventDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #eventDatePicker></mat-datepicker>
+              <mat-error *ngIf="f['eventDateTime'].errors?.['required']">Event date and time is required</mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="section-card">
+            <div class="section-header">
+              <mat-icon>palette</mat-icon>
+              <h2>Display Options</h2>
+            </div>
+
+            <h3>Countdown Units</h3>
+            <div class="timer-units-container">
+              <mat-checkbox formControlName="showDays" color="primary">Days</mat-checkbox>
+              <mat-checkbox formControlName="showHours" color="primary">Hours</mat-checkbox>
+              <mat-checkbox formControlName="showMinutes" color="primary">Minutes</mat-checkbox>
+              <mat-checkbox formControlName="showSeconds" color="primary">Seconds</mat-checkbox>
+            </div>
+
+            <div class="customization-options">
+              <app-font-picker formControlName="customFontFamily" [label]="'Font'"></app-font-picker>
+
+              <div class="color-picker-row">
+                <app-color-picker formControlName="customPrimaryColor" [label]="'Color'"></app-color-picker>
               </div>
             </div>
 
-            <!-- Fallback Preview if no template HTML -->
-            <div class="preview-content" *ngIf="!selectedTemplate || !selectedTemplate.htmlTemplate"
-                [ngStyle]="{'font-family': postForm.get('customFontFamily')?.value || 'Arial, sans-serif'}">
-              <div class="preview-background"
-                  [ngStyle]="{'background-color': postForm.get('customPrimaryColor')?.value || '#3f51b5',
-                             'background-image': postForm.get('backgroundImageUrl')?.value ? 'url(' + postForm.get('backgroundImageUrl')?.value + ')' : 'none'}">
-                <div class="preview-overlay" *ngIf="postForm.get('hasOverlay')?.value"></div>
-                <div class="preview-text">
-                  <div class="preview-title">{{ postForm.get('title')?.value || 'EVENT NAME IS COMING!' }}</div>
-                  <div class="preview-description">{{ postForm.get('description')?.value || 'Your event description here' }}</div>
+            <div class="background-options">
+              <h3>Background Options</h3>
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Background Image URL</mat-label>
+                <input matInput formControlName="backgroundImageUrl" placeholder="Enter image URL">
+                <mat-icon matSuffix>image</mat-icon>
+                <mat-hint>Leave empty to use template default</mat-hint>
+              </mat-form-field>
 
-                  <div class="preview-countdown">
-                    <app-countdown-timer
-                      [targetDate]="postForm.get('eventDateTime')?.value || minDateTime"
-                      [showDays]="postForm.get('showDays')?.value"
-                      [showHours]="postForm.get('showHours')?.value"
-                      [showMinutes]="postForm.get('showMinutes')?.value"
-                      [showSeconds]="postForm.get('showSeconds')?.value"
-                      [primaryColor]="'white'"
-                      [fontFamily]="postForm.get('customFontFamily')?.value || 'Arial, sans-serif'">
-                    </app-countdown-timer>
+              <mat-checkbox formControlName="hasOverlay" color="primary" class="overlay-checkbox">
+                Add dark overlay to background
+              </mat-checkbox>
+            </div>
+          </div>
+
+          <div class="section-card">
+            <div class="section-header">
+              <mat-icon>schedule</mat-icon>
+              <h2>Scheduling Options</h2>
+            </div>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Schedule For (Optional)</mat-label>
+              <input matInput [matDatepicker]="scheduleDatePicker" formControlName="scheduledFor" [min]="minDateTime" placeholder="Leave empty to save as draft">
+              <mat-datepicker-toggle matSuffix [for]="scheduleDatePicker"></mat-datepicker-toggle>
+              <mat-datepicker #scheduleDatePicker></mat-datepicker>
+              <mat-hint>If set, the post will be automatically published at this time</mat-hint>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Refresh Interval</mat-label>
+              <mat-select formControlName="refreshIntervalInMinutes">
+                <mat-option [value]="5">5 minutes</mat-option>
+                <mat-option [value]="15">15 minutes</mat-option>
+                <mat-option [value]="30">30 minutes</mat-option>
+                <mat-option [value]="60">1 hour</mat-option>
+              </mat-select>
+              <mat-hint>How often the countdown timer should update on Facebook</mat-hint>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="form-column preview-column">
+          <div class="section-card preview-card">
+            <div class="section-header">
+              <mat-icon>visibility</mat-icon>
+              <h2>Preview</h2>
+            </div>
+
+            <div class="preview-wrapper">
+              <div class="preview-header">
+                <div class="preview-page-info" *ngIf="selectedPage">
+                  <div class="page-avatar">{{ selectedPage.pageName.charAt(0) }}</div>
+                  <div class="page-details">
+                    <div class="preview-page-name">{{ selectedPage.pageName }}</div>
+                    <div class="preview-template-name" *ngIf="selectedTemplate">{{ selectedTemplate.name }}</div>
+                  </div>
+                </div>
+                <div class="preview-status">
+                  <mat-chip color="primary">Preview</mat-chip>
+                </div>
+              </div>
+
+              <!-- Template Preview Container with iframe -->
+              <div class="template-preview-container" *ngIf="selectedTemplate && selectedTemplate.htmlTemplate">
+                <div class="iframe-container">
+                  <iframe
+                    #previewFrame
+                    frameborder="0"
+                    class="template-iframe"
+                    (load)="onPreviewLoad()"
+                    scrolling="no">
+                  </iframe>
+                </div>
+              </div>
+
+              <!-- Fallback Preview if no template HTML -->
+              <div class="preview-content" *ngIf="!selectedTemplate || !selectedTemplate.htmlTemplate"
+                  [ngStyle]="{'font-family': postForm.get('customFontFamily')?.value || 'Arial, sans-serif'}">
+                <div class="preview-background"
+                    [ngStyle]="{'background-color': postForm.get('customPrimaryColor')?.value || '#3f51b5',
+                               'background-image': postForm.get('backgroundImageUrl')?.value ? 'url(' + postForm.get('backgroundImageUrl')?.value + ')' : 'none'}">
+                  <div class="preview-overlay" *ngIf="postForm.get('hasOverlay')?.value"></div>
+                  <div class="preview-text">
+                    <div class="preview-title">{{ postForm.get('title')?.value || 'EVENT NAME IS COMING!' }}</div>
+                    <div class="preview-description">{{ postForm.get('description')?.value || 'Your event description here' }}</div>
+
+                    <div class="preview-countdown">
+                      <app-countdown-timer
+                        [targetDate]="postForm.get('eventDateTime')?.value || minDateTime"
+                        [showDays]="postForm.get('showDays')?.value"
+                        [showHours]="postForm.get('showHours')?.value"
+                        [showMinutes]="postForm.get('showMinutes')?.value"
+                        [showSeconds]="postForm.get('showSeconds')?.value"
+                        [primaryColor]="'white'"
+                        [fontFamily]="postForm.get('customFontFamily')?.value || 'Arial, sans-serif'">
+                      </app-countdown-timer>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div class="preview-footer">
-              <button mat-stroked-button type="button" (click)="previewPost()" [disabled]="postForm.invalid">
-                <mat-icon>visibility</mat-icon>
-                Full Screen Preview
-              </button>
+              <div class="preview-footer">
+                <button mat-flat-button color="primary" type="button" (click)="previewPost()" [disabled]="postForm.invalid">
+                  <mat-icon>fullscreen</mat-icon>
+                  Full Screen Preview
+                </button>
+              </div>
             </div>
           </div>
 
-          <div class="action-buttons">
-            <button mat-button type="button" (click)="cancel()">Cancel</button>
-            <button mat-raised-button color="accent" type="submit" [disabled]="postForm.invalid || submitting">
-              <mat-icon>save</mat-icon>
-              Save as Draft
-            </button>
-            <button mat-raised-button color="primary" type="button" (click)="schedulePost()" [disabled]="postForm.invalid || submitting || !postForm.get('scheduledFor')?.value">
-              <mat-icon>schedule</mat-icon>
-              Schedule Post
-            </button>
-            <button mat-raised-button color="warn" type="button" (click)="publishNow()" [disabled]="postForm.invalid || submitting">
-              <mat-icon>publish</mat-icon>
-              Publish Now
-            </button>
+          <div class="section-card action-card">
+            <div class="action-buttons">
+              <button mat-stroked-button type="button" (click)="cancel()" class="cancel-button">
+                <mat-icon>close</mat-icon>
+                Cancel
+              </button>
+              <button mat-raised-button color="primary" type="submit" [disabled]="postForm.invalid || submitting" class="draft-button">
+                <mat-icon>save</mat-icon>
+                Save as Draft
+              </button>
+              <button mat-raised-button color="accent" type="button" (click)="schedulePost()" [disabled]="postForm.invalid || submitting || !postForm.get('scheduledFor')?.value" class="schedule-button">
+                <mat-icon>schedule</mat-icon>
+                Schedule Post
+              </button>
+              <button mat-raised-button color="warn" type="button" (click)="publishNow()" [disabled]="postForm.invalid || submitting" class="publish-button">
+                <mat-icon>publish</mat-icon>
+                Publish Now
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </form>
   </div>
 
-  <ng-template #loadingTemplate>
-    <div class="loading-container">
-      <mat-spinner></mat-spinner>
-      <p>Loading...</p>
+  <div class="submitting-overlay" *ngIf="submitting">
+    <div class="spinner-container">
+      <div class="pulse-spinner"></div>
+      <p>{{ isEdit ? 'Updating your post...' : 'Creating your post...' }}</p>
     </div>
-  </ng-template>
+  </div>
 </div>
